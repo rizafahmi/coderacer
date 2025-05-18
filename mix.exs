@@ -10,7 +10,12 @@ defmodule Coderacer.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      listeners: [Phoenix.CodeReloader]
+      listeners: [Phoenix.CodeReloader],
+      dialyzer: [
+        plt_add_apps: [:mix],
+        ignore_warnings: "dialyzer.ignore-warnings",
+        plt_file: {:no_warn, "_build/#{Mix.env()}/dialyzer.plt"}
+      ]
     ]
   end
 
@@ -57,7 +62,10 @@ defmodule Coderacer.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
+      {:credo, "~> 1.7", only: [:dev], runtime: false},
+      {:tidewave, "~> 0.1", only: :dev}
     ]
   end
 
@@ -70,6 +78,7 @@ defmodule Coderacer.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
+      check: ["dialyzer", "credo"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],

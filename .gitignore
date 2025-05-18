@@ -39,3 +39,6 @@ npm-debug.log
 *.db
 *.db-*
 
+
+.mix/
+.hex/

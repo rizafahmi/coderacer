@@ -1,5 +1,10 @@
 # Coderacer
 
+## TODO
+- [ ] Timer
+- [ ] Calcualte wpm
+- [ ] Generate code with AI
+
 To start your Phoenix server:
 
 * Run `mix setup` to install and setup dependencies
