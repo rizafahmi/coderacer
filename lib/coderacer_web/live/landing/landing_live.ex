@@ -3,8 +3,6 @@ defmodule CoderacerWeb.LandingLive do
 
   require Logger
 
-  @agent_name :score
-
   @impl true
   def mount(_params, _session, socket) do
     initial_state = %{streak: 0, wrong: 0}
@@ -17,6 +15,7 @@ defmodule CoderacerWeb.LandingLive do
       |> assign(:remaining_code, code)
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
+      |> assign(:elapsed_time, %{elapsed_time: 0, running: false})
 
     {:ok, socket}
   end
@@ -29,9 +28,44 @@ defmodule CoderacerWeb.LandingLive do
     Logger.info("Remaining code: #{socket.assigns.remaining_code}")
     remaining_code = socket.assigns.remaining_code
 
+    socket =
+      case socket.assigns.elapsed_time.running do
+        false ->
+          Process.send_after(self(), :tick, 1000)
+          assign(socket, :elapsed_time, %{socket.assigns.elapsed_time | running: true})
+
+        true ->
+          socket
+      end
+
     socket = check_code(String.graphemes(remaining_code), char_to_check, socket)
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("start_stopwatch", _params, socket) do
+    if socket.assigns.elapsed_time.running do
+      {:noreply, assign(socket, :elapsed_time, %{socket.assigns.elapsed_time | running: false})}
+    else
+      Process.send_after(self(), :tick, 1000)
+      {:noreply, assign(socket, :elapsed_time, %{socket.assigns.elapsed_time | running: true})}
+    end
+  end
+
+  @impl true
+  def handle_info(:tick, socket) do
+    if socket.assigns.elapsed_time.running do
+      Process.send_after(self(), :tick, 1000)
+
+      {:noreply,
+       assign(socket, :elapsed_time, %{
+         socket.assigns.elapsed_time
+         | elapsed_time: socket.assigns.elapsed_time.elapsed_time + 1
+       })}
+    else
+      {:noreply, socket}
+    end
   end
 
   def get_char_to_check(current_char) do
@@ -44,10 +78,21 @@ defmodule CoderacerWeb.LandingLive do
   def check_code([], _char_to_check, socket) do
     # No characters left to check
     Logger.info("Finish")
+
     socket
   end
 
   def check_code([h | t], char_to_check, socket) do
+    socket =
+      case Enum.empty?(t) do
+        true ->
+          socket
+          |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
+
+        false ->
+          socket
+      end
+
     case char_to_check == h do
       true ->
         # Correct character typed

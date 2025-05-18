@@ -6,6 +6,12 @@
     <pre>{@code}</pre>
     <h3>Remaining</h3>
     <pre>{@remaining_code}</pre>
-
-
 </form>
+
+<div>
+    <h3>Stopwatch</h3>
+    <p>Time: {@elapsed_time.elapsed_time} seconds</p>
+    <button phx-click="start_stopwatch">
+        {@elapsed_time.running && "Stop" || "Start"}
+    </button>
+</div>
