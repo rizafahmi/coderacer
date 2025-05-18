@@ -1,17 +1,14 @@
 <pre>{inspect @score}</pre>
 <form>
-    <input type="text" name="typing" autofocus phx-change="user_type" />
+  <input type="text" name="typing" autofocus phx-change="user_type" />
 
-    <h3>Origin Code</h3>
-    <pre>{@code}</pre>
-    <h3>Remaining</h3>
-    <pre>{@remaining_code}</pre>
+  <h3>Origin Code</h3>
+  <pre>{@code}</pre>
+  <h3>Remaining</h3>
+  <pre>{@remaining_code}</pre>
 </form>
 
 <div>
-    <h3>Stopwatch</h3>
-    <p>Time: {@elapsed_time.elapsed_time} seconds</p>
-    <button phx-click="start_stopwatch">
-        {@elapsed_time.running && "Stop" || "Start"}
-    </button>
+  <h3>Stopwatch</h3>
+  <p>Time: {@elapsed_time.elapsed_time} seconds</p>
 </div>
