@@ -1,7 +1,7 @@
 defmodule Coderacer.AI do
-  def generate(language, difficulty) do
+  def generate(language, lines, difficulty) do
     # Simulate code generation based on language and difficulty
-    prompt = "Generate 20 lines of code in #{language} that is #{difficulty} to type."
+    prompt = "Generate #{lines} lines of code in #{language} that is #{difficulty} to type."
 
     case send(prompt) do
       %Req.Response{status: 200, body: body} ->
