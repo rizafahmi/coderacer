@@ -1,9 +1,9 @@
 <pre>{inspect @score}</pre>
-<form>
-  <input type="text" name="typing" autofocus phx-change="user_type" />
 
-  <h3>Origin Code</h3>
-  <pre>{@code}</pre>
+<form>
+  <button type="button" phx-click="gen-code">Start</button>
+  <textarea name="typing" autofocus phx-change="user_type" />
+
   <h3>Remaining</h3>
   <pre>{@remaining_code}</pre>
 </form>
