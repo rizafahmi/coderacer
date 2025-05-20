@@ -20,31 +20,30 @@ defmodule Coderacer.AI do
     system =
       "You are awesome at generating various programming languages to exercise and have some fun. You will ask to generate code snippets from 1 line to hundreds line of code. And you will generate the snippets based on how easy, medium or hard it is for user to type for. Just return the code, not markdown, or anything else. Just the code."
 
-    result =
-      Req.post!(url,
-        json: %{
-          contents: [
-            %{role: "assistant", parts: [%{text: system}]},
-            %{role: "user", parts: [%{text: prompt}]}
-          ],
-          generationConfig: %{
-            temperature: 0.5,
-            topP: 0.8,
-            max_output_tokens: 65536,
-            responseMimeType: "application/json",
-            responseSchema: %{
-              type: "object",
-              properties: %{
-                response: %{
-                  type: "string"
-                }
+    http_client = Application.get_env(:coderacer, :http_client, Req)
+
+    http_client.post!(url,
+      json: %{
+        contents: [
+          %{role: "assistant", parts: [%{text: system}]},
+          %{role: "user", parts: [%{text: prompt}]}
+        ],
+        generationConfig: %{
+          temperature: 0.5,
+          topP: 0.8,
+          max_output_tokens: 65536,
+          responseMimeType: "application/json",
+          responseSchema: %{
+            type: "object",
+            properties: %{
+              response: %{
+                type: "string"
               }
             }
           }
         }
-      )
-
-    result
+      }
+    )
   end
 
   def parse_body(body) do
