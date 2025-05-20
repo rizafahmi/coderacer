@@ -2,36 +2,23 @@ defmodule CoderacerWeb.LandingLive do
   use CoderacerWeb, :live_view
 
   require Logger
+  alias Coderacer.Game
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"id" => id}, _session, socket) do
     initial_state = %{streak: 0, wrong: 0}
 
-    # code = Coderacer.AI.generate("JavaScript", 2, "easy")
-    # code =
-    #   "const arr = [];\nfor (let i = 0; i < 10; i++) {\n  arr.push(i * 2);\n}\n\nfunction greet(name) {\n  console.log('Hello, ' + name + '!');\n}\n\ngreet('World');\n\nconst obj = {\n  name: 'Example',\n  value: 123\n};\n\nconsole.log(obj.name);\nconsole.log(arr);\n"
+    session = Game.get_session!(id)
 
     socket =
       socket
-      # |> assign(:code, code)
-      |> assign(:remaining_code, "")
+      # |> assign(:code, session.code_challenge)
+      |> assign(:remaining_code, session.code_challenge)
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
       |> assign(:elapsed_time, %{elapsed_time: 0, running: false})
 
     {:ok, socket}
-  end
-
-  @impl true
-  def handle_event("gen-code", _value, socket) do
-    # code = "const arr = [];"
-    code = Coderacer.AI.generate("Clojure", 15, "easy")
-
-    socket =
-      socket
-      |> assign(:remaining_code, code)
-
-    {:noreply, socket}
   end
 
   @impl true
