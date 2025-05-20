@@ -13,7 +13,8 @@ defmodule Coderacer.GameFixtures do
       |> Enum.into(%{
         difficulty: :easy,
         language: "some language",
-        time_completion: 42
+        time_completion: 42,
+        code_challenge: "some code challenge"
       })
       |> Coderacer.Game.create_session()
 

@@ -8,7 +8,13 @@ defmodule CoderacerWeb.StartLive do
   end
 
   def handle_event("submit_choice", %{"language" => language, "difficulty" => difficulty}, socket) do
-    case Game.create_session(%{language: language, difficulty: String.to_atom(difficulty)}) do
+    code = Coderacer.AI.generate(language, 25, difficulty)
+
+    case Game.create_session(%{
+           language: language,
+           difficulty: String.to_atom(difficulty),
+           code_challenge: code
+         }) do
       {:ok, session} ->
         socket =
           socket

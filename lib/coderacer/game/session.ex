@@ -12,6 +12,7 @@ defmodule Coderacer.Game.Session do
     field :language, :string
     field :difficulty, Ecto.Enum, values: [:easy, :medium, :hard]
     field :time_completion, :integer, default: 0
+    field :code_challenge, :string, default: ""
 
     timestamps(type: :utc_datetime)
   end
@@ -19,7 +20,7 @@ defmodule Coderacer.Game.Session do
   @doc false
   def changeset(session, attrs) do
     session
-    |> cast(attrs, [:language, :difficulty, :time_completion])
+    |> cast(attrs, [:language, :difficulty, :time_completion, :code_challenge])
     |> validate_required([:language, :difficulty])
   end
 end
