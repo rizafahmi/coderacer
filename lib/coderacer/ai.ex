@@ -1,5 +1,5 @@
 defmodule Coderacer.AI do
-  def generate(language, lines, difficulty) do
+  def generate(language, difficulty, lines \\ 10) do
     # Simulate code generation based on language and difficulty
     prompt = "Generate #{lines} lines of code in #{language} that is #{difficulty} to type."
 
