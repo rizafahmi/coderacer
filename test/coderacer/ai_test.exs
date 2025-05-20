@@ -8,5 +8,8 @@ defmodule Coderacer.AITest do
     assert String.length(code) > 0, "Expected generated code to be non-empty"
   end
 
-  test "to make sure generate/2 retunrs only code and not some markdown triple tick"
+  test "to make sure generate/2 retunrs only code and not some markdown triple tick" do
+    code = Coderacer.AI.generate("JavaScript", 2, "easy")
+    assert String.contains?(code, "```") == false
+  end
 end
