@@ -17,7 +17,7 @@ defmodule CoderacerWeb.Router do
   scope "/", CoderacerWeb do
     pipe_through :browser
 
-    live "/", LandingLive
+    live "/", StartLive
   end
 
   # Other scopes may use custom stacks.
