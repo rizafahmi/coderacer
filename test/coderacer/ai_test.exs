@@ -30,6 +30,20 @@ defmodule Coderacer.AITest do
     end
   end
 
+  # Mock module for error cases
+  defmodule MockReqError do
+    def post!(_url, _opts) do
+      %Req.Response{
+        status: 429,
+        body: %{
+          "error" => %{
+            "message" => "Rate limit exceeded"
+          }
+        }
+      }
+    end
+  end
+
   setup do
     # Replace the real Req module with our mock
     Application.put_env(:coderacer, :http_client, MockReq)
@@ -48,5 +62,13 @@ defmodule Coderacer.AITest do
   test "to make sure generate/2 returns only code and not some markdown triple tick" do
     code = Coderacer.AI.generate("JavaScript", 2, "easy")
     assert String.contains?(code, "```") == false
+  end
+
+  test "generate/2 handles HTTP error responses" do
+    # Configure the error mock
+    Application.put_env(:coderacer, :http_client, MockReqError)
+
+    # Test error handling
+    assert {:error, 429, "Rate limit exceeded"} = Coderacer.AI.generate("JavaScript", 2, "easy")
   end
 end
