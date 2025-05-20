@@ -1,13 +1,35 @@
-<pre>{inspect @score}</pre>
+<div class="bg-neutral text-neutral-content p-8 rounded-lg shadow-lg">
+  <h1 class="text-5xl font-bold text-center mb-8">Code Racer</h1>
 
-<form>
-  <textarea name="typing" autofocus phx-change="user_type" />
+  <form class="space-y-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-xl font-semibold">Time Remaining</h3>
+        <p class="text-lg">{@elapsed_time.elapsed_time} seconds</p>
+      </div>
+      <div class="flex space-x-4">
+        <div>
+          <h3 class="text-xl font-semibold">Streak</h3>
+          <p class="text-lg text-green-500">{@score.streak}</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold">Wrong</h3>
+          <p class="text-lg text-red-300">{@score.wrong}</p>
+        </div>
+      </div>
+    </div>
+    <textarea
+      name="typing"
+      autofocus
+      phx-change="user_type"
+      class="textarea textarea-bordered w-full h-24"
+      style="opacity: 0; position: absolute; left: -9999px;"
+      placeholder="Type here..."
+    ></textarea>
+    <pre class="bg-neutral-focus p-4 rounded-lg">{@remaining_code}</pre>
+  </form>
 
-  <h3>Remaining</h3>
-  <pre>{@remaining_code}</pre>
-</form>
-
-<div>
-  <h3>Stopwatch</h3>
-  <p>Time: {@elapsed_time.elapsed_time} seconds</p>
+  <div class="mt-8 text-center">
+    <a href="/" class="btn btn-primary">Back to Start Screen</a>
+  </div>
 </div>
