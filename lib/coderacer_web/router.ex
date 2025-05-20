@@ -18,6 +18,7 @@ defmodule CoderacerWeb.Router do
     pipe_through :browser
 
     live "/", StartLive
+    live "/game/:id", LandingLive
   end
 
   # Other scopes may use custom stacks.
