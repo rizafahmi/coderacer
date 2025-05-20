@@ -33,6 +33,8 @@ defmodule Coderacer.GameTest do
       assert session.difficulty == :easy
       assert session.time_completion == 42
       assert session.code_challenge == "some code challenge"
+      assert session.streak == 0
+      assert session.wrong == 0
     end
 
     test "create_session/1 with invalid data returns error changeset" do
@@ -46,7 +48,9 @@ defmodule Coderacer.GameTest do
         language: "some updated language",
         difficulty: :medium,
         time_completion: 43,
-        code_challenge: "some updated code challenge"
+        code_challenge: "some updated code challenge",
+        streak: 10,
+        wrong: 5
       }
 
       assert {:ok, %Session{} = session} = Game.update_session(session, update_attrs)
@@ -54,6 +58,8 @@ defmodule Coderacer.GameTest do
       assert session.difficulty == :medium
       assert session.time_completion == 43
       assert session.code_challenge == "some updated code challenge"
+      assert session.streak == 10
+      assert session.wrong == 5
     end
 
     test "update_session/2 with invalid data returns error changeset" do

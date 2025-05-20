@@ -14,7 +14,9 @@ defmodule Coderacer.GameFixtures do
         difficulty: :easy,
         language: "some language",
         time_completion: 42,
-        code_challenge: "some code challenge"
+        code_challenge: "some code challenge",
+        streak: 10,
+        wrong: 5
       })
       |> Coderacer.Game.create_session()
 
