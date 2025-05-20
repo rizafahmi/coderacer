@@ -1,4 +1,4 @@
-defmodule CoderacerWeb.LandingLive do
+defmodule CoderacerWeb.GameLive do
   use CoderacerWeb, :live_view
 
   require Logger
