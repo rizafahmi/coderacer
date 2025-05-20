@@ -1,4 +1,7 @@
 defmodule Coderacer.AI do
+  @moduledoc """
+  Module documentation for Coderacer.AI.
+  """
   def generate(language, difficulty, lines \\ 10) do
     # Simulate code generation based on language and difficulty
     prompt = "Generate #{lines} lines of code in #{language} that is #{difficulty} to type."
@@ -31,7 +34,7 @@ defmodule Coderacer.AI do
         generationConfig: %{
           temperature: 0.5,
           topP: 0.8,
-          max_output_tokens: 65536,
+          max_output_tokens: 65_536,
           responseMimeType: "application/json",
           responseSchema: %{
             type: "object",
