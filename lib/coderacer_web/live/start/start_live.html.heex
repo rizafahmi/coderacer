@@ -1,28 +1,22 @@
-<div class="container mx-auto p-4">
-  <h1 class="text-2xl font-bold mb-4">Choose your poison</h1>
-  <form phx-submit="submit_choice">
-    <div class="mb-4">
-      <label for="language" class="block text-sm font-medium text-gray-700">
-        Programming Language
-      </label>
-      <select id="language" name="language" class="select select-bordered w-full mt-1">
+<div class="bg-neutral text-neutral-content p-8 rounded-lg shadow-lg container mx-auto">
+  <h1 class="text-5xl font-bold text-center mb-8">Choose Your Poison</h1>
+  <form phx-submit="submit_choice" class="space-y-6">
+    <div>
+      <label for="language" class="block text-lg font-medium">Programming Language</label>
+      <select id="language" name="language" class="select select-bordered w-full mt-2">
         <option value="elixir">Elixir</option>
         <option value="javascript">JavaScript</option>
         <option value="python">Python</option>
       </select>
     </div>
-    <div class="mb-4">
-      <label for="difficulty" class="block text-sm font-medium text-gray-700">
-        Difficulty Level
-      </label>
-      <select id="difficulty" name="difficulty" class="select select-bordered w-full mt-1">
+    <div>
+      <label for="difficulty" class="block text-lg font-medium">Difficulty Level</label>
+      <select id="difficulty" name="difficulty" class="select select-bordered w-full mt-2">
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
       </select>
     </div>
-    <button type="submit" class="btn btn-primary">
-      Start
-    </button>
+    <button type="submit" class="btn btn-primary w-full">Start</button>
   </form>
 </div>
