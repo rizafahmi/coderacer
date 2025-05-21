@@ -12,7 +12,7 @@ defmodule CoderacerWeb.GameLive do
 
     socket =
       socket
-      # |> assign(:code, session.code_challenge)
+      |> assign(:session, session)
       |> assign(:remaining_code, session.code_challenge)
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
@@ -79,6 +79,16 @@ defmodule CoderacerWeb.GameLive do
   def check_code([], _char_to_check, socket) do
     # No characters left to check
     Logger.info("Finish")
+
+    session =
+      Game.update_session(socket.assigns.session, %{
+        streak: socket.assigns.score.streak,
+        wrong: socket.assigns.score.wrong,
+        time_completion: socket.assigns.elapsed_time.elapsed_time
+      })
+
+    dbg(session)
+    # Show result modal
 
     socket
   end
