@@ -44,6 +44,40 @@ defmodule Coderacer.AITest do
     end
   end
 
+  # Mock module for malformed JSON response
+  defmodule MockReqMalformedJson do
+    def post!(_url, _opts) do
+      %Req.Response{
+        status: 200,
+        body: %{
+          "candidates" => [
+            %{
+              "content" => %{
+                "parts" => [
+                  %{
+                    "text" => "invalid json content"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    end
+  end
+
+  # Mock module for empty candidates
+  defmodule MockReqEmptyCandidates do
+    def post!(_url, _opts) do
+      %Req.Response{
+        status: 200,
+        body: %{
+          "candidates" => []
+        }
+      }
+    end
+  end
+
   setup do
     # Replace the real Req module with our mock
     Application.put_env(:coderacer, :http_client, MockReq)
@@ -59,6 +93,12 @@ defmodule Coderacer.AITest do
     assert code == "console.log('Hello, World!');\nconst x = 42;"
   end
 
+  test "generate/3 with default lines parameter" do
+    code = Coderacer.AI.generate("Python", "medium")
+    assert is_binary(code)
+    assert String.length(code) > 0
+  end
+
   test "to make sure generate/2 returns only code and not some markdown triple tick" do
     code = Coderacer.AI.generate("JavaScript", "easy", 2)
     assert String.contains?(code, "```") == false
@@ -69,6 +109,36 @@ defmodule Coderacer.AITest do
     Application.put_env(:coderacer, :http_client, MockReqError)
 
     # Test error handling
-    assert {:error, 429, "Rate limit exceeded"} = Coderacer.AI.generate("JavaScript", 2, "easy")
+    assert {:error, 429, "Rate limit exceeded"} = Coderacer.AI.generate("JavaScript", "easy", 2)
+  end
+
+  test "generate/2 handles malformed JSON gracefully" do
+    Application.put_env(:coderacer, :http_client, MockReqMalformedJson)
+
+    result = Coderacer.AI.generate("JavaScript", "easy", 2)
+    assert {:error, _} = result
+  end
+
+  test "generate/2 handles empty candidates array" do
+    Application.put_env(:coderacer, :http_client, MockReqEmptyCandidates)
+
+    assert_raise BadMapError, fn ->
+      Coderacer.AI.generate("JavaScript", "easy", 2)
+    end
+  end
+
+  test "parse_json/1 handles valid JSON" do
+    valid_json = Jason.encode!(%{"response" => "test code"})
+    assert Coderacer.AI.parse_json(valid_json) == "test code"
+  end
+
+  test "parse_json/1 handles invalid JSON" do
+    invalid_json = "invalid json"
+    assert {:error, _} = Coderacer.AI.parse_json(invalid_json)
+  end
+
+  test "parse_error/1 extracts error message from body" do
+    error_body = %{"error" => %{"message" => "Test error"}}
+    assert Coderacer.AI.parse_error(error_body) == "Test error"
   end
 end
