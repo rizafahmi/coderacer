@@ -31,5 +31,16 @@ defmodule CoderacerWeb.FinishLiveTest do
       {:ok, _view, html} = live(conn, "/finish/#{invalid_id}")
       assert html =~ "Session not found"
     end
+
+    test "shows error message for invalid session id", %{conn: conn} do
+      invalid_id = Ecto.UUID.generate()
+      {:ok, _view, html} = live(conn, "/finish/#{invalid_id}")
+      assert html =~ "Session not found"
+    end
+
+    test "does not show session id on finish page", %{conn: conn, session: session} do
+      {:ok, _view, html} = live(conn, "/finish/#{session.id}")
+      refute html =~ session.id
+    end
   end
 end

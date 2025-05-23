@@ -54,6 +54,11 @@ defmodule CoderacerWeb.StartLiveTest do
       # Clean up
       Application.delete_env(:coderacer, :http_client)
     end
+
+    test "renders Clojure in language dropdown", %{conn: conn} do
+      {:ok, _view, html} = live(conn, "/")
+      assert html =~ "Clojure"
+    end
   end
 
   # Mock module for successful AI responses
