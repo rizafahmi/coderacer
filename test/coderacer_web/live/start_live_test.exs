@@ -6,7 +6,9 @@ defmodule CoderacerWeb.StartLiveTest do
     test "renders start page with form", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/")
 
-      assert html =~ "Choose Your Poison"
+      assert html =~
+               "Test your coding speed and accuracy. Choose your language and difficulty to get started."
+
       assert html =~ "Programming Language"
       assert html =~ "Difficulty Level"
       assert html =~ "Start"

@@ -20,8 +20,7 @@ defmodule CoderacerWeb.FinishLiveTest do
     test "renders finish page with session id", %{conn: conn, session: session} do
       {:ok, _view, html} = live(conn, "/finish/#{session.id}")
 
-      assert html =~ "Finish"
-      assert html =~ session.id
+      assert html =~ "Challenge Complete!"
     end
 
     test "handles invalid session id gracefully", %{conn: conn} do
@@ -30,8 +29,7 @@ defmodule CoderacerWeb.FinishLiveTest do
 
       # This should work since the view doesn't actually load the session
       {:ok, _view, html} = live(conn, "/finish/#{invalid_id}")
-      assert html =~ "Finish"
-      assert html =~ invalid_id
+      assert html =~ "Session not found"
     end
   end
 end

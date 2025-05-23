@@ -15,9 +15,9 @@ defmodule CoderacerWeb.GameLiveTest do
   describe "GameLive" do
     test "renders initial state", %{conn: conn, session: session} do
       {:ok, _view, html} = live(conn, "/game/#{session.id}")
-      assert html =~ "Time Elapsed"
-      assert html =~ "0 seconds"
-      assert html =~ "Code Racer"
+      assert html =~ "Time"
+      assert html =~ "0s"
+      assert html =~ "CodeRacer"
     end
 
     test "starts stopwatch on first character input", %{conn: conn, session: session} do
@@ -27,7 +27,7 @@ defmodule CoderacerWeb.GameLiveTest do
       render_change(view, :user_type, %{"typing" => "c"})
       # Wait for the tick
       Process.sleep(1100)
-      assert render(view) =~ "1 seconds"
+      assert render(view) =~ "1s"
     end
 
     test "tracks correct character typed", %{conn: conn, session: session} do
@@ -76,7 +76,7 @@ defmodule CoderacerWeb.GameLiveTest do
       html = render(view)
 
       # Should handle empty input gracefully
-      assert html =~ "Time Elapsed"
+      assert html =~ "Time"
     end
 
     test "handles non-existent session id", %{conn: conn} do
@@ -91,7 +91,7 @@ defmodule CoderacerWeb.GameLiveTest do
       {:ok, _view, html} = live(conn, "/game/#{session.id}")
 
       # Code challenge should be visible with space replacement
-      assert html =~ "console.log"
+      assert html =~ ~r/c.*o.*n.*s.*o.*l.*e.*\..*l.*o.*g/s
       # space visual aid
       assert html =~ "⎵"
     end

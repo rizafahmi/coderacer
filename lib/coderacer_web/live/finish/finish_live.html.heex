@@ -1,122 +1,128 @@
 <div class="w-full max-w-4xl mx-auto">
-  <!-- Header -->
-  <div class="text-center mb-12">
-    <div class="text-6xl mb-6">🎉</div>
-    <h1 class="text-5xl font-bold text-gradient mb-4">Challenge Complete!</h1>
-    <p class="text-xl text-muted">Well done on completing the coding challenge</p>
-  </div>
-  
+  <%= if assigns[:error] do %>
+    <div class="text-center text-red-500 text-xl font-bold py-12">Session not found</div>
+  <% else %>
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="text-6xl mb-6">🎉</div>
+      <h1 class="text-5xl font-bold text-gradient mb-4">Challenge Complete!</h1>
+      <p class="text-xl text-muted">Well done on completing the coding challenge</p>
+    </div>
+    
 <!-- Results Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-    <div class="stat-card text-center p-6">
-      <div class="text-4xl font-bold text-brand-primary mb-2">{@cpm}</div>
-      <div class="text-lg font-medium text-muted">Characters/Min</div>
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="stat-card text-center p-6">
+        <div class="text-4xl font-bold text-brand-primary mb-2">{@cpm}</div>
+        <div class="text-lg font-medium text-muted">Characters/Min</div>
+      </div>
 
-    <div class="stat-card text-center p-6">
-      <div class="text-4xl font-bold text-green-400 mb-2">{@accuracy}%</div>
-      <div class="text-lg font-medium text-muted">Accuracy</div>
-    </div>
+      <div class="stat-card text-center p-6">
+        <div class="text-4xl font-bold text-green-400 mb-2">{@accuracy}%</div>
+        <div class="text-lg font-medium text-muted">Accuracy</div>
+      </div>
 
-    <div class="stat-card text-center p-6">
-      <div class="text-4xl font-bold text-blue-400 mb-2">{@session.time_completion}s</div>
-      <div class="text-lg font-medium text-muted">Time Taken</div>
-    </div>
+      <div class="stat-card text-center p-6">
+        <div class="text-4xl font-bold text-blue-400 mb-2">{@session.time_completion}s</div>
+        <div class="text-lg font-medium text-muted">Time Taken</div>
+      </div>
 
-    <div class="stat-card text-center p-6">
-      <div class="text-4xl font-bold text-red-400 mb-2">{@session.wrong}</div>
-      <div class="text-lg font-medium text-muted">Errors</div>
+      <div class="stat-card text-center p-6">
+        <div class="text-4xl font-bold text-red-400 mb-2">{@session.wrong}</div>
+        <div class="text-lg font-medium text-muted">Errors</div>
+      </div>
     </div>
-  </div>
-  
+    
 <!-- Performance Analysis -->
-  <div class="card-modern mb-8 p-8">
-    <h2 class="text-2xl font-bold text-brand-primary mb-6">Performance Analysis</h2>
+    <div class="card-modern mb-8 p-8">
+      <h2 class="text-2xl font-bold text-brand-primary mb-6">Performance Analysis</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <h3 class="text-lg font-semibold mb-4 text-brand-secondary">Test Details</h3>
-        <div class="space-y-3">
-          <div class="flex justify-between">
-            <span class="text-muted">Language:</span>
-            <span class="font-medium">{String.capitalize(@session.language)}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-muted">Difficulty:</span>
-            <span class="font-medium">{String.capitalize(to_string(@session.difficulty))}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-muted">Characters Typed:</span>
-            <span class="font-medium">{@session.streak + @session.wrong}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-muted">Code Length:</span>
-            <span class="font-medium">{String.length(@session.code_challenge)} chars</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-4 text-brand-secondary">Test Details</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between">
+              <span class="text-muted">Language:</span>
+              <span class="font-medium">{String.capitalize(@session.language)}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted">Difficulty:</span>
+              <span class="font-medium">{String.capitalize(to_string(@session.difficulty))}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted">Characters Typed:</span>
+              <span class="font-medium">{@session.streak + @session.wrong}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted">Code Length:</span>
+              <span class="font-medium">{String.length(@session.code_challenge)} chars</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div>
-        <h3 class="text-lg font-semibold mb-4 text-brand-secondary">Performance Insights</h3>
-        <div class="space-y-2 text-sm">
-          <%= if @accuracy >= 95 do %>
-            <p class="text-green-400">✓ Excellent accuracy! You have great precision.</p>
-          <% else %>
-            <p class="text-yellow-400">• Focus on accuracy over speed for better results.</p>
-          <% end %>
+        <div>
+          <h3 class="text-lg font-semibold mb-4 text-brand-secondary">Performance Insights</h3>
+          <div class="space-y-2 text-sm">
+            <%= if @accuracy >= 95 do %>
+              <p class="text-green-400">✓ Excellent accuracy! You have great precision.</p>
+            <% else %>
+              <p class="text-yellow-400">• Focus on accuracy over speed for better results.</p>
+            <% end %>
 
-          <%= if @cpm >= 200 do %>
-            <p class="text-green-400">✓ Great typing speed! You're above average for code.</p>
-          <% else %>
-            <p class="text-blue-400">• Practice regularly to improve your coding typing speed.</p>
-          <% end %>
+            <%= if @cpm >= 200 do %>
+              <p class="text-green-400">✓ Great typing speed! You're above average for code.</p>
+            <% else %>
+              <p class="text-blue-400">
+                • Practice regularly to improve your coding typing speed.
+              </p>
+            <% end %>
 
-          <%= if @session.wrong <= 3 do %>
-            <p class="text-green-400">✓ Very few errors - keep up the good work!</p>
-          <% else %>
-            <p class="text-orange-400">• Try to slow down and reduce errors for better flow.</p>
-          <% end %>
+            <%= if @session.wrong <= 3 do %>
+              <p class="text-green-400">✓ Very few errors - keep up the good work!</p>
+            <% else %>
+              <p class="text-orange-400">• Try to slow down and reduce errors for better flow.</p>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  
+    
 <!-- Action Buttons -->
-  <div class="flex flex-col sm:flex-row gap-4 justify-center">
-    <a href="/" class="btn-brand px-8 py-4 text-center">
-      <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-        >
-        </path>
-      </svg>
-      Try Another Challenge
-    </a>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/" class="btn-brand px-8 py-4 text-center">
+        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          >
+          </path>
+        </svg>
+        Try Another Challenge
+      </a>
 
-    <button class="btn-secondary px-8 py-4">
-      <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
-        >
-        </path>
-      </svg>
-      Share Results
-    </button>
-  </div>
-  
-<!-- Motivational Quote -->
-  <div class="mt-12 text-center">
-    <div class="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
-      <p class="text-lg text-muted italic mb-2">
-        "The way to get started is to quit talking and begin doing."
-      </p>
-      <p class="text-brand-primary font-medium">— Walt Disney</p>
+      <button class="btn-secondary px-8 py-4">
+        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+          >
+          </path>
+        </svg>
+        Share Results
+      </button>
     </div>
-  </div>
+    
+<!-- Motivational Quote -->
+    <div class="mt-12 text-center">
+      <div class="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
+        <p class="text-lg text-muted italic mb-2">
+          "The way to get started is to quit talking and begin doing."
+        </p>
+        <p class="text-brand-primary font-medium">— Walt Disney</p>
+      </div>
+    </div>
+  <% end %>
 </div>

@@ -101,4 +101,6 @@ defmodule Coderacer.Game do
   def change_session(%Session{} = session, attrs \\ %{}) do
     Session.changeset(session, attrs)
   end
+
+  def get_session(id), do: Repo.get(Session, id)
 end
