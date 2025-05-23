@@ -77,36 +77,11 @@ defmodule CoderacerWeb.GameLive do
   end
 
   def check_code([], _char_to_check, socket) do
-    # No characters left to check
-    Logger.info("Finish")
-
-    socket =
-      socket
-      |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
-      |> push_navigate(to: "/finish/#{socket.assigns.session.id}")
-
-    Game.update_session(socket.assigns.session, %{
-      streak: socket.assigns.score.streak,
-      wrong: socket.assigns.score.wrong,
-      time_completion: socket.assigns.elapsed_time.elapsed_time
-    })
-
-    # Show result modal
-
+    # No characters left to check - game already completed
     socket
   end
 
   def check_code([h | t], char_to_check, socket) do
-    socket =
-      case Enum.empty?(t) do
-        true ->
-          socket
-          |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
-
-        false ->
-          socket
-      end
-
     case char_to_check == h do
       true ->
         # Correct character typed
@@ -120,7 +95,28 @@ defmodule CoderacerWeb.GameLive do
             wrong: socket.assigns.score.wrong
           })
 
-        socket
+        # Check if this was the last character
+        case Enum.empty?(t) do
+          true ->
+            # Game completed!
+            Logger.info("Finish")
+
+            socket =
+              socket
+              |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
+              |> push_navigate(to: "/finish/#{socket.assigns.session.id}")
+
+            Game.update_session(socket.assigns.session, %{
+              streak: socket.assigns.score.streak,
+              wrong: socket.assigns.score.wrong,
+              time_completion: socket.assigns.elapsed_time.elapsed_time
+            })
+
+            socket
+
+          false ->
+            socket
+        end
 
       false ->
         # Incorrect character typed
