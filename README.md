@@ -3,11 +3,15 @@
 ## TODO
 
 - [x] Timer
-- [-] Start Screen -> Game Screen
+- [x] Start Screen -> Game Screen
   - Or use modal
   - [x] Save game session to db -> Game screen
 - [x] Generate code with AI
-- [ ] Calcualte wpm
+- [ ] Finish screen
+  - [ ] Calcualte statistics
+    - CPS
+    - Streak
+    - Wrong
 
 To start your Phoenix server:
 
