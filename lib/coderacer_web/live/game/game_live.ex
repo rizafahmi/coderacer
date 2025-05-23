@@ -14,8 +14,10 @@ defmodule CoderacerWeb.GameLive do
     socket =
       socket
       |> assign(:session, session)
+      |> assign(:original_code, snippet)
+      |> assign(:current_position, 0)
       |> assign(:remaining_code, snippet)
-      |> assign(:display_code, format_code_with_visual_aids(snippet))
+      |> assign(:display_code, format_code_for_typing(snippet, 0))
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
       |> assign(:elapsed_time, %{elapsed_time: 0, running: false})
@@ -78,6 +80,51 @@ defmodule CoderacerWeb.GameLive do
     |> List.first()
   end
 
+  def format_code_for_typing(original_code, current_position) do
+    graphemes = String.graphemes(original_code)
+
+    {typed, remaining} = Enum.split(graphemes, current_position)
+
+    typed_html = Enum.map_join(typed, "", &format_char_as_typed/1)
+    cursor_html = "<span class=\"inline-block w-2 animate-blink text-brand-primary\">|</span>"
+    remaining_html = Enum.map_join(remaining, "", &format_char_as_remaining/1)
+
+    typed_html <> cursor_html <> remaining_html
+  end
+
+  defp format_char_as_typed(char) do
+    case char do
+      "\t" -> "<span class=\"text-green-100\">⇥</span>"
+      " " -> "<span class=\"text-green-100\">⎵</span>"
+      "\r\n" -> "<span class=\"text-green-100 font-bold\">↵</span>\n"
+      "\n" -> "<span class=\"text-green-100 font-bold\">↵</span>\n"
+      "\r" -> "<span class=\"text-green-100 font-bold\">↵</span>\n"
+      _ -> "<span class=\"text-green-100 \">#{html_escape_char(char)}</span>"
+    end
+  end
+
+  defp format_char_as_remaining(char) do
+    case char do
+      "\t" -> "<span class=\"text-slate-400 opacity-60\">⇥</span>"
+      " " -> "<span class=\"text-slate-400 opacity-60\">⎵</span>"
+      "\r\n" -> "<span class=\"text-slate-400 opacity-60 font-bold\">↵</span>\n"
+      "\n" -> "<span class=\"text-slate-400 opacity-60 font-bold\">↵</span>\n"
+      "\r" -> "<span class=\"text-slate-400 opacity-60 font-bold\">↵</span>\n"
+      _ -> "<span class=\"text-slate-400 opacity-60\">#{html_escape_char(char)}</span>"
+    end
+  end
+
+  defp html_escape_char(char) do
+    case char do
+      "<" -> "&lt;"
+      ">" -> "&gt;"
+      "&" -> "&amp;"
+      "\"" -> "&quot;"
+      "'" -> "&#x27;"
+      _ -> char
+    end
+  end
+
   def format_code_with_visual_aids(code) do
     code
     # Use unique markers first to avoid interference
@@ -105,10 +152,16 @@ defmodule CoderacerWeb.GameLive do
         # Correct character and it's the last one - finish game!
         Logger.info("Finish")
 
+        new_position = socket.assigns.current_position + 1
+
         socket =
           socket
+          |> assign(:current_position, new_position)
           |> assign(:remaining_code, "")
-          |> assign(:display_code, "")
+          |> assign(
+            :display_code,
+            format_code_for_typing(socket.assigns.original_code, new_position)
+          )
           |> assign(:score, %{
             streak: socket.assigns.score.streak + 1,
             wrong: socket.assigns.score.wrong
@@ -126,11 +179,16 @@ defmodule CoderacerWeb.GameLive do
 
       char_to_check == h ->
         # Correct character but not the last one
+        new_position = socket.assigns.current_position + 1
         new_remaining_code = Enum.join(t)
 
         socket
+        |> assign(:current_position, new_position)
         |> assign(:remaining_code, new_remaining_code)
-        |> assign(:display_code, format_code_with_visual_aids(new_remaining_code))
+        |> assign(
+          :display_code,
+          format_code_for_typing(socket.assigns.original_code, new_position)
+        )
         |> assign(:score, %{
           streak: socket.assigns.score.streak + 1,
           wrong: socket.assigns.score.wrong

@@ -1,3 +1,13 @@
+<style>
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .animate-blink {
+    animation: blink 1s steps(1) infinite;
+  }
+</style>
+
 <div class="w-full max-w-6xl mx-auto">
   <!-- Header -->
   <div class="text-center mb-8">
@@ -57,8 +67,8 @@
       placeholder="Type here..."
     ></textarea>
 
-    <div class="code-display text-xl leading-relaxed min-h-[300px]">
-      <pre class="font-mono"><%= if String.length(@remaining_code) > 0 do %><span><%= Phoenix.HTML.raw(@display_code) %></span><% else %>
+    <div class="code-display text-xl leading-relaxed min-h-[300px] bg-slate-900/50 rounded-xl p-6 border border-slate-700/50">
+      <pre class="font-mono text-xl whitespace-pre-wrap break-words"><%= if String.length(@remaining_code) > 0 do %><%= Phoenix.HTML.raw(@display_code) %><% else %>
           <div class="text-center py-16">
             <div class="text-6xl mb-4">🎉</div>
             <h2 class="text-3xl font-bold text-brand-primary mb-2">Challenge Complete!</h2>

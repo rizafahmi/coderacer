@@ -7,8 +7,8 @@
   - Or use modal
   - [x] Save game session to db -> Game screen
 - [x] Generate code with AI
-- [ ] Finish screen
-  - [ ] Calcualte statistics
+- [x] Finish screen
+  - [x] Calcualte statistics
     - CPS
     - Streak
     - Wrong
