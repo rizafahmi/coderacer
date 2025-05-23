@@ -18,29 +18,29 @@
   </div>
   
 <!-- Stats Bar -->
-  <div class="stats stats-vertical lg:stats-horizontal shadow mb-8">
-    <div class="stat place-items-center">
-      <div class="stat-title">Time</div>
-      <div class="stat-value text-primary">{@elapsed_time.elapsed_time}s</div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="stat-card text-center">
+      <div class="text-3xl font-bold text-brand-primary">{@elapsed_time.elapsed_time}s</div>
+      <div class="text-sm text-muted">Time</div>
     </div>
 
-    <div class="stat place-items-center">
-      <div class="stat-title">Streak</div>
-      <div class="stat-value text-success">{@score.streak}</div>
+    <div class="stat-card text-center">
+      <div class="text-3xl font-bold text-green-400">{@score.streak}</div>
+      <div class="text-sm text-muted">Streak</div>
     </div>
 
-    <div class="stat place-items-center">
-      <div class="stat-title">Errors</div>
-      <div class="stat-value text-error">{@score.wrong}</div>
+    <div class="stat-card text-center">
+      <div class="text-3xl font-bold text-red-400">{@score.wrong}</div>
+      <div class="text-sm text-muted">Errors</div>
     </div>
 
-    <div class="stat place-items-center">
-      <div class="stat-title">CPM</div>
-      <div class="stat-value text-secondary">
+    <div class="stat-card text-center">
+      <div class="text-3xl font-bold text-brand-secondary">
         {if @elapsed_time.elapsed_time > 0,
           do: round((@score.streak + @score.wrong) * 60 / @elapsed_time.elapsed_time),
           else: 0}
       </div>
+      <div class="text-sm text-muted">CPM</div>
     </div>
   </div>
   

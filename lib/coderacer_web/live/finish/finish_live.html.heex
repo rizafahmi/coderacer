@@ -7,25 +7,25 @@
   </div>
   
 <!-- Results Grid -->
-  <div class="stats stats-vertical lg:stats-horizontal shadow mb-12">
-    <div class="stat place-items-center">
-      <div class="stat-title">Characters/Min</div>
-      <div class="stat-value text-primary">{@cpm}</div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <div class="stat-card text-center p-6">
+      <div class="text-4xl font-bold text-brand-primary mb-2">{@cpm}</div>
+      <div class="text-lg font-medium text-muted">Characters/Min</div>
     </div>
 
-    <div class="stat place-items-center">
-      <div class="stat-title">Accuracy</div>
-      <div class="stat-value text-success">{@accuracy}%</div>
+    <div class="stat-card text-center p-6">
+      <div class="text-4xl font-bold text-green-400 mb-2">{@accuracy}%</div>
+      <div class="text-lg font-medium text-muted">Accuracy</div>
     </div>
 
-    <div class="stat place-items-center">
-      <div class="stat-title">Time Taken</div>
-      <div class="stat-value text-info">{@session.time_completion}s</div>
+    <div class="stat-card text-center p-6">
+      <div class="text-4xl font-bold text-blue-400 mb-2">{@session.time_completion}s</div>
+      <div class="text-lg font-medium text-muted">Time Taken</div>
     </div>
 
-    <div class="stat place-items-center">
-      <div class="stat-title">Errors</div>
-      <div class="stat-value text-error">{@session.wrong}</div>
+    <div class="stat-card text-center p-6">
+      <div class="text-4xl font-bold text-red-400 mb-2">{@session.wrong}</div>
+      <div class="text-lg font-medium text-muted">Errors</div>
     </div>
   </div>
   
