@@ -83,6 +83,7 @@ defmodule CoderacerWeb.GameLive do
     socket =
       socket
       |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
+      |> push_navigate(to: "/finish/#{socket.assigns.session.id}")
 
     Game.update_session(socket.assigns.session, %{
       streak: socket.assigns.score.streak,
