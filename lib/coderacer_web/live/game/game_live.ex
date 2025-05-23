@@ -15,6 +15,7 @@ defmodule CoderacerWeb.GameLive do
       socket
       |> assign(:session, session)
       |> assign(:remaining_code, snippet)
+      |> assign(:display_code, format_code_with_newlines(snippet))
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
       |> assign(:elapsed_time, %{elapsed_time: 0, running: false})
@@ -77,6 +78,13 @@ defmodule CoderacerWeb.GameLive do
     |> List.first()
   end
 
+  def format_code_with_newlines(code) do
+    code
+    |> String.replace("\n", "<span class=\"text-blue-400 font-bold\">↵</span>\n")
+    |> String.replace("\r\n", "<span class=\"text-blue-400 font-bold\">↵</span>\n")
+    |> String.replace("\r", "<span class=\"text-blue-400 font-bold\">↵</span>\n")
+  end
+
   def check_code([], _char_to_check, socket) do
     # No characters left to check - game already completed
     socket
@@ -91,6 +99,7 @@ defmodule CoderacerWeb.GameLive do
         socket =
           socket
           |> assign(:remaining_code, "")
+          |> assign(:display_code, "")
           |> assign(:score, %{
             streak: socket.assigns.score.streak + 1,
             wrong: socket.assigns.score.wrong
@@ -112,6 +121,7 @@ defmodule CoderacerWeb.GameLive do
 
         socket
         |> assign(:remaining_code, new_remaining_code)
+        |> assign(:display_code, format_code_with_newlines(new_remaining_code))
         |> assign(:score, %{
           streak: socket.assigns.score.streak + 1,
           wrong: socket.assigns.score.wrong
