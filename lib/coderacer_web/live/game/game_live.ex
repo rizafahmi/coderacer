@@ -80,10 +80,18 @@ defmodule CoderacerWeb.GameLive do
 
   def format_code_with_visual_aids(code) do
     code
-    |> String.replace(" ", "<span class=\"text-slate-500\">⎵</span>")
-    |> String.replace("\n", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
-    |> String.replace("\r\n", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
-    |> String.replace("\r", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
+    # Use unique markers first to avoid interference
+    |> String.replace("\t", "___TAB___")
+    |> String.replace(" ", "___SPACE___")
+    |> String.replace("\r\n", "___CRLF___")
+    |> String.replace("\n", "___LF___")
+    |> String.replace("\r", "___CR___")
+    # Then replace with HTML
+    |> String.replace("___TAB___", "<span class=\"text-slate-500\">⇥</span>")
+    |> String.replace("___SPACE___", "<span class=\"text-slate-500\">⎵</span>")
+    |> String.replace("___CRLF___", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
+    |> String.replace("___LF___", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
+    |> String.replace("___CR___", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
   end
 
   def check_code([], _char_to_check, socket) do
