@@ -80,14 +80,16 @@ defmodule CoderacerWeb.GameLive do
     # No characters left to check
     Logger.info("Finish")
 
-    session =
-      Game.update_session(socket.assigns.session, %{
-        streak: socket.assigns.score.streak,
-        wrong: socket.assigns.score.wrong,
-        time_completion: socket.assigns.elapsed_time.elapsed_time
-      })
+    socket =
+      socket
+      |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
 
-    dbg(session)
+    Game.update_session(socket.assigns.session, %{
+      streak: socket.assigns.score.streak,
+      wrong: socket.assigns.score.wrong,
+      time_completion: socket.assigns.elapsed_time.elapsed_time
+    })
+
     # Show result modal
 
     socket
