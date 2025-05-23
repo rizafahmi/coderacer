@@ -82,49 +82,44 @@ defmodule CoderacerWeb.GameLive do
   end
 
   def check_code([h | t], char_to_check, socket) do
-    case char_to_check == h do
-      true ->
-        # Correct character typed
-        new_remaining_code = Enum.join(t)
+    cond do
+      char_to_check == h and Enum.empty?(t) ->
+        # Correct character and it's the last one - finish game!
+        Logger.info("Finish")
 
         socket =
           socket
-          |> assign(:remaining_code, new_remaining_code)
+          |> assign(:remaining_code, "")
           |> assign(:score, %{
             streak: socket.assigns.score.streak + 1,
             wrong: socket.assigns.score.wrong
           })
+          |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
+          |> push_navigate(to: "/finish/#{socket.assigns.session.id}")
 
-        # Check if this was the last character
-        case Enum.empty?(t) do
-          true ->
-            # Game completed!
-            Logger.info("Finish")
-
-            socket =
-              socket
-              |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
-              |> push_navigate(to: "/finish/#{socket.assigns.session.id}")
-
-            Game.update_session(socket.assigns.session, %{
-              streak: socket.assigns.score.streak,
-              wrong: socket.assigns.score.wrong,
-              time_completion: socket.assigns.elapsed_time.elapsed_time
-            })
-
-            socket
-
-          false ->
-            socket
-        end
-
-      false ->
-        # Incorrect character typed
-        socket =
-          socket
-          |> assign(:score, %{streak: 0, wrong: socket.assigns.score.wrong + 1})
+        Game.update_session(socket.assigns.session, %{
+          streak: socket.assigns.score.streak + 1,
+          wrong: socket.assigns.score.wrong,
+          time_completion: socket.assigns.elapsed_time.elapsed_time
+        })
 
         socket
+
+      char_to_check == h ->
+        # Correct character but not the last one
+        new_remaining_code = Enum.join(t)
+
+        socket
+        |> assign(:remaining_code, new_remaining_code)
+        |> assign(:score, %{
+          streak: socket.assigns.score.streak + 1,
+          wrong: socket.assigns.score.wrong
+        })
+
+      true ->
+        # Incorrect character typed
+        socket
+        |> assign(:score, %{streak: 0, wrong: socket.assigns.score.wrong + 1})
     end
   end
 end
