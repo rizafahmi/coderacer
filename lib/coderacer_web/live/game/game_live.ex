@@ -15,7 +15,7 @@ defmodule CoderacerWeb.GameLive do
       socket
       |> assign(:session, session)
       |> assign(:remaining_code, snippet)
-      |> assign(:display_code, format_code_with_newlines(snippet))
+      |> assign(:display_code, format_code_with_visual_aids(snippet))
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
       |> assign(:elapsed_time, %{elapsed_time: 0, running: false})
@@ -78,8 +78,9 @@ defmodule CoderacerWeb.GameLive do
     |> List.first()
   end
 
-  def format_code_with_newlines(code) do
+  def format_code_with_visual_aids(code) do
     code
+    |> String.replace(" ", "<span class=\"text-slate-500\">⎵</span>")
     |> String.replace("\n", "<span class=\"text-blue-400 font-bold\">↵</span>\n")
     |> String.replace("\r\n", "<span class=\"text-blue-400 font-bold\">↵</span>\n")
     |> String.replace("\r", "<span class=\"text-blue-400 font-bold\">↵</span>\n")
@@ -121,7 +122,7 @@ defmodule CoderacerWeb.GameLive do
 
         socket
         |> assign(:remaining_code, new_remaining_code)
-        |> assign(:display_code, format_code_with_newlines(new_remaining_code))
+        |> assign(:display_code, format_code_with_visual_aids(new_remaining_code))
         |> assign(:score, %{
           streak: socket.assigns.score.streak + 1,
           wrong: socket.assigns.score.wrong
