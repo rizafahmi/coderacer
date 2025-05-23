@@ -1,23 +1,51 @@
-<div class="bg-neutral text-neutral-content p-8 rounded-lg shadow-lg">
-  <h1 class="text-5xl font-bold text-center mb-8">Code Racer</h1>
+<div class="w-full max-w-6xl mx-auto">
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-gradient mb-2">CodeRacer</h1>
+    <div class="flex items-center justify-center space-x-4 text-muted">
+      <span class="text-sm">
+        Language:
+        <span class="text-brand-primary font-medium">{String.capitalize(@session.language)}</span>
+      </span>
+      <span class="text-sm">•</span>
+      <span class="text-sm">
+        Difficulty:
+        <span class="text-brand-primary font-medium">
+          {String.capitalize(to_string(@session.difficulty))}
+        </span>
+      </span>
+    </div>
+  </div>
+  
+<!-- Stats Bar -->
+  <div class="stats stats-vertical lg:stats-horizontal shadow mb-8">
+    <div class="stat place-items-center">
+      <div class="stat-title">Time</div>
+      <div class="stat-value text-primary">{@elapsed_time.elapsed_time}s</div>
+    </div>
 
-  <form class="space-y-4">
-    <div class="flex justify-between items-center">
-      <div>
-        <h3 class="text-xl font-semibold">Time Elapsed</h3>
-        <p class="text-lg">{@elapsed_time.elapsed_time} seconds</p>
-      </div>
-      <div class="flex space-x-4">
-        <div>
-          <h3 class="text-xl font-semibold">Streak</h3>
-          <p class="text-lg text-green-500">{@score.streak}</p>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Wrong</h3>
-          <p class="text-lg text-red-300">{@score.wrong}</p>
-        </div>
+    <div class="stat place-items-center">
+      <div class="stat-title">Streak</div>
+      <div class="stat-value text-success">{@score.streak}</div>
+    </div>
+
+    <div class="stat place-items-center">
+      <div class="stat-title">Errors</div>
+      <div class="stat-value text-error">{@score.wrong}</div>
+    </div>
+
+    <div class="stat place-items-center">
+      <div class="stat-title">CPM</div>
+      <div class="stat-value text-secondary">
+        {if @elapsed_time.elapsed_time > 0,
+          do: round((@score.streak + @score.wrong) * 60 / @elapsed_time.elapsed_time),
+          else: 0}
       </div>
     </div>
+  </div>
+  
+<!-- Main Form (original structure) -->
+  <form class="space-y-4">
     <textarea
       name="typing"
       autofocus
@@ -26,10 +54,54 @@
       style="opacity: 0; position: absolute; left: -9999px;"
       placeholder="Type here..."
     ></textarea>
-    <pre class="font-mono bg-neutral-focus p-4 rounded-lg whitespace-pre-wrap"><span>{Phoenix.HTML.raw(@display_code)}</span></pre>
-  </form>
 
-  <div class="mt-8 text-center">
-    <a href="/" class="btn btn-primary">Back to Start Screen</a>
+    <div class="code-display text-xl leading-relaxed min-h-[300px]">
+      <pre class="font-mono"><%= if String.length(@remaining_code) > 0 do %><span><%= Phoenix.HTML.raw(@display_code) %></span><% else %>
+          <div class="text-center py-16">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-3xl font-bold text-brand-primary mb-2">Challenge Complete!</h2>
+            <p class="text-lg text-muted">Redirecting to results...</p>
+          </div>
+        <% end %></pre>
+    </div>
+  </form>
+  
+<!-- Action Buttons -->
+  <div class="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
+    <button onclick="location.reload()" class="btn-secondary px-6 py-3">
+      <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+        >
+        </path>
+      </svg>
+      Restart
+    </button>
+
+    <a href="/" class="btn-secondary px-6 py-3 text-center">
+      <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        >
+        </path>
+      </svg>
+      Back to Menu
+    </a>
+  </div>
+  
+<!-- Tips -->
+  <div class="mt-12 text-center">
+    <div class="glass-effect rounded-xl p-6 max-w-2xl mx-auto">
+      <p class="text-sm text-muted">
+        <span class="text-brand-primary font-medium">Pro tip:</span>
+        Focus on accuracy over speed. Speed will naturally improve with practice.
+      </p>
+    </div>
   </div>
 </div>

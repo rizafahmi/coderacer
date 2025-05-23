@@ -1,22 +1,93 @@
-<div class="bg-neutral text-neutral-content p-8 rounded-lg shadow-lg container mx-auto">
-  <h1 class="text-5xl font-bold text-center mb-8">Choose Your Poison</h1>
-  <form phx-submit="submit_choice" class="space-y-6">
-    <div>
-      <label for="language" class="block text-lg font-medium">Programming Language</label>
-      <select id="language" name="language" class="select select-bordered w-full mt-2">
-        <option value="elixir">Elixir</option>
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-      </select>
+<div class="w-full max-w-2xl mx-auto">
+  <!-- Hero Section -->
+  <div class="text-center mb-12">
+    <h1 class="text-6xl font-bold text-gradient mb-4 typing-cursor">
+      CodeRacer
+    </h1>
+    <p class="text-xl text-muted max-w-lg mx-auto">
+      Test your coding speed and accuracy. Choose your language and difficulty to get started.
+    </p>
+  </div>
+  
+<!-- Main Form Card -->
+  <div class="card bg-base-200 shadow-xl">
+    <div class="card-body">
+      <form phx-submit="submit_choice" class="space-y-8">
+        <!-- Programming Language Selection -->
+        <div class="space-y-3">
+          <label for="language" class="block text-lg font-medium text-brand-primary">
+            Programming Language
+          </label>
+          <select id="language" name="language" class="select select-bordered w-full" required>
+            <option value="" disabled selected>Select a language...</option>
+            <option value="elixir">Elixir</option>
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+          </select>
+        </div>
+        
+<!-- Difficulty Level Selection -->
+        <div class="space-y-3">
+          <label for="difficulty" class="block text-lg font-medium text-brand-primary">
+            Difficulty Level
+          </label>
+          <select id="difficulty" name="difficulty" class="select select-bordered w-full" required>
+            <option value="" disabled selected>Choose difficulty...</option>
+            <option value="easy">Easy - Simple syntax and structure</option>
+            <option value="medium">Medium - Moderate complexity</option>
+            <option value="hard">Hard - Advanced patterns</option>
+          </select>
+        </div>
+        
+<!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn-brand w-full text-lg py-4 mt-8 transition-smooth pulse-glow"
+        >
+          Start Coding Challenge
+          <svg class="w-5 h-5 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            >
+            </path>
+          </svg>
+        </button>
+      </form>
     </div>
-    <div>
-      <label for="difficulty" class="block text-lg font-medium">Difficulty Level</label>
-      <select id="difficulty" name="difficulty" class="select select-bordered w-full mt-2">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
+  </div>
+  
+<!-- Features Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+    <div class="stat-card text-center p-6 transition-smooth hover:scale-105">
+      <div class="text-2xl mb-2">⚡</div>
+      <h3 class="font-semibold text-brand-secondary mb-2">Fast & Responsive</h3>
+      <p class="text-sm text-muted">Real-time typing detection with instant feedback</p>
     </div>
-    <button type="submit" class="btn btn-primary w-full">Start</button>
-  </form>
+
+    <div class="stat-card text-center p-6 transition-smooth hover:scale-105">
+      <div class="text-2xl mb-2">📊</div>
+      <h3 class="font-semibold text-brand-secondary mb-2">Detailed Stats</h3>
+      <p class="text-sm text-muted">Track your CPM, accuracy, and improvement</p>
+    </div>
+
+    <div class="stat-card text-center p-6 transition-smooth hover:scale-105">
+      <div class="text-2xl mb-2">🏆</div>
+      <h3 class="font-semibold text-brand-secondary mb-2">Challenge Yourself</h3>
+      <p class="text-sm text-muted">Multiple difficulty levels and languages</p>
+    </div>
+  </div>
+  
+<!-- Tips Section -->
+  <div class="mt-12 p-6 glass-effect rounded-xl">
+    <h3 class="font-semibold text-brand-primary mb-3">💡 Quick Tips</h3>
+    <ul class="space-y-2 text-sm text-muted">
+      <li>• Focus on accuracy first, speed will follow naturally</li>
+      <li>• Use proper finger positioning on the keyboard</li>
+      <li>• Take breaks to avoid fatigue and maintain performance</li>
+      <li>• Practice regularly to build muscle memory</li>
+    </ul>
+  </div>
 </div>

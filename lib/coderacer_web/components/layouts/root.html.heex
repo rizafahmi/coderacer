@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="coderacer">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title default="Coderacer" suffix=" · Phoenix Framework">
+    <.live_title default="CodeRacer" suffix=" · Modern Code Typing">
       {assigns[:page_title]}
     </.live_title>
+    
+<!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
     </script>
@@ -21,13 +30,25 @@
             document.documentElement.setAttribute("data-theme", theme);
           }
         };
-        setTheme(localStorage.getItem("phx:theme") || "system");
-        window.addEventListener("storage", (e) => e.key === "phx:theme" && setTheme(e.newValue || "system"));
+        setTheme(localStorage.getItem("phx:theme") || "coderacer");
+        window.addEventListener("storage", (e) => e.key === "phx:theme" && setTheme(e.newValue || "coderacer"));
         window.addEventListener("phx:set-theme", ({ detail: { theme } }) => setTheme(theme));
       })();
     </script>
   </head>
-  <body>
-    {@inner_content}
+  <body class="min-h-screen antialiased">
+    <div class="min-h-screen flex flex-col">
+      <main class="flex-1 flex items-center justify-center p-4">
+        {@inner_content}
+      </main>
+      
+<!-- Footer -->
+      <footer class="text-center py-6 text-muted border-t border-gray-800">
+        <p class="text-sm">
+          Built with ❤️ using Elixir & Phoenix •
+          <span class="text-brand-primary font-medium">CodeRacer</span>
+        </p>
+      </footer>
+    </div>
   </body>
 </html>
