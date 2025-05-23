@@ -9,11 +9,12 @@ defmodule CoderacerWeb.GameLive do
     initial_state = %{streak: 0, wrong: 0}
 
     session = Game.get_session!(id)
+    snippet = String.trim(session.code_challenge)
 
     socket =
       socket
       |> assign(:session, session)
-      |> assign(:remaining_code, session.code_challenge)
+      |> assign(:remaining_code, snippet)
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
       |> assign(:elapsed_time, %{elapsed_time: 0, running: false})
