@@ -1,0 +1,166 @@
+<div class="w-full max-w-6xl mx-auto">
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-gradient mb-2">🏆 Leaderboard</h1>
+    <p class="text-xl text-muted">Top coding speed champions</p>
+  </div>
+  
+<!-- Filter Tabs -->
+  <div class="tabs tabs-boxed justify-center mb-8 bg-slate-800/50">
+    <button
+      class={"tab #{if @current_view == "global", do: "tab-active"}"}
+      phx-click="switch_view"
+      phx-value-view="global"
+    >
+      🌍 Global
+    </button>
+
+    <div class="dropdown dropdown-hover">
+      <div
+        tabindex="0"
+        role="button"
+        class={"tab #{if @current_view == "language", do: "tab-active"}"}
+      >
+        💻 By Language
+      </div>
+      <ul
+        tabindex="0"
+        class="dropdown-content z-10 menu p-2 shadow bg-slate-800 rounded-box w-52 mt-2"
+      >
+        <%= for language <- @available_languages do %>
+          <li>
+            <button phx-click="filter_language" phx-value-language={language} class="text-left">
+              {String.capitalize(language)}
+            </button>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="dropdown dropdown-hover">
+      <div
+        tabindex="0"
+        role="button"
+        class={"tab #{if @current_view == "difficulty", do: "tab-active"}"}
+      >
+        🎯 By Difficulty
+      </div>
+      <ul
+        tabindex="0"
+        class="dropdown-content z-10 menu p-2 shadow bg-slate-800 rounded-box w-52 mt-2"
+      >
+        <%= for difficulty <- @available_difficulties do %>
+          <li>
+            <button
+              phx-click="filter_difficulty"
+              phx-value-difficulty={to_string(difficulty)}
+              class="text-left"
+            >
+              {format_difficulty(difficulty)}
+            </button>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  
+<!-- Current Filter Display -->
+  <%= if @current_view != "global" do %>
+    <div class="text-center mb-6">
+      <div class="badge badge-primary badge-lg">
+        <%= cond do %>
+          <% @current_view == "language" and @selected_language -> %>
+            {String.capitalize(@selected_language)} Leaderboard
+          <% @current_view == "difficulty" and @selected_difficulty -> %>
+            {format_difficulty(@selected_difficulty)} Difficulty Leaderboard
+          <% true -> %>
+            Filtered Leaderboard
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  
+<!-- Leaderboard Table -->
+  <%= if Enum.empty?(@leaderboard_entries) do %>
+    <div class="text-center py-16">
+      <div class="text-6xl mb-4">📊</div>
+      <h3 class="text-2xl font-bold text-muted mb-2">No Entries Yet</h3>
+      <p class="text-lg text-muted mb-6">Be the first to set a record!</p>
+      <a href="/" class="btn btn-primary">
+        Start Playing
+      </a>
+    </div>
+  <% else %>
+    <div class="overflow-x-auto">
+      <table class="table table-zebra bg-slate-900/50 rounded-xl">
+        <thead>
+          <tr class="text-brand-primary">
+            <th class="text-center">Rank</th>
+            <th>Player</th>
+            <th class="text-center">CPM</th>
+            <th class="text-center">Accuracy</th>
+            <th class="text-center">Language</th>
+            <th class="text-center">Difficulty</th>
+            <th class="text-center">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for {entry, index} <- Enum.with_index(@leaderboard_entries, 1) do %>
+            <tr class="hover:bg-slate-800/30">
+              <td class="text-center font-bold">
+                <div class={"badge #{rank_badge_class(index)}"}>
+                  {rank_display(index)}
+                </div>
+              </td>
+              <td class="font-medium text-white">
+                {entry.player_name}
+              </td>
+              <td class="text-center font-bold text-brand-primary">
+                {entry.cpm}
+              </td>
+              <td class="text-center font-bold text-green-400">
+                {entry.accuracy}%
+              </td>
+              <td class="text-center">
+                <span class="badge badge-outline">
+                  {String.capitalize(entry.language)}
+                </span>
+              </td>
+              <td class="text-center">
+                <span class={"badge #{difficulty_badge_class(entry.difficulty)}"}>
+                  {format_difficulty(entry.difficulty)}
+                </span>
+              </td>
+              <td class="text-center text-sm text-muted">
+                <div>{Calendar.strftime(entry.inserted_at, "%m/%d/%y")}</div>
+                <div class="text-xs opacity-75">
+                  {Calendar.strftime(entry.inserted_at, "%I:%M %p")}
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+  
+<!-- Back to Game Button -->
+  <div class="text-center mt-8">
+    <a href="/" class="btn btn-primary btn-lg">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        />
+      </svg>
+      Back to Game
+    </a>
+  </div>
+</div>
+
+<script>
+  // Helper functions for ranking and styling
+  <%!-- These would normally be in a separate JavaScript file or module --%>
+</script>

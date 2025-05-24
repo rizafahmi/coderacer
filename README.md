@@ -164,6 +164,7 @@ We welcome contributions to Coderacer! Here's how you can help:
 ### Leaderboard Feature (Coming Soon)
 
 We're planning to add a leaderboard feature with:
+- Global ranking
 - Per-language rankings
 - Difficulty-based leaderboards
 - Name entry (no registration required)

@@ -6,6 +6,8 @@ defmodule Coderacer.Game.Session do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Coderacer.Leaderboards.LeaderboardEntry
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "sessions" do
@@ -15,6 +17,8 @@ defmodule Coderacer.Game.Session do
     field :code_challenge, :string, default: ""
     field :streak, :integer, default: 0
     field :wrong, :integer, default: 0
+
+    has_many :leaderboard_entries, LeaderboardEntry
 
     timestamps(type: :utc_datetime)
   end

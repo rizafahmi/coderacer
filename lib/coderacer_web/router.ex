@@ -20,6 +20,7 @@ defmodule CoderacerWeb.Router do
     live "/", StartLive
     live "/game/:id", GameLive
     live "/finish/:id", FinishLive
+    live "/leaderboard", LeaderboardLive
   end
 
   # Other scopes may use custom stacks.
