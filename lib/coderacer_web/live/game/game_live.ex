@@ -95,7 +95,7 @@ defmodule CoderacerWeb.GameLive do
   defp format_char_as_typed(char) do
     case char do
       "\t" -> "<span class=\"text-green-100\">⇥</span>"
-      " " -> "<span class=\"text-green-100\">⎵</span>"
+      " " -> "<span class=\"text-green-100 text-[10px]\">⎵</span>"
       "\r\n" -> "<span class=\"text-green-100 font-bold\">↵</span>\n"
       "\n" -> "<span class=\"text-green-100 font-bold\">↵</span>\n"
       "\r" -> "<span class=\"text-green-100 font-bold\">↵</span>\n"
@@ -106,7 +106,7 @@ defmodule CoderacerWeb.GameLive do
   defp format_char_as_remaining(char) do
     case char do
       "\t" -> "<span class=\"text-slate-400 opacity-60\">⇥</span>"
-      " " -> "<span class=\"text-slate-400 opacity-60\">⎵</span>"
+      " " -> "<span class=\"text-slate-400 opacity-60 text-[10px]\">⎵</span>"
       "\r\n" -> "<span class=\"text-slate-400 opacity-60 font-bold\">↵</span>\n"
       "\n" -> "<span class=\"text-slate-400 opacity-60 font-bold\">↵</span>\n"
       "\r" -> "<span class=\"text-slate-400 opacity-60 font-bold\">↵</span>\n"
@@ -135,7 +135,7 @@ defmodule CoderacerWeb.GameLive do
     |> String.replace("\r", "___CR___")
     # Then replace with HTML
     |> String.replace("___TAB___", "<span class=\"text-slate-500\">⇥</span>")
-    |> String.replace("___SPACE___", "<span class=\"text-slate-500\">⎵</span>")
+    |> String.replace("___SPACE___", "<span class=\"text-slate-500 text-[10px]\">⎵</span>")
     |> String.replace("___CRLF___", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
     |> String.replace("___LF___", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
     |> String.replace("___CR___", "<span class=\"text-slate-500 font-bold\">↵</span>\n")
