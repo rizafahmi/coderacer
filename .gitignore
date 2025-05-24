@@ -46,3 +46,5 @@ npm-debug.log
 .envrc
 .cursorrules
 .DS_Store
+.amazonq
+AmazonQ.md
