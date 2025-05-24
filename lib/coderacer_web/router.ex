@@ -20,10 +20,12 @@ defmodule CoderacerWeb.Router do
     live "/", StartLive
     live "/game/:id", GameLive
     live "/finish/:id", FinishLive
+    live "/share/leaderboard", ShareLeaderboardLive
     live "/share/:id", ShareLive
     live "/leaderboard", LeaderboardLive
 
-    # OG Image endpoint
+    # OG Image endpoints
+    get "/og-image/leaderboard", OgImageController, :leaderboard
     get "/og-image/:id", OgImageController, :show
   end
 

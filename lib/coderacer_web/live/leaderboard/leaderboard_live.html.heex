@@ -5,6 +5,21 @@
     <p class="text-xl text-muted">Top coding speed champions</p>
   </div>
   
+<!-- Share Button -->
+  <%= if not Enum.empty?(@leaderboard_entries) do %>
+    <div class="text-center mb-6">
+      <.live_component
+        module={CoderacerWeb.Live.Components.ShareButton}
+        id="share-leaderboard"
+        share_title="CodeRacer Leaderboard 🏆"
+        share_text="Check out this CodeRacer leaderboard! 🏆"
+        share_url={
+          build_leaderboard_share_url(@current_view, @selected_language, @selected_difficulty)
+        }
+      />
+    </div>
+  <% end %>
+  
 <!-- Filter Tabs -->
   <div class="tabs tabs-boxed justify-center mb-8 bg-slate-800/50">
     <button

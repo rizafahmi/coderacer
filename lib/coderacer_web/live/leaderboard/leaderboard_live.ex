@@ -106,4 +106,19 @@ defmodule CoderacerWeb.LeaderboardLive do
   defp difficulty_badge_class(:medium), do: "badge-warning"
   defp difficulty_badge_class(:hard), do: "badge-error"
   defp difficulty_badge_class(_), do: "badge-outline"
+
+  defp build_leaderboard_share_url(view_type, language, difficulty) do
+    base_url = CoderacerWeb.Endpoint.url()
+
+    params =
+      [view: view_type]
+      |> maybe_add_param(:language, language)
+      |> maybe_add_param(:difficulty, difficulty)
+      |> URI.encode_query()
+
+    "#{base_url}/share/leaderboard?#{params}"
+  end
+
+  defp maybe_add_param(params, _key, nil), do: params
+  defp maybe_add_param(params, key, value), do: [{key, value} | params]
 end
