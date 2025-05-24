@@ -20,6 +20,7 @@ defmodule CoderacerWeb.Router do
     live "/", StartLive
     live "/game/:id", GameLive
     live "/finish/:id", FinishLive
+    live "/share/:id", ShareLive
     live "/leaderboard", LeaderboardLive
   end
 

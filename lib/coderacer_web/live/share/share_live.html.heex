@@ -1,0 +1,86 @@
+<div class="w-full max-w-4xl mx-auto">
+  <%= if assigns[:error] do %>
+    <div class="text-center text-red-500 text-xl font-bold py-12">Session not found</div>
+  <% else %>
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="text-6xl mb-6">🚀</div>
+      <h1 class="text-5xl font-bold text-gradient mb-4">CodeRacer Results</h1>
+      <p class="text-xl text-muted">Check out this coding challenge performance!</p>
+    </div>
+    
+<!-- Results Grid -->
+    <.live_component
+      module={CoderacerWeb.Components.PerformanceStats}
+      id="performance-stats"
+      cpm={@cpm}
+      accuracy={@accuracy}
+      session={@session}
+    />
+    
+<!-- Performance Analysis with Share Button -->
+    <.live_component
+      module={CoderacerWeb.Components.PerformanceAnalysis}
+      id="performance-analysis"
+      cpm={@cpm}
+      accuracy={@accuracy}
+      session={@session}
+    />
+    
+<!-- CTA Section for Visitors -->
+    <div class="card-modern mb-8 p-8 text-center bg-gradient-to-r from-brand-primary/10 to-brand-secondary/10 border-brand-primary/20">
+      <div class="text-4xl mb-4">🎯</div>
+      <h2 class="text-3xl font-bold text-brand-primary mb-4">Think You Can Do Better?</h2>
+      <p class="text-lg text-muted mb-12 max-w-2xl mx-auto">
+        Test your coding typing speed and accuracy! Choose from 20+ programming languages and challenge yourself with real code snippets.
+      </p>
+      <a href="/" class="btn-brand btn-lg px-12 py-4 text-xl font-semibold pulse-glow">
+        <svg class="w-6 h-6 mr-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          >
+          </path>
+        </svg>
+        Start Your Challenge
+      </a>
+      <p class="text-sm text-muted mt-6">Free • No signup required • Instant results</p>
+    </div>
+    
+<!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+      <a href="/leaderboard" class="btn-secondary px-8 py-4 text-center">
+        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+          />
+        </svg>
+        View Leaderboard
+      </a>
+    </div>
+    
+<!-- Motivational Quote -->
+    <div class="text-center">
+      <div class="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
+        <p class="text-lg text-muted italic mb-2">
+          "The only way to learn a new programming language is by writing programs in it."
+        </p>
+        <p class="text-brand-primary font-medium">— Dennis Ritchie</p>
+      </div>
+    </div>
+    
+<!-- Share Script Component -->
+    <.live_component
+      module={CoderacerWeb.Components.ShareScript}
+      id="share-script"
+      cpm={@cpm}
+      accuracy={@accuracy}
+      session={@session}
+    />
+  <% end %>
+</div>
