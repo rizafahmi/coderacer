@@ -30,6 +30,17 @@ defmodule CoderacerWeb.ShareLive do
         # Check if this might be the original session owner (simple heuristic)
         is_likely_owner = session["current_session_id"] == id
 
+        # Create share description
+        language = String.capitalize(game_session.language)
+        difficulty = game_session.difficulty |> to_string() |> String.capitalize()
+
+        share_description =
+          "I scored #{cpm} CPM with #{accuracy}% accuracy in #{language} (#{difficulty}) on CodeRacer! Can you beat my score?"
+
+        # Set up meta tags for social sharing
+        og_image_url = url(socket, ~p"/og-image/#{id}")
+        share_url = url(socket, ~p"/share/#{id}")
+
         socket =
           socket
           |> assign(:session, game_session)
@@ -37,6 +48,9 @@ defmodule CoderacerWeb.ShareLive do
           |> assign(:accuracy, accuracy)
           |> assign(:is_likely_owner, is_likely_owner)
           |> assign(:page_title, "CodeRacer Results - #{cpm} CPM, #{accuracy}% Accuracy")
+          |> assign(:share_description, share_description)
+          |> assign(:og_image_url, og_image_url)
+          |> assign(:share_url, share_url)
 
         {:ok, socket}
     end

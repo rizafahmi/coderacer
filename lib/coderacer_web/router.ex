@@ -22,6 +22,9 @@ defmodule CoderacerWeb.Router do
     live "/finish/:id", FinishLive
     live "/share/:id", ShareLive
     live "/leaderboard", LeaderboardLive
+
+    # OG Image endpoint
+    get "/og-image/:id", OgImageController, :show
   end
 
   # Other scopes may use custom stacks.
