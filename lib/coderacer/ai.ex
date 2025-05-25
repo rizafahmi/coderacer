@@ -59,11 +59,14 @@ defmodule Coderacer.AI do
     |> Map.get("text")
   end
 
-  def parse_error(body) do
-    body
-    |> Map.get("error")
-    |> Map.get("message")
+  def parse_error(body) when is_map(body) do
+    case Map.get(body, "error") do
+      nil -> nil
+      error_map -> Map.get(error_map, "message")
+    end
   end
+
+  def parse_error(nil), do: nil
 
   def parse_json(json) do
     case Jason.decode(json) do

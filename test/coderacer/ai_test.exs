@@ -141,4 +141,44 @@ defmodule Coderacer.AITest do
     error_body = %{"error" => %{"message" => "Test error"}}
     assert Coderacer.AI.parse_error(error_body) == "Test error"
   end
+
+  test "parse_error/1 handles missing error message" do
+    error_body = %{"error" => %{}}
+    assert Coderacer.AI.parse_error(error_body) == nil
+  end
+
+  test "parse_error/1 handles malformed error body" do
+    error_body = %{"not_error" => "something"}
+    assert Coderacer.AI.parse_error(error_body) == nil
+  end
+
+  test "generate/2 with different languages" do
+    languages = ["JavaScript", "Python", "Elixir", "Go", "Rust", "C++", "Java"]
+
+    for language <- languages do
+      code = Coderacer.AI.generate(language, "easy", 2)
+      assert is_binary(code)
+      assert String.length(code) > 0
+    end
+  end
+
+  test "generate/2 with different difficulties" do
+    difficulties = ["easy", "medium", "hard"]
+
+    for difficulty <- difficulties do
+      code = Coderacer.AI.generate("JavaScript", difficulty, 2)
+      assert is_binary(code)
+      assert String.length(code) > 0
+    end
+  end
+
+  test "generate/2 with different line counts" do
+    line_counts = [1, 2, 5, 10]
+
+    for lines <- line_counts do
+      code = Coderacer.AI.generate("JavaScript", "easy", lines)
+      assert is_binary(code)
+      assert String.length(code) > 0
+    end
+  end
 end
