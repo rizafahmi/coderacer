@@ -36,11 +36,11 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-gradient mb-2">
           <%= cond do %>
-            <% @current_view == "language" and @selected_language -> %>
+            <% @current_view == "language" and not is_nil(@selected_language) and @selected_language != "" -> %>
               🏆 {String.capitalize(@selected_language)} Leaderboard
-            <% @current_view == "difficulty" and @selected_difficulty -> %>
+            <% @current_view == "difficulty" and not is_nil(@selected_difficulty) and @selected_difficulty != "" -> %>
               🏆 {format_difficulty(@selected_difficulty)} Difficulty Leaderboard
-            <% @current_view == "combined" and @selected_language and @selected_difficulty -> %>
+            <% @current_view == "combined" and not is_nil(@selected_language) and @selected_language != "" and not is_nil(@selected_difficulty) and @selected_difficulty != "" -> %>
               🏆 {String.capitalize(@selected_language)} ({format_difficulty(@selected_difficulty)}) Leaderboard
             <% true -> %>
               🏆 Global Leaderboard
@@ -48,7 +48,7 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
         </h1>
         <p class="text-xl text-muted">Top coding speed champions</p>
       </div>
-      
+
     <!-- Share Button -->
       <%= if not Enum.empty?(@leaderboard_entries) do %>
         <div class="text-center mb-6">
@@ -61,7 +61,7 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
           />
         </div>
       <% end %>
-      
+
     <!-- Leaderboard Table -->
       <%= if Enum.empty?(@leaderboard_entries) do %>
         <div class="text-center py-16">
@@ -122,7 +122,7 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
           </table>
         </div>
       <% end %>
-      
+
     <!-- Call to Action Section -->
       <div class="text-center py-16 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-xl border border-slate-700 mb-8">
         <h2 class="text-3xl font-bold text-white mb-4">🎯 Think You Can Beat These Scores?</h2>
@@ -208,9 +208,11 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
     base_url = CoderacerWeb.Endpoint.url()
 
     params =
-      [view: view_type]
+      []
+      |> maybe_add_param(:view, view_type)
       |> maybe_add_param(:language, language)
       |> maybe_add_param(:difficulty, difficulty)
+      |> Enum.reverse()
       |> URI.encode_query()
 
     "#{base_url}/share/leaderboard?#{params}"
@@ -220,15 +222,18 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
     base_url = CoderacerWeb.Endpoint.url()
 
     params =
-      [view: view_type]
+      []
+      |> maybe_add_param(:view, view_type)
       |> maybe_add_param(:language, language)
       |> maybe_add_param(:difficulty, difficulty)
+      |> Enum.reverse()
       |> URI.encode_query()
 
     "#{base_url}/og-image/leaderboard?#{params}"
   end
 
   defp maybe_add_param(params, _key, nil), do: params
+  defp maybe_add_param(params, _key, ""), do: params
   defp maybe_add_param(params, key, value), do: [{key, value} | params]
 
   defp format_difficulty(difficulty) when is_atom(difficulty) do

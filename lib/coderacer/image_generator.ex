@@ -82,7 +82,7 @@ defmodule Coderacer.ImageGenerator do
       <g transform="translate(80, 180)">
         <!-- CPM Card -->
         <rect x="0" y="0" width="240" height="140" rx="20" fill="url(#cardGradient)" stroke="#9333ea" stroke-width="1" opacity="0.9"/>
-        <text x="120" y="50" text-anchor="middle" class="text-brand text-large">#{cpm}</text>
+        <text x="120" y="50" text-anchor="middle" class="text-brand text-large">#{cpm} CPM</text>
         <text x="120" y="80" text-anchor="middle" class="text-white text-small">Characters</text>
         <text x="120" y="105" text-anchor="middle" class="text-muted text-xs">per Minute</text>
 
@@ -141,8 +141,11 @@ defmodule Coderacer.ImageGenerator do
   Generates an SVG template for leaderboard sharing.
   """
   def generate_leaderboard_svg(leaderboard_entries, filter_info \\ %{}) do
-    # Take top 5 entries for display
-    top_entries = Enum.take(leaderboard_entries, 5)
+    # Sort entries by CPM descending and take top 5 entries for display
+    top_entries =
+      leaderboard_entries
+      |> Enum.sort_by(& &1.cpm, :desc)
+      |> Enum.take(5)
 
     # Generate title based on filter
     title = generate_leaderboard_title(filter_info)
@@ -344,17 +347,17 @@ defmodule Coderacer.ImageGenerator do
 
   defp generate_leaderboard_title(filter_info) do
     case filter_info do
+      %{language: lang, difficulty: diff} when not is_nil(lang) and not is_nil(diff) ->
+        lang_str = String.capitalize(lang)
+        diff_str = diff |> to_string() |> String.capitalize()
+        "🏆 #{lang_str} (#{diff_str}) Leaderboard"
+
       %{language: lang} when not is_nil(lang) ->
         "🏆 #{String.capitalize(lang)} Leaderboard"
 
       %{difficulty: diff} when not is_nil(diff) ->
         diff_str = diff |> to_string() |> String.capitalize()
-        "🏆 #{diff_str} Difficulty Leaderboard"
-
-      %{language: lang, difficulty: diff} when not is_nil(lang) and not is_nil(diff) ->
-        lang_str = String.capitalize(lang)
-        diff_str = diff |> to_string() |> String.capitalize()
-        "🏆 #{lang_str} (#{diff_str}) Leaderboard"
+        "🏆 #{diff_str} Leaderboard"
 
       _ ->
         "🏆 Global Leaderboard"
