@@ -170,5 +170,59 @@ defmodule Coderacer.GameTest do
       invalid_id = Ecto.UUID.generate()
       assert_raise Ecto.NoResultsError, fn -> Game.get_session!(invalid_id) end
     end
+
+    test "list_sessions/0 returns empty list when no sessions exist" do
+      assert Game.list_sessions() == []
+    end
+
+    test "list_sessions/0 returns sessions in insertion order" do
+      session1 = session_fixture(%{language: "JavaScript"})
+      session2 = session_fixture(%{language: "Python"})
+      session3 = session_fixture(%{language: "Elixir"})
+
+      sessions = Game.list_sessions()
+      assert length(sessions) == 3
+      assert Enum.at(sessions, 0).id == session1.id
+      assert Enum.at(sessions, 1).id == session2.id
+      assert Enum.at(sessions, 2).id == session3.id
+    end
+
+    test "create_session/1 sets default values correctly" do
+      attrs = %{language: "JavaScript", difficulty: :easy}
+      {:ok, session} = Game.create_session(attrs)
+
+      assert session.time_completion == 0
+      assert session.streak == 0
+      assert session.wrong == 0
+      assert session.code_challenge == ""
+    end
+
+    test "update_session/2 with empty attributes does not change session" do
+      session = session_fixture()
+
+      original_attrs =
+        Map.take(session, [:language, :difficulty, :time_completion, :streak, :wrong])
+
+      {:ok, updated_session} = Game.update_session(session, %{})
+
+      updated_attrs =
+        Map.take(updated_session, [:language, :difficulty, :time_completion, :streak, :wrong])
+
+      assert original_attrs == updated_attrs
+    end
+
+    test "delete_session/1 with non-existent session returns error" do
+      non_existent_session = %Coderacer.Game.Session{id: Ecto.UUID.generate()}
+      assert_raise Ecto.StaleEntryError, fn -> Game.delete_session(non_existent_session) end
+    end
+
+    test "change_session/1 with invalid data returns invalid changeset" do
+      session = session_fixture()
+      changeset = Game.change_session(session, %{language: "", difficulty: :invalid})
+
+      refute changeset.valid?
+      assert "can't be blank" in errors_on(changeset).language
+      assert "is invalid" in errors_on(changeset).difficulty
+    end
   end
 end
