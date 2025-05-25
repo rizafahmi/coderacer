@@ -48,7 +48,7 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
         </h1>
         <p class="text-xl text-muted">Top coding speed champions</p>
       </div>
-
+      
     <!-- Share Button -->
       <%= if not Enum.empty?(@leaderboard_entries) do %>
         <div class="text-center mb-6">
@@ -61,7 +61,7 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
           />
         </div>
       <% end %>
-
+      
     <!-- Leaderboard Table -->
       <%= if Enum.empty?(@leaderboard_entries) do %>
         <div class="text-center py-16">
@@ -122,7 +122,7 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
           </table>
         </div>
       <% end %>
-
+      
     <!-- Call to Action Section -->
       <div class="text-center py-16 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-xl border border-slate-700 mb-8">
         <h2 class="text-3xl font-bold text-white mb-4">🎯 Think You Can Beat These Scores?</h2>
