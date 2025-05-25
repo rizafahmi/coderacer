@@ -11,6 +11,18 @@ defmodule Coderacer.MixProject do
       aliases: aliases(),
       deps: deps(),
       listeners: [Phoenix.CodeReloader],
+      test_coverage: [
+        threshold: 90,
+        ignore_modules: [
+          CoderacerWeb.CoreComponents,
+          CoderacerWeb.Layouts,
+          CoderacerWeb.ErrorHTML,
+          CoderacerWeb.ErrorJSON,
+          CoderacerWeb.Telemetry,
+          Coderacer.Repo,
+          Coderacer.Mailer
+        ]
+      ],
       dialyzer: [
         plt_add_apps: [:mix],
         ignore_warnings: "dialyzer.ignore-warnings",
