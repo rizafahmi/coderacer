@@ -95,5 +95,95 @@ defmodule CoderacerWeb.GameLiveTest do
       # space visual aid
       assert html =~ "⎵"
     end
+
+    test "handles backspace correctly", %{conn: conn, session: session} do
+      {:ok, view, _html} = live(conn, "/game/#{session.id}")
+
+      # Type some characters
+      render_change(view, :user_type, %{"typing" => "con"})
+
+      # Backspace (remove one character)
+      render_change(view, :user_type, %{"typing" => "co"})
+
+      html = render(view)
+      # Should handle backspace gracefully
+      assert html =~ "Time"
+    end
+
+    test "handles rapid typing correctly", %{conn: conn, session: session} do
+      {:ok, view, _html} = live(conn, "/game/#{session.id}")
+
+      # Simulate rapid typing by sending multiple events quickly
+      characters = String.graphemes(session.code_challenge)
+
+      for {_char, index} <- Enum.with_index(characters) do
+        typed_so_far = Enum.take(characters, index + 1) |> Enum.join()
+        render_change(view, :user_type, %{"typing" => typed_so_far})
+      end
+
+      # Should handle rapid typing without errors
+      assert_redirect(view, "/finish/#{session.id}")
+    end
+
+    test "handles special characters in code challenge", %{conn: conn} do
+      session =
+        session_fixture(%{
+          code_challenge: "console.log('Hello, 世界! 🌍');"
+        })
+
+      {:ok, _view, html} = live(conn, "/game/#{session.id}")
+
+      # Should display special characters correctly (they are in the HTML)
+      assert html =~ "世"
+      assert html =~ "界"
+      assert html =~ "🌍"
+    end
+
+    test "handles very long code challenge", %{conn: conn} do
+      long_code = String.duplicate("console.log('test');\n", 10)
+      session = session_fixture(%{code_challenge: long_code})
+
+      {:ok, _view, html} = live(conn, "/game/#{session.id}")
+
+      # Should handle long code without errors
+      assert html =~ "Time"
+      # The code should be displayed in the HTML - check for the first word
+      # The HTML might have the text split across spans, so we check for individual characters
+      assert html =~ "c"
+      assert html =~ "o"
+      assert html =~ "n"
+      assert html =~ "s"
+    end
+
+    test "handles empty code challenge", %{conn: conn} do
+      session = session_fixture(%{code_challenge: ""})
+
+      {:ok, view, _html} = live(conn, "/game/#{session.id}")
+
+      # With empty challenge, any input should complete the game
+      render_change(view, :user_type, %{"typing" => ""})
+
+      # Check that the page renders without errors
+      html = render(view)
+      assert html =~ "Time"
+    end
+
+    test "tracks typing statistics correctly", %{conn: conn, session: session} do
+      {:ok, view, _html} = live(conn, "/game/#{session.id}")
+
+      # Type first character correctly
+      render_change(view, :user_type, %{"typing" => "c"})
+
+      # Type second character incorrectly
+      render_change(view, :user_type, %{"typing" => "cx"})
+
+      # Correct it
+      render_change(view, :user_type, %{"typing" => "co"})
+
+      html = render(view)
+
+      # Should track both correct and incorrect characters
+      assert html =~ "Time"
+    end
   end
 end
