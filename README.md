@@ -4,7 +4,7 @@ A **CodeRacer** typing speed game designed for developers to practice typing cod
 
 ## 🚀 Features
 
-- **AI-Generated Code Challenges**: Dynamic code snippets generated using Google's Gemini AI
+- **AI-Generated Code Challenges**: Dynamic code snippets generated using GenAI
 - **Multiple Programming Languages**: Support for various programming languages (JavaScript, Python, Elixir, etc.)
 - **Difficulty Levels**: Easy, Medium, and Hard challenges to match your skill level
 - **Real-time Typing Interface**: Live feedback as you type with streak tracking
@@ -22,7 +22,7 @@ A **CodeRacer** typing speed game designed for developers to practice typing cod
 - **Backend**: Elixir & Phoenix Framework
 - **Frontend**: Phoenix LiveView, Tailwind CSS, DaisyUI
 - **Database**: SQLite with Ecto
-- **AI Integration**: Google Gemini API for code generation
+- **AI Integration**: GenAI for code generation
 - **Real-time Updates**: Phoenix LiveView for reactive user interface
 
 ## 🚀 Getting Started
@@ -32,7 +32,7 @@ A **CodeRacer** typing speed game designed for developers to practice typing cod
 - Elixir 1.15 or later
 - Erlang/OTP 24 or later
 - Node.js (for asset compilation)
-- Google Gemini API key
+- GenAI API key
 
 ### Installation
 
@@ -152,21 +152,3 @@ We welcome contributions to Coderacer! Here's how you can help:
 - Write tests for new features and bug fixes
 - Use keyword-based Ecto queries when possible
 
-### What We're Looking For
-
-- **New Programming Languages**: Add support for additional languages
-- **Enhanced AI Prompts**: Improve code generation quality
-- **UI/UX Improvements**: Better design and user experience
-- **Performance Optimizations**: Database queries, LiveView optimizations
-- **Testing**: Increase test coverage
-- **Documentation**: Improve docs and add examples
-
-### Leaderboard Feature (Coming Soon)
-
-We're planning to add a leaderboard feature with:
-- Global ranking
-- Per-language rankings
-- Difficulty-based leaderboards
-- Name entry (no registration required)
-
-If you're interested in implementing this feature, please open an issue to discuss the approach!
