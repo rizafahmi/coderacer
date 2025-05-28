@@ -11,6 +11,8 @@ defmodule CoderacerWeb.StartLiveTest do
       assert html =~ "Programming Language"
       assert html =~ "Difficulty Level"
       assert html =~ "Start"
+      assert html =~ "BalapKode"
+      refute html =~ "CodeRacer"
     end
 
     test "mount assigns languages and difficulties", %{conn: conn} do

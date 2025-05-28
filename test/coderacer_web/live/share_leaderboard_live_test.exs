@@ -43,14 +43,16 @@ defmodule CoderacerWeb.ShareLeaderboardLiveTest do
       assert html =~ "Top coding speed champions"
       assert html =~ "Think You Can Beat These Scores?"
       assert html =~ "Start Your Challenge"
+      assert html =~ "BalapKode"
+      refute html =~ "CodeRacer"
     end
 
     test "assigns correct Open Graph meta data for global leaderboard", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/share/leaderboard")
 
       # Check meta tags in the HTML
-      assert html =~ "Global Leaderboard - CodeRacer"
-      assert html =~ "Check out the top coding speed champions on CodeRacer!"
+      assert html =~ "Global Leaderboard - BalapKode"
+      assert html =~ "Check out the top coding speed champions on BalapKode!"
       assert html =~ "/share/leaderboard?view=global"
       assert html =~ "/og-image/leaderboard?view=global"
     end
@@ -66,7 +68,7 @@ defmodule CoderacerWeb.ShareLeaderboardLiveTest do
       {:ok, _view, html} = live(conn, "/share/leaderboard?view=language&language=elixir")
 
       # Check meta tags in the HTML
-      assert html =~ "Elixir Leaderboard - CodeRacer"
+      assert html =~ "Elixir Leaderboard - BalapKode"
       assert html =~ "Check out the top Elixir coding speed champions"
       assert html =~ "/share/leaderboard?view=language&amp;language=elixir"
       assert html =~ "/og-image/leaderboard?view=language&amp;language=elixir"
@@ -83,7 +85,7 @@ defmodule CoderacerWeb.ShareLeaderboardLiveTest do
       {:ok, _view, html} = live(conn, "/share/leaderboard?view=difficulty&difficulty=hard")
 
       # Check meta tags in the HTML
-      assert html =~ "Hard Difficulty Leaderboard - CodeRacer"
+      assert html =~ "Hard Difficulty Leaderboard - BalapKode"
       assert html =~ "Check out the top Hard difficulty coding speed champions"
       assert html =~ "/share/leaderboard?view=difficulty&amp;difficulty=hard"
       assert html =~ "/og-image/leaderboard?view=difficulty&amp;difficulty=hard"
@@ -102,7 +104,7 @@ defmodule CoderacerWeb.ShareLeaderboardLiveTest do
         live(conn, "/share/leaderboard?view=combined&language=elixir&difficulty=easy")
 
       # Check meta tags in the HTML
-      assert html =~ "Elixir (Easy) Leaderboard - CodeRacer"
+      assert html =~ "Elixir (Easy) Leaderboard - BalapKode"
       assert html =~ "Check out the top Elixir (Easy) coding speed champions"
       assert html =~ "/share/leaderboard?view=combined&amp;language=elixir&amp;difficulty=easy"
       assert html =~ "/og-image/leaderboard?view=combined&amp;language=elixir&amp;difficulty=easy"
@@ -127,8 +129,8 @@ defmodule CoderacerWeb.ShareLeaderboardLiveTest do
       {:ok, _view, html} = live(conn, "/share/leaderboard")
 
       assert html =~ "share-leaderboard"
-      assert html =~ "CodeRacer Leaderboard 🏆"
-      assert html =~ "Check out this CodeRacer leaderboard! 🏆"
+      assert html =~ "BalapKode Leaderboard 🏆"
+      assert html =~ "Check out this BalapKode leaderboard! 🏆"
       assert html =~ "Share"
     end
 

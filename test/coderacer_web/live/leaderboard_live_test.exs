@@ -12,39 +12,50 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
       assert html =~ "No Entries Yet"
       assert html =~ "Be the first to set a record!"
       assert html =~ "Start Playing"
+      assert html =~ "BalapKode"
+      refute html =~ "CodeRacer"
     end
 
     test "renders global leaderboard with entries", %{conn: conn} do
       # Create test entries
-      _entry1 = leaderboard_entry_fixture(%{
-        player_name: "Alice",
-        cpm: 50,
-        accuracy: 95,
-        language: "JavaScript",
-        difficulty: :easy
-      })
+      _entry1 =
+        leaderboard_entry_fixture(%{
+          player_name: "Alice",
+          cpm: 50,
+          accuracy: 95,
+          language: "JavaScript",
+          difficulty: :easy
+        })
 
-      _entry2 = leaderboard_entry_fixture(%{
-        player_name: "Bob",
-        cpm: 45,
-        accuracy: 90,
-        language: "Python",
-        difficulty: :medium
-      })
+      _entry2 =
+        leaderboard_entry_fixture(%{
+          player_name: "Bob",
+          cpm: 45,
+          accuracy: 90,
+          language: "Python",
+          difficulty: :medium
+        })
 
       {:ok, _view, html} = live(conn, "/leaderboard")
 
       assert html =~ "Leaderboard"
       assert html =~ "Alice"
       assert html =~ "Bob"
-      assert html =~ "50" # CPM
-      assert html =~ "45" # CPM
-      assert html =~ "95%" # Accuracy
-      assert html =~ "90%" # Accuracy
-      assert html =~ "Javascript" # Capitalized
+      # CPM
+      assert html =~ "50"
+      # CPM
+      assert html =~ "45"
+      # Accuracy
+      assert html =~ "95%"
+      # Accuracy
+      assert html =~ "90%"
+      # Capitalized
+      assert html =~ "Javascript"
       assert html =~ "Python"
-      assert html =~ "badge-warning" # First place gold
-      assert html =~ "badge-info" # Second place silver
+      # First place gold
+      assert html =~ "badge-warning"
+      # Second place silver
+      assert html =~ "badge-info"
     end
 
     test "displays ranking badges correctly", %{conn: conn} do
@@ -56,17 +67,22 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
 
       {:ok, _view, html} = live(conn, "/leaderboard")
 
-      assert html =~ "badge-warning" # Gold medal
-      assert html =~ "badge-info" # Silver medal
-      assert html =~ "badge-accent" # Bronze medal
-      assert html =~ "#4" # Numeric rank
+      # Gold medal
+      assert html =~ "badge-warning"
+      # Silver medal
+      assert html =~ "badge-info"
+      # Bronze medal
+      assert html =~ "badge-accent"
+      # Numeric rank
+      assert html =~ "#4"
     end
 
     test "switches to language view", %{conn: conn} do
-      _entry = leaderboard_entry_fixture(%{
-        player_name: "JS Developer",
-        language: "JavaScript"
-      })
+      _entry =
+        leaderboard_entry_fixture(%{
+          player_name: "JS Developer",
+          language: "JavaScript"
+        })
 
       {:ok, view, _html} = live(conn, "/leaderboard")
 
@@ -78,17 +94,19 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
     end
 
     test "filters by specific language", %{conn: conn} do
-      _js_entry = leaderboard_entry_fixture(%{
-        player_name: "JS Dev",
-        language: "JavaScript",
-        cpm: 50
-      })
+      _js_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "JS Dev",
+          language: "JavaScript",
+          cpm: 50
+        })
 
-      _py_entry = leaderboard_entry_fixture(%{
-        player_name: "Python Dev",
-        language: "Python",
-        cpm: 45
-      })
+      _py_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Python Dev",
+          language: "Python",
+          cpm: 45
+        })
 
       {:ok, view, _html} = live(conn, "/leaderboard")
 
@@ -106,17 +124,19 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
     end
 
     test "filters by difficulty", %{conn: conn} do
-      _easy_entry = leaderboard_entry_fixture(%{
-        player_name: "Easy Player",
-        difficulty: :easy,
-        cpm: 50
-      })
+      _easy_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Easy Player",
+          difficulty: :easy,
+          cpm: 50
+        })
 
-      _hard_entry = leaderboard_entry_fixture(%{
-        player_name: "Hard Player",
-        difficulty: :hard,
-        cpm: 45
-      })
+      _hard_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Hard Player",
+          difficulty: :hard,
+          cpm: 45
+        })
 
       {:ok, view, _html} = live(conn, "/leaderboard")
 
@@ -134,11 +154,12 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
     end
 
     test "handles params on mount", %{conn: conn} do
-      _entry = leaderboard_entry_fixture(%{
-        player_name: "Test Player",
-        language: "JavaScript",
-        difficulty: :medium
-      })
+      _entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Test Player",
+          language: "JavaScript",
+          difficulty: :medium
+        })
 
       # Mount with language filter
       {:ok, _view, html} = live(conn, "/leaderboard?view=language&language=JavaScript")
@@ -148,10 +169,11 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
     end
 
     test "handles params with difficulty filter", %{conn: conn} do
-      _entry = leaderboard_entry_fixture(%{
-        player_name: "Medium Player",
-        difficulty: :medium
-      })
+      _entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Medium Player",
+          difficulty: :medium
+        })
 
       # Mount with difficulty filter
       {:ok, _view, html} = live(conn, "/leaderboard?view=difficulty&difficulty=medium")
@@ -168,7 +190,8 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
       {:ok, _view, html} = live(conn, "/leaderboard")
 
       assert html =~ "By Language"
-      assert html =~ "Javascript" # Capitalized
+      # Capitalized
+      assert html =~ "Javascript"
       assert html =~ "Python"
       assert html =~ "Elixir"
     end
@@ -202,26 +225,32 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
     end
 
     test "displays correct difficulty badges", %{conn: conn} do
-      _easy_entry = leaderboard_entry_fixture(%{
-        player_name: "Easy Player",
-        difficulty: :easy
-      })
+      _easy_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Easy Player",
+          difficulty: :easy
+        })
 
-      _medium_entry = leaderboard_entry_fixture(%{
-        player_name: "Medium Player",
-        difficulty: :medium
-      })
+      _medium_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Medium Player",
+          difficulty: :medium
+        })
 
-      _hard_entry = leaderboard_entry_fixture(%{
-        player_name: "Hard Player",
-        difficulty: :hard
-      })
+      _hard_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Hard Player",
+          difficulty: :hard
+        })
 
       {:ok, _view, html} = live(conn, "/leaderboard")
 
-      assert html =~ "badge-success" # Easy
-      assert html =~ "badge-warning" # Medium
-      assert html =~ "badge-error" # Hard
+      # Easy
+      assert html =~ "badge-success"
+      # Medium
+      assert html =~ "badge-warning"
+      # Hard
+      assert html =~ "badge-error"
     end
 
     test "formats dates correctly", %{conn: conn} do
@@ -265,23 +294,26 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
     end
 
     test "displays entries in correct order by CPM", %{conn: conn} do
-      _entry1 = leaderboard_entry_fixture(%{
-        player_name: "Slow",
-        cpm: 30,
-        accuracy: 95
-      })
+      _entry1 =
+        leaderboard_entry_fixture(%{
+          player_name: "Slow",
+          cpm: 30,
+          accuracy: 95
+        })
 
-      _entry2 = leaderboard_entry_fixture(%{
-        player_name: "Fast",
-        cpm: 60,
-        accuracy: 85
-      })
+      _entry2 =
+        leaderboard_entry_fixture(%{
+          player_name: "Fast",
+          cpm: 60,
+          accuracy: 85
+        })
 
-      _entry3 = leaderboard_entry_fixture(%{
-        player_name: "Medium",
-        cpm: 45,
-        accuracy: 90
-      })
+      _entry3 =
+        leaderboard_entry_fixture(%{
+          player_name: "Medium",
+          cpm: 45,
+          accuracy: 90
+        })
 
       {:ok, _view, html} = live(conn, "/leaderboard")
 
@@ -321,19 +353,22 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
     end
 
     test "handles combined language and difficulty filter", %{conn: conn} do
-      _matching_entry = leaderboard_entry_fixture(%{
-        player_name: "Perfect Match",
-        language: "JavaScript",
-        difficulty: :hard
-      })
+      _matching_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Perfect Match",
+          language: "JavaScript",
+          difficulty: :hard
+        })
 
-      _non_matching_entry = leaderboard_entry_fixture(%{
-        player_name: "Wrong Lang",
-        language: "Python",
-        difficulty: :hard
-      })
+      _non_matching_entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Wrong Lang",
+          language: "Python",
+          difficulty: :hard
+        })
 
-      {:ok, _view, html} = live(conn, "/leaderboard?view=combined&language=JavaScript&difficulty=hard")
+      {:ok, _view, html} =
+        live(conn, "/leaderboard?view=combined&language=JavaScript&difficulty=hard")
 
       assert html =~ "Perfect Match"
       refute html =~ "Wrong Lang"

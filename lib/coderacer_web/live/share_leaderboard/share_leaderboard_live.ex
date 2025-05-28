@@ -55,8 +55,8 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
           <.live_component
             module={CoderacerWeb.Live.Components.ShareButton}
             id="share-leaderboard"
-            share_title="CodeRacer Leaderboard 🏆"
-            share_text="Check out this CodeRacer leaderboard! 🏆"
+            share_title="BalapKode Leaderboard 🏆"
+            share_text="Check out this BalapKode leaderboard! 🏆"
             share_url={@share_url}
           />
         </div>
@@ -175,32 +175,32 @@ defmodule CoderacerWeb.ShareLeaderboardLive do
   defp generate_page_title(view_type, language, difficulty) do
     case view_type do
       "language" when not is_nil(language) ->
-        "#{String.capitalize(language)} Leaderboard - CodeRacer"
+        "#{String.capitalize(language)} Leaderboard - BalapKode"
 
       "difficulty" when not is_nil(difficulty) ->
-        "#{format_difficulty(difficulty)} Difficulty Leaderboard - CodeRacer"
+        "#{format_difficulty(difficulty)} Difficulty Leaderboard - BalapKode"
 
       "combined" when not is_nil(language) and not is_nil(difficulty) ->
-        "#{String.capitalize(language)} (#{format_difficulty(difficulty)}) Leaderboard - CodeRacer"
+        "#{String.capitalize(language)} (#{format_difficulty(difficulty)}) Leaderboard - BalapKode"
 
       _ ->
-        "Global Leaderboard - CodeRacer"
+        "Global Leaderboard - BalapKode"
     end
   end
 
   defp generate_share_description(view_type, language, difficulty) do
     case view_type do
       "language" when not is_nil(language) ->
-        "Check out the top #{String.capitalize(language)} coding speed champions on CodeRacer! 🏆 See who dominates the leaderboard."
+        "Check out the top #{String.capitalize(language)} coding speed champions on BalapKode! 🏆 See who dominates the leaderboard."
 
       "difficulty" when not is_nil(difficulty) ->
-        "Check out the top #{format_difficulty(difficulty)} difficulty coding speed champions on CodeRacer! 🏆 See who dominates the leaderboard."
+        "Check out the top #{format_difficulty(difficulty)} difficulty coding speed champions on BalapKode! 🏆 See who dominates the leaderboard."
 
       "combined" when not is_nil(language) and not is_nil(difficulty) ->
-        "Check out the top #{String.capitalize(language)} (#{format_difficulty(difficulty)}) coding speed champions on CodeRacer! 🏆 See who dominates the leaderboard."
+        "Check out the top #{String.capitalize(language)} (#{format_difficulty(difficulty)}) coding speed champions on BalapKode! 🏆 See who dominates the leaderboard."
 
       _ ->
-        "Check out the top coding speed champions on CodeRacer! 🏆 See who dominates the global leaderboard."
+        "Check out the top coding speed champions on BalapKode! 🏆 See who dominates the global leaderboard."
     end
   end
 
