@@ -50,7 +50,9 @@ defmodule CoderacerWeb.FinishLiveTest do
 
       assert html =~ "Performance Analysis"
       assert html =~ "Share"
-      assert html =~ "sharePerformance()"
+
+      assert html =~
+               "sharePerformance(cpm, accuracy, time_completion, wrong, language, difficulty)"
     end
 
     test "includes leaderboard submission form", %{conn: conn, session: session} do
@@ -73,9 +75,11 @@ defmodule CoderacerWeb.FinishLiveTest do
     test "includes share script component", %{conn: conn, session: session} do
       {:ok, _view, html} = live(conn, "/finish/#{session.id}")
 
-      assert html =~ "sharePerformance()"
+      assert html =~
+               "sharePerformance(cpm, accuracy, time_completion, wrong, language, difficulty)"
+
       assert html =~ "Web Share API"
-      assert html =~ "window.location.origin + '/share/#{session.id}'"
+      assert html =~ "window.location.href.replace(\"/finish/\", \"/share/\")"
     end
 
     test "handles invalid session id gracefully", %{conn: conn} do
