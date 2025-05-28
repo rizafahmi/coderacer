@@ -44,6 +44,7 @@ npm-debug.log
 .hex/
 
 .envrc
+.env
 .cursorrules
 .DS_Store
 .amazonq
