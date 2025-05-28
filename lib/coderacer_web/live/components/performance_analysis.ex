@@ -6,11 +6,18 @@ defmodule CoderacerWeb.Components.PerformanceAnalysis do
   use CoderacerWeb, :live_component
 
   def render(assigns) do
+    func =
+      "sharePerformance(#{assigns.cpm}, #{assigns.accuracy}, #{assigns.session.time_completion}, #{assigns.session.wrong}, '#{assigns.session.language}', '#{assigns.session.difficulty}')"
+
+    assigns =
+      assigns
+      |> assign(:func, func)
+
     ~H"""
     <div class="card-modern mb-8 p-8">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-brand-primary">Performance Analysis</h2>
-        <button id="share-button" class="btn btn-outline btn-sm" onclick="sharePerformance()">
+        <button id="share-button" class="btn btn-outline btn-sm" onclick={@func}>
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
