@@ -12,8 +12,10 @@ config :coderacer,
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
+host = System.get_env("PHX_HOST") || "localhost"
+
 config :coderacer, CoderacerWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: host],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: CoderacerWeb.ErrorHTML, json: CoderacerWeb.ErrorJSON],
