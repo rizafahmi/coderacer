@@ -116,6 +116,33 @@ Run all quality checks with:
 mix check
 ```
 
+### Test Coverage
+
+The project maintains comprehensive test coverage across all major components:
+
+#### Test Categories
+- **Context Tests**: Game, Leaderboards, AI, and ImageGenerator modules
+- **Schema Tests**: Session and LeaderboardEntry validation and constraints
+- **LiveView Tests**: All screens including Start, Game, Finish, Share, and Leaderboard
+- **Component Tests**: Reusable components for performance stats and sharing
+- **Integration Tests**: Full game flow from session creation to leaderboard submission
+
+#### Test Quality Features
+- **Edge Case Testing**: Invalid inputs, extreme values, and error conditions
+- **Performance Testing**: Large datasets (100+ entries) and query optimization
+- **Error Handling**: Graceful degradation and constraint violation handling
+- **Fixture-based Testing**: Consistent test data generation with proper relationships
+
+Run the full test suite with:
+```bash
+mix test
+```
+
+View test coverage details:
+```bash
+mix test --cover
+```
+
 ## 🤝 Contributing
 
 We welcome contributions to Coderacer! Here's how you can help:
@@ -151,4 +178,3 @@ We welcome contributions to Coderacer! Here's how you can help:
 - Add documentation for public functions
 - Write tests for new features and bug fixes
 - Use keyword-based Ecto queries when possible
-
