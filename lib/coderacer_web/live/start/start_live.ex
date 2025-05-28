@@ -74,6 +74,7 @@ defmodule CoderacerWeb.StartLive do
   end
 
   def handle_event("submit_choice", %{"language" => language, "difficulty" => difficulty}, socket) do
+    # TODO: Handle error case or take code from cache
     code = Coderacer.AI.generate(language, difficulty)
 
     case Game.create_session(%{

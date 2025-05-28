@@ -29,8 +29,6 @@ defmodule CoderacerWeb.GameLive do
   def handle_event("user_type", %{"typing" => current_char}, socket) do
     char_to_check = get_char_to_check(current_char)
 
-    Logger.info("User typed: #{char_to_check}")
-    Logger.info("Remaining code: #{socket.assigns.remaining_code}")
     remaining_code = socket.assigns.remaining_code
 
     socket =

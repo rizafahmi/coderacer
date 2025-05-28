@@ -3,6 +3,10 @@
 
 @import "tailwindcss";
 
+@plugin "../vendor/daisyui" {
+  themes: false
+}
+
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */
 @layer components {
@@ -112,18 +116,6 @@ body {
   }
 
   .input-modern:focus {
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(247, 144, 9, 0.1);
-    outline: none;
-  }
-
-  .select-modern {
-    @apply border-gray-600 rounded-xl transition-all duration-200 px-4 py-3;
-    background-color: var(--bg-tertiary);
-    color: var(--text-primary);
-  }
-
-  .select-modern:focus {
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 3px rgba(247, 144, 9, 0.1);
     outline: none;

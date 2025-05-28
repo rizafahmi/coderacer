@@ -18,7 +18,7 @@
           <label for="language" class="block text-lg font-medium text-brand-primary">
             Programming Language
           </label>
-          <select id="language" name="language" class="select select-modern w-full" required>
+          <select id="language" name="language" class="select w-full" required>
             <option value="" disabled selected>Select a language...</option>
             <%= for {value, label} <- @languages do %>
               <option value={value}>{label}</option>
@@ -31,7 +31,7 @@
           <label for="difficulty" class="block text-lg font-medium text-brand-primary">
             Difficulty Level
           </label>
-          <select id="difficulty" name="difficulty" class="select select-modern w-full" required>
+          <select id="difficulty" name="difficulty" class="select w-full" required>
             <option value="" disabled selected>Choose difficulty...</option>
             <%= for {value, label} <- @difficulties do %>
               <option value={value}>{label}</option>
@@ -42,15 +42,9 @@
 <!-- Submit Button with Random Option -->
         <div class="flex gap-3 items-center">
           <div class="tooltip" data-tip="Randomly pick language & difficulty for me">
-            <button
-              type="button"
-              phx-click="random_choice"
-              class="btn btn-square btn-outline btn-secondary aspect-square text-xl"
-              phx-disable-with="🎯"
-            >
+            <.button type="button" phx-click="random_choice" phx-disable-with="🎯">
               🎲
-            </button>
-            <button class="btn-primary">Test</button>
+            </.button>
           </div>
 
           <button
