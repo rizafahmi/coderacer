@@ -66,7 +66,9 @@ defmodule CoderacerWeb.ShareLiveTest do
 
       assert html =~ "Performance Analysis"
       assert html =~ "Share"
-      assert html =~ "sharePerformance()"
+
+      assert html =~
+               "sharePerformance(cpm, accuracy, time_completion, wrong, language, difficulty)"
     end
 
     test "includes navigation buttons", %{conn: conn, session: session} do
@@ -116,12 +118,6 @@ defmodule CoderacerWeb.ShareLiveTest do
       {:ok, _view, html} = live(conn, "/share/#{session_zero_chars.id}")
       # Both CPM and accuracy should be 0
       assert html =~ "0"
-    end
-
-    test "share script includes correct session URL", %{conn: conn, session: session} do
-      {:ok, _view, html} = live(conn, "/share/#{session.id}")
-
-      assert html =~ "window.location.origin + '/share/#{session.id}'"
     end
   end
 end

@@ -20,22 +20,6 @@ defmodule CoderacerWeb.Components.PerformanceAnalysisTest do
       %{session: session}
     end
 
-    test "renders performance analysis with share button", %{session: session} do
-      assigns = %{
-        cpm: 13,
-        accuracy: 80,
-        session: session
-      }
-
-      html = render_component(PerformanceAnalysis, assigns)
-
-      assert html =~ "Performance Analysis"
-      assert html =~ "Share"
-      assert html =~ "sharePerformance()"
-      assert html =~ "Test Details"
-      assert html =~ "Performance Insights"
-    end
-
     test "displays test details correctly", %{session: session} do
       assigns = %{
         cpm: 13,

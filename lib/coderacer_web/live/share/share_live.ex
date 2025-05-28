@@ -1,9 +1,10 @@
 defmodule CoderacerWeb.ShareLive do
+  use CoderacerWeb, :live_view
+
   @moduledoc """
   LiveView for sharing coding challenge results.
   Optimized to encourage visitors to try the game themselves.
   """
-  use CoderacerWeb, :live_view
 
   alias Coderacer.Game
 

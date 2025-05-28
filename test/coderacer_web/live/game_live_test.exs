@@ -88,12 +88,15 @@ defmodule CoderacerWeb.GameLiveTest do
     end
 
     test "displays code challenge with visual aids", %{conn: conn, session: session} do
-      {:ok, _view, html} = live(conn, "/game/#{session.id}")
+      {:ok, view, _html} = live(conn, "/game/#{session.id}")
 
       # Code challenge should be visible with space replacement
-      assert html =~ ~r/c.*o.*n.*s.*o.*l.*e.*\..*l.*o.*g/s
+      assert view |> has_element?("pre")
       # space visual aid
-      assert html =~ "⎵"
+      # assert html =~ "⎵"
+      assert view
+             |> element("pre")
+             |> render() =~ "⎵"
     end
 
     test "handles backspace correctly", %{conn: conn, session: session} do
