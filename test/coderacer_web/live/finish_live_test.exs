@@ -23,6 +23,8 @@ defmodule CoderacerWeb.FinishLiveTest do
 
       assert html =~ "Challenge Complete!"
       assert html =~ "Well done on completing the coding challenge"
+      assert html =~ "BalapKode"
+      refute html =~ "CodeRacer"
     end
 
     test "displays performance statistics using component", %{conn: conn, session: session} do

@@ -36,7 +36,7 @@ defmodule CoderacerWeb.ShareLive do
         difficulty = game_session.difficulty |> to_string() |> String.capitalize()
 
         share_description =
-          "I scored #{cpm} CPM with #{accuracy}% accuracy in #{language} (#{difficulty}) on CodeRacer! Can you beat my score?"
+          "I scored #{cpm} CPM with #{accuracy}% accuracy in #{language} (#{difficulty}) on BalapKode! Can you beat my score?"
 
         # Set up meta tags for social sharing
         og_image_url = url(socket, ~p"/og-image/#{id}")
@@ -48,7 +48,7 @@ defmodule CoderacerWeb.ShareLive do
           |> assign(:cpm, cpm)
           |> assign(:accuracy, accuracy)
           |> assign(:is_likely_owner, is_likely_owner)
-          |> assign(:page_title, "CodeRacer Results - #{cpm} CPM, #{accuracy}% Accuracy")
+          |> assign(:page_title, "BalapKode Results - #{cpm} CPM, #{accuracy}% Accuracy")
           |> assign(:share_description, share_description)
           |> assign(:og_image_url, og_image_url)
           |> assign(:share_url, share_url)

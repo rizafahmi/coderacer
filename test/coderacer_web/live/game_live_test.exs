@@ -17,7 +17,8 @@ defmodule CoderacerWeb.GameLiveTest do
       {:ok, _view, html} = live(conn, "/game/#{session.id}")
       assert html =~ "Time"
       assert html =~ "0s"
-      assert html =~ "CodeRacer"
+      refute html =~ "CodeRacer"
+      assert html =~ "BalapKode"
     end
 
     test "starts stopwatch on first character input", %{conn: conn, session: session} do

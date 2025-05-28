@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title default="CodeRacer" suffix=" · Modern Code Typing">
+    <.live_title default="BalapKode" suffix=" · Modern Code Typing">
       {assigns[:page_title]}
     </.live_title>
     
@@ -13,7 +13,7 @@
       <!-- Open Graph / Facebook -->
       <meta property="og:type" content="website" />
       <meta property="og:url" content={assigns[:share_url]} />
-      <meta property="og:title" content={assigns[:page_title] || "CodeRacer"} />
+      <meta property="og:title" content={assigns[:page_title] || "BalapKode"} />
       <meta property="og:description" content={assigns[:share_description]} />
       <meta property="og:image" content={assigns[:og_image_url]} />
       <meta property="og:image:width" content="1200" />
@@ -22,26 +22,26 @@
 <!-- Twitter -->
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={assigns[:share_url]} />
-      <meta property="twitter:title" content={assigns[:page_title] || "CodeRacer"} />
+      <meta property="twitter:title" content={assigns[:page_title] || "BalapKode"} />
       <meta property="twitter:description" content={assigns[:share_description]} />
       <meta property="twitter:image" content={assigns[:og_image_url]} />
     <% else %>
       <!-- Default Meta Tags -->
       <meta
         name="description"
-        content="Test your coding typing speed and accuracy with CodeRacer. Challenge yourself with real code snippets in 20+ programming languages."
+        content="Test your coding typing speed and accuracy with BalapKode. Challenge yourself with real code snippets in 20+ programming languages."
       />
       <meta property="og:type" content="website" />
-      <meta property="og:title" content="CodeRacer - Modern Code Typing" />
+      <meta property="og:title" content="BalapKode - Modern Code Typing" />
       <meta
         property="og:description"
-        content="Test your coding typing speed and accuracy with CodeRacer. Challenge yourself with real code snippets in 20+ programming languages."
+        content="Test your coding typing speed and accuracy with BalapKode. Challenge yourself with real code snippets in 20+ programming languages."
       />
       <meta property="twitter:card" content="summary" />
-      <meta property="twitter:title" content="CodeRacer - Modern Code Typing" />
+      <meta property="twitter:title" content="BalapKode - Modern Code Typing" />
       <meta
         property="twitter:description"
-        content="Test your coding typing speed and accuracy with CodeRacer. Challenge yourself with real code snippets in 20+ programming languages."
+        content="Test your coding typing speed and accuracy with BalapKode. Challenge yourself with real code snippets in 20+ programming languages."
       />
     <% end %>
     
@@ -86,7 +86,7 @@
       <footer class="text-center py-6 text-muted border-t border-gray-800">
         <p class="text-sm">
           Built with ❤️ using Elixir & Phoenix •
-          <span class="text-brand-primary font-medium">CodeRacer</span>
+          <span class="text-brand-primary font-medium">BalapKode</span>
           •
           <a href="/leaderboard" class="text-yellow-400 hover:text-yellow-300 transition-colors">
             🏆 Leaderboard
@@ -98,8 +98,8 @@
       function sharePerformance(cpm, accuracy, time_completion, wrong, language, difficulty) {
         const shareUrl = window.location.href.replace("/finish/", "/share/")
         const shareData = {
-          title: 'CodeRacer Challenge Results 🏆',
-          text: `I just completed a coding challenge on CodeRacer!\n\n🎯 Results:\n• ${cpm} Characters/Min\n• ${accuracy}% Accuracy\n• ${time_completion}s Time Taken\n• ${wrong} Errors\n\nLanguage: ${language.toUpperCase()}\nDifficulty: ${difficulty.toUpperCase()}\n\nTry your own coding challenge at CodeRacer!`,
+          title: 'BalapKode Challenge Results 🏆',
+          text: `I just completed a coding challenge on BalapKode!\n\n🎯 Results:\n• ${cpm} Characters/Min\n• ${accuracy}% Accuracy\n• ${time_completion}s Time Taken\n• ${wrong} Errors\n\nLanguage: ${language.toUpperCase()}\nDifficulty: ${difficulty.toUpperCase()}\n\nTry your own coding challenge at BalapKode!`,
           url: shareUrl
         };
 

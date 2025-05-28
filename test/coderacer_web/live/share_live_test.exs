@@ -21,8 +21,9 @@ defmodule CoderacerWeb.ShareLiveTest do
     test "renders share page with session results", %{conn: conn, session: session} do
       {:ok, _view, html} = live(conn, "/share/#{session.id}")
 
-      assert html =~ "CodeRacer Results"
       assert html =~ "Check out this coding challenge performance!"
+      assert html =~ "BalapKode"
+      refute html =~ "CodeRacer"
     end
 
     test "displays performance statistics correctly", %{conn: conn, session: session} do
