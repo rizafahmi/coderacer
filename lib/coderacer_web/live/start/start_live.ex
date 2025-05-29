@@ -2,6 +2,7 @@ defmodule CoderacerWeb.StartLive do
   use CoderacerWeb, :live_view
 
   alias Coderacer.Game
+  alias CoderacerWeb.Layouts
 
   @languages [
     {"c", "C"},
@@ -54,27 +55,28 @@ defmodule CoderacerWeb.StartLive do
     language = Enum.random(language_values)
     difficulty = Enum.random(difficulty_values)
 
-    code = Coderacer.AI.generate(language, difficulty)
-
-    case Game.create_session(%{
-           language: language,
-           difficulty: String.to_atom(difficulty),
-           code_challenge: code
-         }) do
-      {:ok, session} ->
-        socket =
-          socket
-          |> push_navigate(to: ~p"/game/#{session.id}")
-
-        {:noreply, socket}
+    with {:ok, code} <- Coderacer.AI.generate(language, difficulty),
+         {:ok, session} <-
+           Game.create_session(%{
+             language: language,
+             difficulty: String.to_atom(difficulty),
+             code_challenge: code
+           }) do
+      {:noreply, push_navigate(socket, to: ~p"/game/#{session.id}")}
+      # {:noreply, put_flash(socket, :info, "🚀 Game created")}
+    else
+      {:error, _status, _error} ->
+        {:noreply, put_flash(socket, :error, "🤖 Error generating code. Rate limit exceeded.")}
 
       {:error, _changeset} ->
-        {:noreply, put_flash(socket, "Error creating session", :error)}
+        {:noreply, put_flash(socket, :error, "🔥 Error creating session")}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, "Unknown error")}
     end
   end
 
   def handle_event("submit_choice", %{"language" => language, "difficulty" => difficulty}, socket) do
-    # TODO: Handle error case or take code from cache
     code = Coderacer.AI.generate(language, difficulty)
 
     case Game.create_session(%{

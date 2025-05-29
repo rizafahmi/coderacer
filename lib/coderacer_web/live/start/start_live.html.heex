@@ -1,116 +1,123 @@
-<div class="w-full max-w-2xl mx-auto">
-  <!-- Hero Section -->
-  <div class="text-center mb-12">
-    <h1 class="text-6xl font-bold text-gradient mb-4 typing-cursor">
-      BalapKode
-    </h1>
-    <p class="text-xl text-muted max-w-lg mx-auto">
-      Tab-completion made you lazy? It's time to get your typing speed back!
-    </p>
-  </div>
-  
+<Layouts.app flash={@flash}>
+  <div class="w-full max-w-2xl mx-auto">
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-6xl font-bold text-gradient mb-4 typing-cursor">
+        BalapKode
+      </h1>
+      <p class="text-xl text-muted max-w-lg mx-auto">
+        Tab-completion made you lazy? It's time to get your typing speed back!
+      </p>
+    </div>
+    
 <!-- Main Form Card -->
-  <div class="card bg-base-200 shadow-xl">
-    <div class="card-body">
-      <form phx-submit="submit_choice" class="space-y-8">
-        <!-- Programming Language Selection -->
-        <div class="space-y-3">
-          <label for="language" class="block text-lg font-medium text-brand-primary">
-            Programming Language
-          </label>
-          <select id="language" name="language" class="select w-full" required>
-            <option value="" disabled selected>Select a language...</option>
-            <%= for {value, label} <- @languages do %>
-              <option value={value}>{label}</option>
-            <% end %>
-          </select>
-        </div>
-        
-<!-- Difficulty Level Selection -->
-        <div class="space-y-3">
-          <label for="difficulty" class="block text-lg font-medium text-brand-primary">
-            Difficulty Level
-          </label>
-          <select id="difficulty" name="difficulty" class="select w-full" required>
-            <option value="" disabled selected>Choose difficulty...</option>
-            <%= for {value, label} <- @difficulties do %>
-              <option value={value}>{label}</option>
-            <% end %>
-          </select>
-        </div>
-        
-<!-- Submit Button with Random Option -->
-        <div class="flex gap-3 items-center">
-          <div class="tooltip" data-tip="Randomly pick language & difficulty for me">
-            <.button type="button" phx-click="random_choice" phx-disable-with="🎯">
-              🎲
-            </.button>
+    <div class="card bg-base-200 shadow-xl">
+      <div class="card-body">
+        <form phx-submit="submit_choice" class="space-y-8">
+          <!-- Programming Language Selection -->
+          <div class="space-y-3">
+            <label for="language" class="block text-lg font-medium text-brand-primary">
+              Programming Language
+            </label>
+            <select id="language" name="language" class="select w-full" required>
+              <option value="" disabled selected>Select a language...</option>
+              <%= for {value, label} <- @languages do %>
+                <option value={value}>{label}</option>
+              <% end %>
+            </select>
           </div>
+          
+<!-- Difficulty Level Selection -->
+          <div class="space-y-3">
+            <label for="difficulty" class="block text-lg font-medium text-brand-primary">
+              Difficulty Level
+            </label>
+            <select id="difficulty" name="difficulty" class="select w-full" required>
+              <option value="" disabled selected>Choose difficulty...</option>
+              <%= for {value, label} <- @difficulties do %>
+                <option value={value}>{label}</option>
+              <% end %>
+            </select>
+          </div>
+          
+<!-- Submit Button with Random Option -->
+          <div class="flex gap-3 items-center">
+            <div class="tooltip" data-tip="Randomly pick language & difficulty for me">
+              <.button type="button" phx-click="random_choice" phx-disable-with="🎯">
+                🎲
+              </.button>
+            </div>
 
-          <button
-            type="submit"
-            class="btn-brand flex-1 text-lg py-4 transition-smooth pulse-glow"
-            phx-disable-with="Starting..."
-          >
-            Start Coding Challenge
-            <svg class="w-5 h-5 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
+            <button
+              type="submit"
+              class="btn-brand flex-1 text-lg py-4 transition-smooth pulse-glow"
+              phx-disable-with="Starting..."
+            >
+              Start Coding Challenge
+              <svg
+                class="w-5 h-5 ml-2 inline"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-              </path>
-            </svg>
-          </button>
-        </div>
-        
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                >
+                </path>
+              </svg>
+            </button>
+          </div>
+          
 <!-- Leaderboard Link -->
-        <div class="text-center">
-          <a
-            href="/leaderboard"
-            class="text-sm text-muted hover:text-brand-primary transition-colors inline-flex items-center gap-2"
-          >
-            <span>🏆</span> View Leaderboard & Top Scores
-          </a>
-        </div>
-      </form>
+          <div class="text-center">
+            <a
+              href="/leaderboard"
+              class="text-sm text-muted hover:text-brand-primary transition-colors inline-flex items-center gap-2"
+            >
+              <span>🏆</span> View Leaderboard & Top Scores
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-  
+    
 <!-- Features Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-    <div class="stat-card text-center p-6 transition-smooth hover:scale-105">
-      <div class="text-2xl mb-2">🤖</div>
-      <h3 class="font-semibold text-brand-secondary mb-2">Beyond AI Autocomplete</h3>
-      <p class="text-sm text-muted">Practice pure coding without tab-completion crutches</p>
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+      <div class="stat-card text-center p-6 transition-smooth hover:scale-105">
+        <div class="text-2xl mb-2">🤖</div>
+        <h3 class="font-semibold text-brand-secondary mb-2">Beyond AI Autocomplete</h3>
+        <p class="text-sm text-muted">Practice pure coding without tab-completion crutches</p>
+      </div>
 
-    <div class="stat-card text-center p-6 transition-smooth hover:scale-105">
-      <div class="text-2xl mb-2">⚡</div>
-      <h3 class="font-semibold text-brand-secondary mb-2">Lightning Reflexes</h3>
-      <p class="text-sm text-muted">Build muscle memory for when you need raw speed</p>
-    </div>
+      <div class="stat-card text-center p-6 transition-smooth hover:scale-105">
+        <div class="text-2xl mb-2">⚡</div>
+        <h3 class="font-semibold text-brand-secondary mb-2">Lightning Reflexes</h3>
+        <p class="text-sm text-muted">Build muscle memory for when you need raw speed</p>
+      </div>
 
-    <a
-      href="/leaderboard"
-      class="stat-card text-center p-6 transition-smooth hover:scale-105 hover:border-brand-primary cursor-pointer block"
-    >
-      <div class="text-2xl mb-2">🏆</div>
-      <h3 class="font-semibold text-brand-secondary mb-2">Leaderboard</h3>
-      <p class="text-sm text-muted">See top performers and challenge records</p>
-    </a>
-  </div>
-  
+      <a
+        href="/leaderboard"
+        class="stat-card text-center p-6 transition-smooth hover:scale-105 hover:border-brand-primary cursor-pointer block"
+      >
+        <div class="text-2xl mb-2">🏆</div>
+        <h3 class="font-semibold text-brand-secondary mb-2">Leaderboard</h3>
+        <p class="text-sm text-muted">See top performers and challenge records</p>
+      </a>
+    </div>
+    
 <!-- Tips Section -->
-  <div class="mt-12 p-6 glass-effect rounded-xl">
-    <h3 class="font-semibold text-brand-primary mb-3">💡 Why Train Your Typing?</h3>
-    <ul class="space-y-2 text-sm text-muted">
-      <li>• AI can't help during interviews or coding challenges</li>
-      <li>• You want to try programming language that suits your personality</li>
-      <li>• Debugging requires fast, precise manual editing</li>
-      <li>• Code reviews and refactoring need quick finger work</li>
-      <li>• Don't let autocomplete make you dependent—stay sharp!</li>
-    </ul>
+    <div class="mt-12 p-6 glass-effect rounded-xl">
+      <h3 class="font-semibold text-brand-primary mb-3">💡 Why Train Your Typing?</h3>
+      <ul class="space-y-2 text-sm text-muted">
+        <li>• AI can't help during interviews or coding challenges</li>
+        <li>• You want to try programming language that suits your personality</li>
+        <li>• Debugging requires fast, precise manual editing</li>
+        <li>• Code reviews and refactoring need quick finger work</li>
+        <li>• Don't let autocomplete make you dependent—stay sharp!</li>
+      </ul>
+    </div>
   </div>
-</div>
+</Layouts.app>

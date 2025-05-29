@@ -3,6 +3,7 @@ defmodule CoderacerWeb.FinishLive do
 
   alias Coderacer.Game
   alias Coderacer.Leaderboards
+  alias CoderacerWeb.Layouts
 
   def mount(%{"id" => id}, _session, socket) do
     case Game.get_session(id) do
@@ -39,7 +40,7 @@ defmodule CoderacerWeb.FinishLive do
 
   def handle_event("submit_to_leaderboard", %{"player_name" => player_name}, socket) do
     if String.trim(player_name) == "" do
-      {:noreply, put_flash(socket, :error, "Please enter a player name")}
+      {:noreply, put_flash(socket, :error, "🔥 Please enter a player name")}
     else
       case Leaderboards.create_leaderboard_entry(%{
              player_name: String.trim(player_name),
@@ -52,12 +53,12 @@ defmodule CoderacerWeb.FinishLive do
             socket
             |> assign(:already_submitted, true)
             |> assign(:submission_status, :success)
-            |> put_flash(:info, "Score submitted to leaderboard!")
+            |> put_flash(:info, "🏆 Score submitted to leaderboard!")
 
           {:noreply, socket}
 
         {:error, _changeset} ->
-          {:noreply, put_flash(socket, :error, "Failed to submit score. Please try again.")}
+          {:noreply, put_flash(socket, :error, "🔥Failed to submit score. Please try again.")}
       end
     end
   end

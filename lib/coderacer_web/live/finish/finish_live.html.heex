@@ -1,122 +1,124 @@
-<div class="w-full max-w-4xl mx-auto">
-  <%= if assigns[:error] do %>
-    <div class="text-center text-red-500 text-xl font-bold py-12">Session not found</div>
-  <% else %>
-    <!-- Header -->
-    <div class="text-center mb-12">
-      <div class="text-6xl mb-6">🎉</div>
-      <h1 class="text-5xl font-bold text-gradient mb-4">Challenge Complete!</h1>
-      <p class="text-xl text-muted">Well done on completing the coding challenge</p>
-    </div>
-    
-<!-- Results Grid -->
-    <.live_component
-      module={CoderacerWeb.Components.PerformanceStats}
-      id="performance-stats"
-      cpm={@cpm}
-      accuracy={@accuracy}
-      session={@session}
-    />
-    
-<!-- Performance Analysis -->
-    <.live_component
-      module={CoderacerWeb.Components.PerformanceAnalysis}
-      id="performance-analysis"
-      cpm={@cpm}
-      accuracy={@accuracy}
-      session={@session}
-    />
-    
-<!-- Leaderboard Submission -->
-    <%= if not @already_submitted do %>
-      <div class="card-modern mb-8 p-8">
-        <div class="text-center mb-6">
-          <h2 class="text-2xl font-bold text-brand-primary mb-2">🏆 Submit to Leaderboard</h2>
-          <p class="text-muted">Share your achievement with the community!</p>
-        </div>
-
-        <form phx-submit="submit_to_leaderboard" class="max-w-md mx-auto">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text font-medium">Your Name</span>
-            </label>
-            <input
-              type="text"
-              name="player_name"
-              class="input input-bordered w-full"
-              placeholder="Enter your name"
-              maxlength="50"
-              required
-            />
-            <label class="label">
-              <span class="label-text-alt text-muted">
-                Your name will be displayed on the public leaderboard
-              </span>
-            </label>
-          </div>
-
-          <div class="form-control mt-6">
-            <button type="submit" class="btn btn-primary btn-lg w-full">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-              Submit to Leaderboard
-            </button>
-          </div>
-        </form>
-      </div>
+<Layouts.app flash={@flash}>
+  <div class="w-full max-w-4xl mx-auto">
+    <%= if assigns[:error] do %>
+      <div class="text-center text-red-500 text-xl font-bold py-12">Session not found</div>
     <% else %>
-      <div class="card-modern mb-8 p-8 text-center">
-        <div class="text-green-400 text-6xl mb-4">✅</div>
-        <h2 class="text-2xl font-bold text-green-400 mb-2">Score Submitted!</h2>
-        <p class="text-muted mb-4">Your performance has been added to the leaderboard.</p>
-        <a href="/leaderboard" class="btn btn-primary">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <div class="text-6xl mb-6">🎉</div>
+        <h1 class="text-5xl font-bold text-gradient mb-4">Challenge Complete!</h1>
+        <p class="text-xl text-muted">Well done on completing the coding challenge</p>
+      </div>
+      
+<!-- Results Grid -->
+      <.live_component
+        module={CoderacerWeb.Components.PerformanceStats}
+        id="performance-stats"
+        cpm={@cpm}
+        accuracy={@accuracy}
+        session={@session}
+      />
+      
+<!-- Performance Analysis -->
+      <.live_component
+        module={CoderacerWeb.Components.PerformanceAnalysis}
+        id="performance-analysis"
+        cpm={@cpm}
+        accuracy={@accuracy}
+        session={@session}
+      />
+      
+<!-- Leaderboard Submission -->
+      <%= if not @already_submitted do %>
+        <div class="card-modern mb-8 p-8">
+          <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-brand-primary mb-2">🏆 Submit to Leaderboard</h2>
+            <p class="text-muted">Share your achievement with the community!</p>
+          </div>
+
+          <form phx-submit="submit_to_leaderboard" class="max-w-md mx-auto">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-medium">Your Name</span>
+              </label>
+              <input
+                type="text"
+                name="player_name"
+                class="input input-bordered w-full"
+                placeholder="Enter your name"
+                maxlength="50"
+                required
+              />
+              <label class="label">
+                <span class="label-text-alt text-muted">
+                  Your name will be displayed on the public leaderboard
+                </span>
+              </label>
+            </div>
+
+            <div class="form-control mt-6">
+              <button type="submit" class="btn btn-primary btn-lg w-full">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+                Submit to Leaderboard
+              </button>
+            </div>
+          </form>
+        </div>
+      <% else %>
+        <div class="card-modern mb-8 p-8 text-center">
+          <div class="text-green-400 text-6xl mb-4">✅</div>
+          <h2 class="text-2xl font-bold text-green-400 mb-2">Score Submitted!</h2>
+          <p class="text-muted mb-4">Your performance has been added to the leaderboard.</p>
+          <a href="/leaderboard" class="btn btn-primary">
+            View Leaderboard
+          </a>
+        </div>
+      <% end %>
+      
+<!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/" class="btn-brand px-8 py-4 text-center">
+          <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            >
+            </path>
+          </svg>
+          Try Another Challenge
+        </a>
+
+        <a href="/leaderboard" class="btn-secondary px-8 py-4 text-center">
+          <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+            />
+          </svg>
           View Leaderboard
         </a>
       </div>
-    <% end %>
-    
-<!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/" class="btn-brand px-8 py-4 text-center">
-        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          >
-          </path>
-        </svg>
-        Try Another Challenge
-      </a>
-
-      <a href="/leaderboard" class="btn-secondary px-8 py-4 text-center">
-        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-          />
-        </svg>
-        View Leaderboard
-      </a>
-    </div>
-    
+      
 <!-- Motivational Quote -->
-    <div class="mt-12 text-center">
-      <div class="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
-        <p class="text-lg text-muted italic mb-2">
-          "The way to get started is to quit talking and begin doing."
-        </p>
-        <p class="text-brand-primary font-medium">— Walt Disney</p>
+      <div class="mt-12 text-center">
+        <div class="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
+          <p class="text-lg text-muted italic mb-2">
+            "The way to get started is to quit talking and begin doing."
+          </p>
+          <p class="text-brand-primary font-medium">— Walt Disney</p>
+        </div>
       </div>
-    </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
+</Layouts.app>
