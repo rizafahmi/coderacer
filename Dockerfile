@@ -64,6 +64,7 @@ RUN mix compile
 COPY config/runtime.exs config/
 
 COPY rel rel
+RUN mkdir -p /app/priv/data && chown nobody /app/priv/data
 RUN mix release
 
 # start a new build stage so that the final image will only contain
