@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  coderacer_deploy:
+    image: localhost/coderacer_deploy:latest
+    container_name: coderacer_deploy
+    ports:
+      - "4000:4000"
+    volumes:
+      - coderacer_sqlite:/app/priv/data
+    env_file:
+      - .env
+    stdin_open: true # equivalent to -it
+    tty: true # equivalent to -it
+    restart: "no" # equivalent to --rm (no restart)
+
+volumes:
+  coderacer_sqlite:
