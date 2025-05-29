@@ -86,7 +86,7 @@ defmodule Coderacer.AITest do
   end
 
   test "generate/2 returns valid code for supported language and difficulty" do
-    code = Coderacer.AI.generate("JavaScript", "easy", 2)
+    {:ok, code} = Coderacer.AI.generate("JavaScript", "easy", 2)
 
     assert is_binary(code), "Expected generated code to be a binary string"
     assert String.length(code) > 0, "Expected generated code to be non-empty"
@@ -94,13 +94,13 @@ defmodule Coderacer.AITest do
   end
 
   test "generate/3 with default lines parameter" do
-    code = Coderacer.AI.generate("Python", "medium")
+    {:ok, code} = Coderacer.AI.generate("Python", "medium")
     assert is_binary(code)
     assert String.length(code) > 0
   end
 
   test "to make sure generate/2 returns only code and not some markdown triple tick" do
-    code = Coderacer.AI.generate("JavaScript", "easy", 2)
+    {:ok, code} = Coderacer.AI.generate("JavaScript", "easy", 2)
     assert String.contains?(code, "```") == false
   end
 
@@ -116,7 +116,10 @@ defmodule Coderacer.AITest do
     Application.put_env(:coderacer, :http_client, MockReqMalformedJson)
 
     result = Coderacer.AI.generate("JavaScript", "easy", 2)
-    assert {:error, _} = result
+
+    assert {:ok,
+            {:error, %Jason.DecodeError{position: 0, token: nil, data: "invalid json content"}}} =
+             result
   end
 
   test "generate/2 handles empty candidates array" do
@@ -156,7 +159,7 @@ defmodule Coderacer.AITest do
     languages = ["JavaScript", "Python", "Elixir", "Go", "Rust", "C++", "Java"]
 
     for language <- languages do
-      code = Coderacer.AI.generate(language, "easy", 2)
+      {:ok, code} = Coderacer.AI.generate(language, "easy", 2)
       assert is_binary(code)
       assert String.length(code) > 0
     end
@@ -166,7 +169,7 @@ defmodule Coderacer.AITest do
     difficulties = ["easy", "medium", "hard"]
 
     for difficulty <- difficulties do
-      code = Coderacer.AI.generate("JavaScript", difficulty, 2)
+      {:ok, code} = Coderacer.AI.generate("JavaScript", difficulty, 2)
       assert is_binary(code)
       assert String.length(code) > 0
     end
@@ -176,7 +179,7 @@ defmodule Coderacer.AITest do
     line_counts = [1, 2, 5, 10]
 
     for lines <- line_counts do
-      code = Coderacer.AI.generate("JavaScript", "easy", lines)
+      {:ok, code} = Coderacer.AI.generate("JavaScript", "easy", lines)
       assert is_binary(code)
       assert String.length(code) > 0
     end

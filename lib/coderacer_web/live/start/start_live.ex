@@ -2,6 +2,7 @@ defmodule CoderacerWeb.StartLive do
   use CoderacerWeb, :live_view
 
   alias Coderacer.Game
+  alias CoderacerWeb.Layouts
 
   @languages [
     {"c", "C"},
@@ -48,49 +49,33 @@ defmodule CoderacerWeb.StartLive do
   end
 
   def handle_event("random_choice", _params, socket) do
-    language_values = Enum.map(@languages, fn {value, _label} -> value end)
-    difficulty_values = Enum.map(@difficulties, fn {value, _label} -> value end)
-
-    language = Enum.random(language_values)
-    difficulty = Enum.random(difficulty_values)
-
-    code = Coderacer.AI.generate(language, difficulty)
-
-    case Game.create_session(%{
-           language: language,
-           difficulty: String.to_atom(difficulty),
-           code_challenge: code
-         }) do
-      {:ok, session} ->
-        socket =
-          socket
-          |> push_navigate(to: ~p"/game/#{session.id}")
-
-        {:noreply, socket}
-
-      {:error, _changeset} ->
-        {:noreply, put_flash(socket, "Error creating session", :error)}
-    end
+    language = Enum.random(Enum.map(@languages, fn {value, _} -> value end))
+    difficulty = Enum.random(Enum.map(@difficulties, fn {value, _} -> value end))
+    start_game(socket, language, difficulty)
   end
 
   def handle_event("submit_choice", %{"language" => language, "difficulty" => difficulty}, socket) do
-    # TODO: Handle error case or take code from cache
-    code = Coderacer.AI.generate(language, difficulty)
+    start_game(socket, language, difficulty)
+  end
 
-    case Game.create_session(%{
-           language: language,
-           difficulty: String.to_atom(difficulty),
-           code_challenge: code
-         }) do
-      {:ok, session} ->
-        socket =
-          socket
-          |> push_navigate(to: ~p"/game/#{session.id}")
-
-        {:noreply, socket}
+  defp start_game(socket, language, difficulty) do
+    with {:ok, code} <- Coderacer.AI.generate(language, difficulty),
+         {:ok, session} <-
+           Game.create_session(%{
+             language: language,
+             difficulty: String.to_atom(difficulty),
+             code_challenge: code
+           }) do
+      {:noreply, push_navigate(socket, to: ~p"/game/#{session.id}")}
+    else
+      {:error, _status, _error} ->
+        {:noreply, put_flash(socket, :error, "🤖 Error generating code. Rate limit exceeded.")}
 
       {:error, _changeset} ->
-        {:noreply, put_flash(socket, "Error creating session", :error)}
+        {:noreply, put_flash(socket, :error, "🔥 Error creating session")}
+
+      _ ->
+        {:noreply, put_flash(socket, :error, "Unknown error")}
     end
   end
 end
