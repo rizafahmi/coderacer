@@ -2,6 +2,8 @@
 
 A **CodeRacer** typing speed game designed for developers to practice typing code snippets in various programming languages. Challenge yourself with AI-generated code snippets across different difficulty levels and track your typing performance.
 
+![screenshot](./priv/static/images/balapkode.com_.png)
+
 ## 🚀 Features
 
 - **AI-Generated Code Challenges**: Dynamic code snippets generated using GenAI
