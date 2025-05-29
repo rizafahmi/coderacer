@@ -160,14 +160,15 @@ defmodule Coderacer.LeaderboardsTest do
       assert result.language == "JavaScript"
       assert result.difficulty == :medium
       assert result.inserted_at
+      assert result.session_id == entry.session_id
     end
   end
 
   describe "get_language_leaderboard/2" do
     test "returns entries for specific language only" do
       # Create entries for different languages
-      _js_entry = leaderboard_entry_fixture(%{language: "JavaScript", cpm: 45})
-      _py_entry = leaderboard_entry_fixture(%{language: "Python", cpm: 50})
+      js_entry = leaderboard_entry_fixture(%{language: "JavaScript", cpm: 45})
+      py_entry = leaderboard_entry_fixture(%{language: "Python", cpm: 50})
       _elixir_entry = leaderboard_entry_fixture(%{language: "Elixir", cpm: 40})
 
       js_results = Leaderboards.get_language_leaderboard("JavaScript")
@@ -177,6 +178,8 @@ defmodule Coderacer.LeaderboardsTest do
       assert length(py_results) == 1
       assert Enum.at(js_results, 0).language == "JavaScript"
       assert Enum.at(py_results, 0).language == "Python"
+      assert Enum.at(js_results, 0).session_id == js_entry.session_id
+      assert Enum.at(py_results, 0).session_id == py_entry.session_id
     end
 
     test "returns empty list for non-existent language" do
@@ -204,8 +207,8 @@ defmodule Coderacer.LeaderboardsTest do
   describe "get_difficulty_leaderboard/2" do
     test "returns entries for specific difficulty only" do
       # Create entries for different difficulties
-      _easy_entry = leaderboard_entry_fixture(%{difficulty: :easy, cpm: 45})
-      _medium_entry = leaderboard_entry_fixture(%{difficulty: :medium, cpm: 50})
+      easy_entry = leaderboard_entry_fixture(%{difficulty: :easy, cpm: 45})
+      medium_entry = leaderboard_entry_fixture(%{difficulty: :medium, cpm: 50})
       _hard_entry = leaderboard_entry_fixture(%{difficulty: :hard, cpm: 40})
 
       easy_results = Leaderboards.get_difficulty_leaderboard(:easy)
@@ -215,6 +218,8 @@ defmodule Coderacer.LeaderboardsTest do
       assert length(medium_results) == 1
       assert Enum.at(easy_results, 0).difficulty == :easy
       assert Enum.at(medium_results, 0).difficulty == :medium
+      assert Enum.at(easy_results, 0).session_id == easy_entry.session_id
+      assert Enum.at(medium_results, 0).session_id == medium_entry.session_id
     end
 
     test "raises error for invalid difficulty" do
@@ -244,9 +249,14 @@ defmodule Coderacer.LeaderboardsTest do
   describe "get_language_difficulty_leaderboard/3" do
     test "returns entries for specific language and difficulty combination" do
       # Create entries with different combinations
-      leaderboard_entry_fixture(%{language: "JavaScript", difficulty: :easy, cpm: 45})
-      leaderboard_entry_fixture(%{language: "JavaScript", difficulty: :medium, cpm: 50})
-      leaderboard_entry_fixture(%{language: "Python", difficulty: :easy, cpm: 40})
+      js_easy_entry =
+        leaderboard_entry_fixture(%{language: "JavaScript", difficulty: :easy, cpm: 45})
+
+      _js_medium_entry =
+        leaderboard_entry_fixture(%{language: "JavaScript", difficulty: :medium, cpm: 50})
+
+      _py_easy_entry =
+        leaderboard_entry_fixture(%{language: "Python", difficulty: :easy, cpm: 40})
 
       results = Leaderboards.get_language_difficulty_leaderboard("JavaScript", :easy)
 
@@ -254,6 +264,7 @@ defmodule Coderacer.LeaderboardsTest do
       assert Enum.at(results, 0).language == "JavaScript"
       assert Enum.at(results, 0).difficulty == :easy
       assert Enum.at(results, 0).cpm == 45
+      assert Enum.at(results, 0).session_id == js_easy_entry.session_id
     end
 
     test "returns empty list for non-matching combination" do
