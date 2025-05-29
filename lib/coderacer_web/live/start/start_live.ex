@@ -49,12 +49,16 @@ defmodule CoderacerWeb.StartLive do
   end
 
   def handle_event("random_choice", _params, socket) do
-    language_values = Enum.map(@languages, fn {value, _label} -> value end)
-    difficulty_values = Enum.map(@difficulties, fn {value, _label} -> value end)
+    language = Enum.random(Enum.map(@languages, fn {value, _} -> value end))
+    difficulty = Enum.random(Enum.map(@difficulties, fn {value, _} -> value end))
+    start_game(socket, language, difficulty)
+  end
 
-    language = Enum.random(language_values)
-    difficulty = Enum.random(difficulty_values)
+  def handle_event("submit_choice", %{"language" => language, "difficulty" => difficulty}, socket) do
+    start_game(socket, language, difficulty)
+  end
 
+  defp start_game(socket, language, difficulty) do
     with {:ok, code} <- Coderacer.AI.generate(language, difficulty),
          {:ok, session} <-
            Game.create_session(%{
@@ -63,7 +67,6 @@ defmodule CoderacerWeb.StartLive do
              code_challenge: code
            }) do
       {:noreply, push_navigate(socket, to: ~p"/game/#{session.id}")}
-      # {:noreply, put_flash(socket, :info, "🚀 Game created")}
     else
       {:error, _status, _error} ->
         {:noreply, put_flash(socket, :error, "🤖 Error generating code. Rate limit exceeded.")}
@@ -73,26 +76,6 @@ defmodule CoderacerWeb.StartLive do
 
       _ ->
         {:noreply, put_flash(socket, :error, "Unknown error")}
-    end
-  end
-
-  def handle_event("submit_choice", %{"language" => language, "difficulty" => difficulty}, socket) do
-    code = Coderacer.AI.generate(language, difficulty)
-
-    case Game.create_session(%{
-           language: language,
-           difficulty: String.to_atom(difficulty),
-           code_challenge: code
-         }) do
-      {:ok, session} ->
-        socket =
-          socket
-          |> push_navigate(to: ~p"/game/#{session.id}")
-
-        {:noreply, socket}
-
-      {:error, _changeset} ->
-        {:noreply, put_flash(socket, "Error creating session", :error)}
     end
   end
 end

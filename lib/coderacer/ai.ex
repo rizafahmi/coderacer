@@ -8,8 +8,11 @@ defmodule Coderacer.AI do
 
     case send(prompt) do
       %Req.Response{status: 200, body: body} ->
-        parse_body(body)
-        |> parse_json()
+        result =
+          parse_body(body)
+          |> parse_json()
+
+        {:ok, result}
 
       %Req.Response{status: status, body: body} ->
         {:error, status, parse_error(body)}
