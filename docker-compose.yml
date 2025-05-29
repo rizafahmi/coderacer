@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   coderacer_deploy:
-    image: localhost/coderacer_deploy:latest
+    image: coderacer_deploy:latest
     container_name: coderacer_deploy
     ports:
       - "4000:4000"
