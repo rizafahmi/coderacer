@@ -373,5 +373,22 @@ defmodule CoderacerWeb.LeaderboardLiveTest do
       assert html =~ "Perfect Match"
       refute html =~ "Wrong Lang"
     end
+
+    test "shows share link for each leaderboard entry", %{conn: conn} do
+      entry =
+        leaderboard_entry_fixture(%{
+          player_name: "Sharable Player",
+          cpm: 77,
+          accuracy: 99,
+          language: "Elixir",
+          difficulty: :medium
+        })
+
+      {:ok, _view, html} = live(conn, "/leaderboard")
+
+      # The share link should be present and correct
+      assert html =~ ~s|href="/share/#{entry.session_id}"|
+      assert html =~ ~r|<a[^>]*href="/share/#{entry.session_id}"[^>]*>\s*View\s*</a>|s
+    end
   end
 end

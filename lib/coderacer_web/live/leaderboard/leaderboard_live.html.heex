@@ -117,6 +117,7 @@
             <th class="text-center">Language</th>
             <th class="text-center">Difficulty</th>
             <th class="text-center">Date</th>
+            <th class="text-center">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
@@ -151,6 +152,11 @@
                 <div class="text-xs opacity-75">
                   {Calendar.strftime(entry.inserted_at, "%I:%M %p")}
                 </div>
+              </td>
+              <td class="text-center">
+                <a href={~p"/share/#{entry.session_id}"} class="btn btn-secondary btn-sm">
+                  View
+                </a>
               </td>
             </tr>
           <% end %>

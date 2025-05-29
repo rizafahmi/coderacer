@@ -43,7 +43,8 @@ defmodule Coderacer.Leaderboards do
         accuracy: entry.accuracy,
         language: session.language,
         difficulty: session.difficulty,
-        inserted_at: entry.inserted_at
+        inserted_at: entry.inserted_at,
+        session_id: entry.session_id
       }
     )
     |> Repo.all()
@@ -65,7 +66,8 @@ defmodule Coderacer.Leaderboards do
         accuracy: entry.accuracy,
         language: session.language,
         difficulty: session.difficulty,
-        inserted_at: entry.inserted_at
+        inserted_at: entry.inserted_at,
+        session_id: entry.session_id
       }
     )
     |> Repo.all()
@@ -87,7 +89,8 @@ defmodule Coderacer.Leaderboards do
         accuracy: entry.accuracy,
         language: session.language,
         difficulty: session.difficulty,
-        inserted_at: entry.inserted_at
+        inserted_at: entry.inserted_at,
+        session_id: entry.session_id
       }
     )
     |> Repo.all()
@@ -109,7 +112,8 @@ defmodule Coderacer.Leaderboards do
         accuracy: entry.accuracy,
         language: session.language,
         difficulty: session.difficulty,
-        inserted_at: entry.inserted_at
+        inserted_at: entry.inserted_at,
+        session_id: entry.session_id
       }
     )
     |> Repo.all()
