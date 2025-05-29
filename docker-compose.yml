@@ -1,6 +1,6 @@
 services:
   coderacer_deploy:
-    image: coderacer-deploy:latest
+    image: coderacer_deploy:latest
     container_name: coderacer_deploy
     ports:
       - "4000:4000"
