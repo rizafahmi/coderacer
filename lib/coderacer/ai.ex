@@ -2,10 +2,23 @@ defmodule Coderacer.AI do
   @moduledoc """
   Module documentation for Coderacer.AI.
   """
+
   def generate(language, difficulty, lines \\ 10) do
+    # First try to get from cache
+    case Coderacer.CodeCache.get_code(language, difficulty, lines) do
+      {:ok, cached_code} ->
+        {:ok, cached_code}
+
+      {:error, :not_found} ->
+        # Fallback to live generation if not in cache
+        generate_live(language, difficulty, lines)
+    end
+  end
+
+  def generate_live(language, difficulty, lines \\ 10) do
     # Simulate code generation based on language and difficulty
     prompt = """
-    Generate exactly #{lines} lines of #{language} code with #{difficulty} typing difficulty.
+    Generate about #{lines} lines of #{language} code with #{difficulty} typing difficulty.
 
     Context: Create a practical code snippet that demonstrates real-world usage.
     Ensure variety in syntax patterns and avoid repetitive structures.
