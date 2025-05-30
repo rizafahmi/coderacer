@@ -14,6 +14,8 @@ defmodule Coderacer.Application do
        repos: Application.fetch_env!(:coderacer, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:coderacer, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Coderacer.PubSub},
+      # Code cache for periodic AI code generation
+      Coderacer.CodeCache,
       # Start a worker by calling: Coderacer.Worker.start_link(arg)
       # {Coderacer.Worker, arg},
       # Start to serve requests, typically the last entry
