@@ -20,7 +20,8 @@ defmodule Coderacer.MixProject do
           CoderacerWeb.ErrorJSON,
           CoderacerWeb.Telemetry,
           Coderacer.Repo,
-          Coderacer.Mailer
+          Coderacer.Mailer,
+          Coderacer.Release
         ]
       ],
       dialyzer: [
