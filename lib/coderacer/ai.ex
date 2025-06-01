@@ -18,7 +18,7 @@ defmodule Coderacer.AI do
   def generate_live(language, difficulty, lines \\ 10) do
     # Simulate code generation based on language and difficulty
     prompt = """
-    Generate about #{lines} lines of #{language} code with #{difficulty} typing difficulty.
+    Generate at least #{lines} lines of #{language} code with #{difficulty} typing difficulty.
 
     Context: Create a practical code snippet that demonstrates real-world usage.
     Ensure variety in syntax patterns and avoid repetitive structures.
