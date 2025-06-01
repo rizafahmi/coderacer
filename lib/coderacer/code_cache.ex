@@ -42,7 +42,7 @@ defmodule Coderacer.CodeCache do
   require Logger
 
   @table_name :code_cache
-  @default_interval :timer.hours(6)
+  @default_interval :timer.hours(12)
   @retry_interval :timer.minutes(30)
   @default_lines [10, 15, 20]
   # New entries added per generation
