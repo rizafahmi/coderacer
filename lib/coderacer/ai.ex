@@ -17,30 +17,6 @@ defmodule Coderacer.AI do
 
   def generate_live(language, difficulty, lines \\ 10) do
     # Simulate code generation based on language and difficulty
-    prompt = """
-    Generate at least #{lines} lines of #{language} code with #{difficulty} typing difficulty.
-
-    Context: Create a practical code snippet that demonstrates real-world usage.
-    Ensure variety in syntax patterns and avoid repetitive structures.
-    """
-
-    case send(prompt) do
-      %Req.Response{status: 200, body: body} ->
-        result =
-          parse_body(body)
-          |> parse_json()
-
-        {:ok, result}
-
-      %Req.Response{status: status, body: body} ->
-        {:error, status, parse_error(body)}
-    end
-  end
-
-  def send(prompt, lines \\ 10) do
-    url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=#{System.get_env("GEMINI_API_KEY")}"
-
     system =
       """
       You are a code generation assistant that creates diverse, real-world programming exercises.
@@ -62,6 +38,93 @@ defmodule Coderacer.AI do
       Return only the raw code without markdown, comments explaining the exercise, or extra text.
       The code should be immediately usable and represent a complete, meaningful snippet.
       """
+
+    prompt = """
+    Generate at least #{lines} lines of #{language} code with #{difficulty} typing difficulty.
+
+    Context: Create a practical code snippet that demonstrates real-world usage.
+    Ensure variety in syntax patterns and avoid repetitive structures.
+    """
+
+    case send_to_gemini(system, prompt) do
+      %Req.Response{status: 200, body: body} ->
+        result =
+          parse_body(body)
+          |> parse_json()
+
+        {:ok, result}
+
+      %Req.Response{status: status, body: body} ->
+        {:error, status, parse_error(body)}
+    end
+  end
+
+  def analyze(session) do
+    system =
+      """
+      You are a specialized AI assistant that evaluates developer typing proficiency for programming languages.
+      """
+
+    prompt =
+      """
+      Analyze typing test results and determine programming language suitability based on typing performance.
+      Input Data:
+
+      Typing test results:
+      Difficulty: #{session.difficulty}
+      Code Length: #{String.length(session.code_challenge)} chars
+      #{round(String.length(session.code_challenge) / session.time_completion * 60)} Characters/Min
+      #{round(session.streak / (session.streak + session.wrong) * 100)}% Accuracy
+      #{session.time_completion}s Time Taken
+      #{session.wrong} Wrong
+
+      Target programming language: #{session.language}
+
+
+      Context: Typing proficiency directly impacts developer productivity, coding speed, and idea implementation. Different programming languages have varying typing demands - some require extensive special character usage, others have verbose syntax, while some leverage code completion tools more heavily.
+
+      Analysis Framework:
+
+      Evaluate Core Metrics: Examine characters per minute (CPM), accuracy, and other provided metrics
+      Language-Specific Assessment: Consider the chosen language's typing characteristics:
+
+      Special character frequency (brackets, operators, symbols)
+      Syntax verbosity vs. conciseness
+      Common development patterns and code completion reliance
+
+      Impact Assessment: Determine how typing skills affect efficiency in the specific language
+
+      Output Requirements:
+      Analysis:
+
+      [Bullet point analysis of typing strengths and weaknesses]
+      [Language-specific typing requirements evaluation]
+      [Performance impact assessment for chosen programming language]
+
+      Call to Action:
+      [Provide encouraging feedback with specific improvement recommendations]
+      Verdict:
+      [Select one: "Highly Suitable" | "Suitable" | "Marginally Suitable" | "Not Suitable"]
+      [Include brief justification]
+      Important: Base your assessment exclusively on the typing test data and programming language characteristics. Do not infer other programming skills or experience levels.
+      """
+
+    case send_to_gemini(system, prompt) do
+      %Req.Response{status: 200, body: body} ->
+        result =
+          parse_body(body)
+          |> parse_json()
+
+        result
+
+      %Req.Response{status: status, body: body} ->
+        {:error, status, parse_error(body)}
+    end
+  end
+
+  def send_to_gemini(system, prompt, lines \\ 10) do
+    url =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=#{System.get_env("GEMINI_API_KEY")}"
 
     http_client = Application.get_env(:coderacer, :http_client, Req)
 
