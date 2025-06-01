@@ -124,14 +124,14 @@ defmodule Coderacer.AI do
 
   def send_to_gemini(system, prompt, lines \\ 10) do
     url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=#{System.get_env("GEMINI_API_KEY")}"
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=#{System.get_env("GEMINI_API_KEY")}"
 
     http_client = Application.get_env(:coderacer, :http_client, Req)
 
     http_client.post!(url,
       json: %{
         contents: [
-          %{role: "assistant", parts: [%{text: system}]},
+          %{role: "model", parts: [%{text: system}]},
           %{role: "user", parts: [%{text: prompt}]}
         ],
         generationConfig: %{
