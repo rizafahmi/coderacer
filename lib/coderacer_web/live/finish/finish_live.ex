@@ -25,6 +25,8 @@ defmodule CoderacerWeb.FinishLive do
         # Check if already submitted to leaderboard
         already_submitted = Leaderboards.entry_exists_for_session?(session.id)
 
+        og_image_url = url(socket, ~p"/images/og-image.png")
+
         socket =
           socket
           |> assign(:session, session)
@@ -33,6 +35,7 @@ defmodule CoderacerWeb.FinishLive do
           |> assign(:already_submitted, already_submitted)
           |> assign(:player_name, "")
           |> assign(:submission_status, nil)
+          |> assign(:og_image_url, og_image_url)
 
         {:ok, socket}
     end

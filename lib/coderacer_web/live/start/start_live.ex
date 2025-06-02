@@ -40,10 +40,13 @@ defmodule CoderacerWeb.StartLive do
   ]
 
   def mount(_params, _session, socket) do
+    og_image_url = url(socket, ~p"/images/og-image.png")
+
     socket =
       socket
       |> assign(:languages, @languages)
       |> assign(:difficulties, @difficulties)
+      |> assign(:og_image_url, og_image_url)
 
     {:ok, socket}
   end

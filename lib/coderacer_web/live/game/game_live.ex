@@ -10,6 +10,7 @@ defmodule CoderacerWeb.GameLive do
 
     session = Game.get_session!(id)
     snippet = String.trim(session.code_challenge)
+    og_image_url = url(socket, ~p"/images/og-image.png")
 
     socket =
       socket
@@ -21,6 +22,7 @@ defmodule CoderacerWeb.GameLive do
       |> assign(:current_char, "")
       |> assign(:score, initial_state)
       |> assign(:elapsed_time, %{elapsed_time: 0, running: false})
+      |> assign(:og_image_url, og_image_url)
 
     {:ok, socket}
   end
