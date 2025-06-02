@@ -35,6 +35,16 @@ defmodule CoderacerWeb.OgImageController do
     end
   end
 
+  def static(conn, _params) do
+    # Generate static OG image representing BalapKode's vibe
+    svg_content = ImageGenerator.generate_static_og_svg()
+
+    conn
+    |> put_resp_content_type("image/svg+xml")
+    |> put_resp_header("cache-control", "public, max-age=604800")
+    |> send_resp(200, svg_content)
+  end
+
   def leaderboard(conn, params) do
     view_type = params["view"] || "global"
     language = params["language"]

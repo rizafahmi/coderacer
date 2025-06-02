@@ -308,4 +308,74 @@ defmodule CoderacerWeb.OgImageControllerTest do
       assert svg_content =~ "Accuracy"
     end
   end
+
+  describe "static/2 (static OG images)" do
+    test "returns static SVG image", %{conn: conn} do
+      conn = get(conn, "/og-image/static")
+
+      assert response(conn, 200)
+      assert get_resp_header(conn, "content-type") == ["image/svg+xml; charset=utf-8"]
+      assert get_resp_header(conn, "cache-control") == ["public, max-age=604800"]
+
+      svg_content = response(conn, 200)
+      assert svg_content =~ "<svg width=\"1200\" height=\"630\""
+      assert svg_content =~ "BalapKode"
+    end
+
+    test "includes app features and branding in static SVG", %{conn: conn} do
+      conn = get(conn, "/og-image/static")
+      svg_content = response(conn, 200)
+
+      # Should include main features
+      assert svg_content =~ "Speed"
+      assert svg_content =~ "Accuracy"
+      assert svg_content =~ "Languages"
+      assert svg_content =~ "Compete"
+
+      # Should include call to action
+      assert svg_content =~ "Ready to race?"
+      assert svg_content =~ "Test your coding speed"
+
+      # Should include code examples
+      assert svg_content =~ "const"
+      assert svg_content =~ "def"
+      assert svg_content =~ "fn"
+      assert svg_content =~ "func"
+      assert svg_content =~ "interface"
+
+      # Should include branding
+      assert svg_content =~ "🏎️ BalapKode"
+    end
+
+    test "uses longer cache duration for static image", %{conn: conn} do
+      conn = get(conn, "/og-image/static")
+
+      # Static images should have longer cache (1 week = 604800 seconds)
+      assert get_resp_header(conn, "cache-control") == ["public, max-age=604800"]
+    end
+
+    test "includes proper SVG structure and styling", %{conn: conn} do
+      conn = get(conn, "/og-image/static")
+      svg_content = response(conn, 200)
+
+      assert svg_content =~ "xmlns=\"http://www.w3.org/2000/svg\""
+      assert svg_content =~ "<defs>"
+      assert svg_content =~ "<style>"
+      assert svg_content =~ "fill:"
+      assert svg_content =~ "font-family:"
+      assert svg_content =~ "</svg>"
+      assert svg_content =~ "radialGradient"
+      assert svg_content =~ "linearGradient"
+    end
+
+    test "includes animated elements", %{conn: conn} do
+      conn = get(conn, "/og-image/static")
+      svg_content = response(conn, 200)
+
+      # Should include animated typing cursor
+      assert svg_content =~ "<animate"
+      assert svg_content =~ "attributeName=\"opacity\""
+      assert svg_content =~ "values=\"0;1;0\""
+    end
+  end
 end

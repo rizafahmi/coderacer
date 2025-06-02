@@ -25,6 +25,7 @@ defmodule CoderacerWeb.Router do
     live "/leaderboard", LeaderboardLive
 
     # OG Image endpoints
+    get "/og-image/static", OgImageController, :static
     get "/og-image/leaderboard", OgImageController, :leaderboard
     get "/og-image/:id", OgImageController, :show
   end

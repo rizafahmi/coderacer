@@ -343,6 +343,180 @@ defmodule Coderacer.ImageGenerator do
     """
   end
 
+  @doc """
+  Generates a static Open Graph image representing BalapKode's vibe for general use.
+  """
+  def generate_static_og_svg do
+    """
+    <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          .bg { fill: #0f172a; }
+          .primary { fill: #9333ea; }
+          .secondary { fill: #22c55e; }
+          .accent { fill: #06b6d4; }
+          .yellow { fill: #eab308; }
+          .orange { fill: #f97316; }
+          .text-white { fill: #ffffff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .text-muted { fill: #94a3b8; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .text-brand { fill: #9333ea; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .text-green { fill: #22c55e; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .text-cyan { fill: #06b6d4; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .text-yellow { fill: #eab308; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .text-hero { font-size: 64px; font-weight: 700; }
+          .text-large { font-size: 38px; font-weight: 600; }
+          .text-medium { font-size: 28px; font-weight: 500; }
+          .text-small { font-size: 20px; font-weight: 500; }
+          .text-xs { font-size: 16px; font-weight: 400; }
+          .code { font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace; }
+        </style>
+
+        <!-- Enhanced background gradients -->
+        <radialGradient id="bgGradient" cx="0.5" cy="0.3" r="1.2">
+          <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1"/>
+          <stop offset="50%" style="stop-color:#0f172a;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#020617;stop-opacity:1"/>
+        </radialGradient>
+
+        <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1"/>
+          <stop offset="25%" style="stop-color:#a855f7;stop-opacity:1"/>
+          <stop offset="50%" style="stop-color:#22c55e;stop-opacity:1"/>
+          <stop offset="75%" style="stop-color:#06b6d4;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1"/>
+        </linearGradient>
+
+        <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#1e293b;stop-opacity:0.9"/>
+          <stop offset="100%" style="stop-color:#334155;stop-opacity:0.7"/>
+        </linearGradient>
+
+        <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#9333ea;stop-opacity:0.15"/>
+          <stop offset="25%" style="stop-color:#22c55e;stop-opacity:0.1"/>
+          <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:0.12"/>
+          <stop offset="75%" style="stop-color:#eab308;stop-opacity:0.08"/>
+          <stop offset="100%" style="stop-color:#9333ea;stop-opacity:0.15"/>
+        </linearGradient>
+
+        <!-- Enhanced glow effects -->
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+
+        <filter id="strongGlow">
+          <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <!-- Background -->
+      <rect width="1200" height="630" fill="url(#bgGradient)"/>
+      <rect width="1200" height="630" fill="url(#accentGradient)"/>
+
+      <!-- Header with enhanced gradient -->
+      <rect x="0" y="0" width="1200" height="160" fill="url(#headerGradient)" rx="0"/>
+      <rect x="0" y="150" width="1200" height="15" fill="url(#headerGradient)" opacity="0.3"/>
+
+      <!-- Logo and main title -->
+      <text x="80" y="110" class="text-white text-hero" filter="url(#strongGlow)">🏎️ BalapKode</text>
+
+      <!-- Feature highlights -->
+      <g transform="translate(80, 200)">
+        <!-- Speed feature -->
+        <rect x="0" y="0" width="280" height="120" rx="16" fill="url(#cardGradient)" stroke="#9333ea" stroke-width="2" opacity="0.9"/>
+        <text x="140" y="35" text-anchor="middle" class="text-brand text-large">⚡ Speed</text>
+        <text x="140" y="65" text-anchor="middle" class="text-white text-small">Test your typing</text>
+        <text x="140" y="90" text-anchor="middle" class="text-muted text-xs">Characters per minute</text>
+
+        <!-- Accuracy feature -->
+        <rect x="300" y="0" width="280" height="120" rx="16" fill="url(#cardGradient)" stroke="#22c55e" stroke-width="2" opacity="0.9"/>
+        <text x="440" y="35" text-anchor="middle" class="text-green text-large">🎯 Accuracy</text>
+        <text x="440" y="65" text-anchor="middle" class="text-white text-small">Precision matters</text>
+        <text x="440" y="90" text-anchor="middle" class="text-muted text-xs">Every character counts</text>
+
+        <!-- Languages feature -->
+        <rect x="600" y="0" width="280" height="120" rx="16" fill="url(#cardGradient)" stroke="#06b6d4" stroke-width="2" opacity="0.9"/>
+        <text x="740" y="35" text-anchor="middle" class="text-cyan text-large">🌐 Languages</text>
+        <text x="740" y="65" text-anchor="middle" class="text-white text-small">20+ Programming</text>
+        <text x="740" y="90" text-anchor="middle" class="text-muted text-xs">Real code snippets</text>
+
+        <!-- Competition feature -->
+        <rect x="900" y="0" width="220" height="120" rx="16" fill="url(#cardGradient)" stroke="#eab308" stroke-width="2" opacity="0.9"/>
+        <text x="1010" y="35" text-anchor="middle" class="text-yellow text-large">🏆 Compete</text>
+        <text x="1010" y="65" text-anchor="middle" class="text-white text-small">Global Ranks</text>
+        <text x="1010" y="90" text-anchor="middle" class="text-muted text-xs">Join leaderboard</text>
+      </g>
+
+      <!-- Code showcase with multiple languages -->
+      <g transform="translate(80, 360)">
+        <rect x="0" y="0" width="1040" height="100" rx="12" fill="url(#cardGradient)" stroke="#475569" stroke-width="1" opacity="0.8"/>
+
+        <!-- JavaScript -->
+        <text x="30" y="30" class="text-yellow text-small code">const</text>
+        <text x="100" y="30" class="text-white text-small code">challenge</text>
+        <text x="220" y="30" class="text-white text-small code">=</text>
+        <text x="250" y="30" class="text-green text-small code">'epic'</text>
+
+        <!-- Python -->
+        <text x="350" y="30" class="text-cyan text-small code">def</text>
+        <text x="400" y="30" class="text-white text-small code">race():</text>
+
+        <!-- Elixir -->
+        <text x="520" y="30" class="text-brand text-small code">|></text>
+        <text x="560" y="30" class="text-white text-small code">Enum.map</text>
+
+        <!-- Rust -->
+        <text x="30" y="60" class="text-orange text-small code">fn</text>
+        <text x="70" y="60" class="text-white text-small code">main()</text>
+        <text x="150" y="60" class="text-white text-small code">{</text>
+
+        <!-- Go -->
+        <text x="200" y="60" class="text-cyan text-small code">func</text>
+        <text x="260" y="60" class="text-white text-small code">speed()</text>
+
+        <!-- TypeScript -->
+        <text x="370" y="60" class="text-brand text-small code">interface</text>
+        <text x="480" y="60" class="text-white text-small code">Racer</text>
+
+        <!-- HTML/JSX -->
+        <text x="570" y="60" class="text-green text-small code">&lt;fast</text>
+        <text x="640" y="60" class="text-white text-small code">/&gt;</text>
+
+        <!-- Decorative typing cursor -->
+        <rect x="950" y="45" width="3" height="20" fill="#22c55e" opacity="0.8">
+          <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+
+      <!-- Call to action footer -->
+      <rect x="0" y="500" width="1200" height="130" fill="url(#headerGradient)" opacity="0.95"/>
+      <rect x="0" y="490" width="1200" height="15" fill="url(#headerGradient)" opacity="0.4"/>
+
+      <text x="80" y="540" class="text-white text-large" filter="url(#glow)">🚀 Ready to race? Test your coding speed!</text>
+      <text x="80" y="575" class="text-white text-medium opacity-90">#{Application.get_env(:coderacer, :base_url, "balapkode.com")}</text>
+
+      <!-- Enhanced decorative elements -->
+      <circle cx="1000" cy="540" r="30" fill="#22c55e" opacity="0.2"/>
+      <circle cx="1060" cy="570" r="20" fill="#06b6d4" opacity="0.25"/>
+      <circle cx="1120" cy="530" r="15" fill="#9333ea" opacity="0.3"/>
+      <circle cx="1030" cy="500" r="10" fill="#eab308" opacity="0.2"/>
+
+      <!-- Floating code symbols -->
+      <text x="950" y="520" class="text-brand text-medium code opacity-20">{}</text>
+      <text x="1080" y="500" class="text-cyan text-medium code opacity-25">&lt;/&gt;</text>
+      <text x="1140" y="580" class="text-green text-medium code opacity-15">()</text>
+    </svg>
+    """
+  end
+
   # Helper functions for leaderboard SVG generation
 
   defp generate_leaderboard_title(filter_info) do

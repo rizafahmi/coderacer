@@ -356,4 +356,119 @@ defmodule Coderacer.ImageGeneratorTest do
       assert third_pos < fourth_pos
     end
   end
+
+  describe "generate_static_og_svg/0" do
+    test "generates static SVG with correct structure" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      assert svg =~ "<svg width=\"1200\" height=\"630\""
+      assert svg =~ "🏎️ BalapKode"
+      assert svg =~ "Ready to race?"
+      assert svg =~ "Test your coding speed"
+    end
+
+    test "includes app features" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      assert svg =~ "⚡ Speed"
+      assert svg =~ "🎯 Accuracy"
+      assert svg =~ "🌐 Languages"
+      assert svg =~ "🏆 Compete"
+      assert svg =~ "20+ Programming"
+      assert svg =~ "Global Ranks"
+    end
+
+    test "includes diverse programming language examples" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      # JavaScript
+      assert svg =~ "const"
+      assert svg =~ "challenge"
+
+      # Python
+      assert svg =~ "def"
+      assert svg =~ "race():"
+
+      # Elixir
+      assert svg =~ "|>"
+      assert svg =~ "Enum.map"
+
+      # Rust
+      assert svg =~ "fn"
+      assert svg =~ "main()"
+
+      # Go
+      assert svg =~ "func"
+      assert svg =~ "speed()"
+
+      # TypeScript
+      assert svg =~ "interface"
+      assert svg =~ "Racer"
+
+      # HTML/JSX
+      assert svg =~ "&lt;fast"
+    end
+
+    test "includes proper styling and gradients" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      assert svg =~ "<defs>"
+      assert svg =~ "<style>"
+      assert svg =~ "radialGradient"
+      assert svg =~ "linearGradient"
+      assert svg =~ "fill:"
+      assert svg =~ "font-family:"
+      assert svg =~ "font-weight:"
+    end
+
+    test "includes animated elements" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      # Should include animated typing cursor
+      assert svg =~ "<animate"
+      assert svg =~ "attributeName=\"opacity\""
+      assert svg =~ "values=\"0;1;0\""
+      assert svg =~ "dur=\"1s\""
+      assert svg =~ "repeatCount=\"indefinite\""
+    end
+
+    test "includes call-to-action and branding" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      assert svg =~ "Ready to race? Test your coding speed!"
+      assert svg =~ "balapkode.com"
+    end
+
+    test "includes decorative elements" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      # Should include floating circles
+      assert svg =~ "<circle"
+      assert svg =~ "fill=\"#22c55e\""
+      assert svg =~ "fill=\"#06b6d4\""
+      assert svg =~ "fill=\"#9333ea\""
+      assert svg =~ "fill=\"#eab308\""
+
+      # Should include floating code symbols
+      assert svg =~ "{}"
+      assert svg =~ "&lt;/&gt;"
+      assert svg =~ "()"
+    end
+
+    test "uses enhanced color palette" do
+      svg = ImageGenerator.generate_static_og_svg()
+
+      # Should include expanded color definitions
+      # purple
+      assert svg =~ "fill: #9333ea"
+      # green
+      assert svg =~ "fill: #22c55e"
+      # cyan
+      assert svg =~ "fill: #06b6d4"
+      # yellow
+      assert svg =~ "fill: #eab308"
+      # orange
+      assert svg =~ "fill: #f97316"
+    end
+  end
 end
