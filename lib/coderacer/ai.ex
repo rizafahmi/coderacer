@@ -122,7 +122,7 @@ defmodule Coderacer.AI do
     end
   end
 
-  def send_to_gemini(system, prompt, lines \\ 10) do
+  def send_to_gemini(system, prompt, _lines \\ 10) do
     url =
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=#{System.get_env("GEMINI_API_KEY")}"
 
