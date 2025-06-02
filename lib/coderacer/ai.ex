@@ -17,30 +17,6 @@ defmodule Coderacer.AI do
 
   def generate_live(language, difficulty, lines \\ 10) do
     # Simulate code generation based on language and difficulty
-    prompt = """
-    Generate at least #{lines} lines of #{language} code with #{difficulty} typing difficulty.
-
-    Context: Create a practical code snippet that demonstrates real-world usage.
-    Ensure variety in syntax patterns and avoid repetitive structures.
-    """
-
-    case send(prompt) do
-      %Req.Response{status: 200, body: body} ->
-        result =
-          parse_body(body)
-          |> parse_json()
-
-        {:ok, result}
-
-      %Req.Response{status: status, body: body} ->
-        {:error, status, parse_error(body)}
-    end
-  end
-
-  def send(prompt, lines \\ 10) do
-    url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=#{System.get_env("GEMINI_API_KEY")}"
-
     system =
       """
       You are a code generation assistant that creates diverse, real-world programming exercises.
@@ -63,12 +39,155 @@ defmodule Coderacer.AI do
       The code should be immediately usable and represent a complete, meaningful snippet.
       """
 
+    prompt = """
+    Generate at least #{lines} lines of #{language} code with #{difficulty} typing difficulty.
+
+    Context: Create a practical code snippet that demonstrates real-world usage.
+    Ensure variety in syntax patterns and avoid repetitive structures.
+    """
+
+    case send_to_gemini(system, prompt) do
+      %Req.Response{status: 200, body: body} ->
+        result =
+          parse_body(body)
+          |> parse_json()
+
+        {:ok, result}
+
+      %Req.Response{status: status, body: body} ->
+        {:error, status, parse_error(body)}
+    end
+  end
+
+  def analyze(session) do
+    system =
+      """
+      You are a specialized AI assistant that evaluates developer typing proficiency for programming languages.
+      """
+
+    prompt =
+      """
+      Analyze typing test results and determine programming language suitability based on typing performance.
+      Input Data:
+
+      Typing test results:
+      Difficulty: #{session.difficulty}
+      Code Length: #{String.length(session.code_challenge)} chars
+      #{round(String.length(session.code_challenge) / session.time_completion * 60)} Characters/Min
+      #{round(session.streak / (session.streak + session.wrong) * 100)}% Accuracy
+      #{session.time_completion}s Time Taken
+      #{session.wrong} Wrong
+
+      Target programming language: #{session.language}
+
+
+      Context: Typing proficiency directly impacts developer productivity, coding speed, and idea implementation. Different programming languages have varying typing demands - some require extensive special character usage, others have verbose syntax, while some leverage code completion tools more heavily.
+
+      Analysis Framework:
+
+      Evaluate Core Metrics: Examine characters per minute (CPM), accuracy, and other provided metrics
+      Language-Specific Assessment: Consider the chosen language's typing characteristics:
+
+      Special character frequency (brackets, operators, symbols)
+      Syntax verbosity vs. conciseness
+      Common development patterns and code completion reliance
+
+      Impact Assessment: Determine how typing skills affect efficiency in the specific language
+
+      Output Requirements:
+      Analysis:
+
+      [Bullet point analysis of typing strengths and weaknesses]
+      [Language-specific typing requirements evaluation]
+      [Performance impact assessment for chosen programming language]
+
+      Call to Action:
+      [Provide encouraging feedback with specific improvement recommendations]
+      Verdict:
+      [Select one: "Highly Suitable" | "Suitable" | "Marginally Suitable" | "Not Suitable"]
+      [Include brief justification]
+      Important: Base your assessment exclusively on the typing test data and programming language characteristics. Do not infer other programming skills or experience levels.
+      """
+
+    case send_to_gemini(system, prompt, "generateContent") do
+      %Req.Response{status: 200, body: body} ->
+        result =
+          parse_body(body)
+          |> parse_json()
+
+        result
+
+      %Req.Response{status: status, body: body} ->
+        {:error, status, parse_error(body)}
+    end
+  end
+
+  def analyze_stream(session, callback_fn) do
+    require Logger
+    Logger.info("Starting AI analysis stream for session #{session.id}")
+
+    system =
+      """
+      You are a specialized AI assistant that evaluates developer typing proficiency for programming languages.
+      """
+
+    prompt =
+      """
+      Analyze typing test results and determine programming language suitability based on typing performance.
+      Input Data:
+
+      Typing test results:
+      Difficulty: #{session.difficulty}
+      Code Length: #{String.length(session.code_challenge)} chars
+      #{round(String.length(session.code_challenge) / session.time_completion * 60)} Characters/Min
+      #{round(session.streak / (session.streak + session.wrong) * 100)}% Accuracy
+      #{session.time_completion}s Time Taken
+      #{session.wrong} Wrong
+
+      Target programming language: #{session.language}
+
+
+      Context: Typing proficiency directly impacts developer productivity, coding speed, and idea implementation. Different programming languages have varying typing demands - some require extensive special character usage, others have verbose syntax, while some leverage code completion tools more heavily.
+
+      Analysis Framework:
+
+      Evaluate Core Metrics: Examine characters per minute (CPM), accuracy, and other provided metrics
+      Language-Specific Assessment: Consider the chosen language's typing characteristics:
+
+      Special character frequency (brackets, operators, symbols)
+      Syntax verbosity vs. conciseness
+      Common development patterns and code completion reliance
+
+      Impact Assessment: Determine how typing skills affect efficiency in the specific language
+
+      Output Requirements:
+      Analysis:
+
+      [Bullet point analysis of typing strengths and weaknesses]
+      [Language-specific typing requirements evaluation]
+      [Performance impact assessment for chosen programming language]
+
+      Call to Action:
+      [Provide encouraging feedback with specific improvement recommendations]
+      Verdict:
+      [Select one: "Highly Suitable" | "Suitable" | "Marginally Suitable" | "Not Suitable"]
+      [Include brief justification]
+      Important: Base your assessment exclusively on the typing test data and programming language characteristics. Do not infer other programming skills or experience levels.
+      """
+
+    send_to_gemini_stream(system, prompt, callback_fn)
+  end
+
+  def send_to_gemini(system, prompt, mode \\ "generateContent") do
+    url =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:#{mode}?key=#{System.get_env("GEMINI_API_KEY")}"
+
     http_client = Application.get_env(:coderacer, :http_client, Req)
 
     http_client.post!(url,
       json: %{
         contents: [
-          %{role: "assistant", parts: [%{text: system}]},
+          %{role: "model", parts: [%{text: system}]},
           %{role: "user", parts: [%{text: prompt}]}
         ],
         generationConfig: %{
@@ -89,6 +208,86 @@ defmodule Coderacer.AI do
         }
       }
     )
+  end
+
+  def send_to_gemini_stream(system, prompt, callback_fn) do
+    require Logger
+    Logger.info("Sending streaming request to Gemini API")
+
+    url =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=#{System.get_env("GEMINI_API_KEY")}"
+
+    http_client = Application.get_env(:coderacer, :http_client, Req)
+
+    # Use streaming request
+    result =
+      http_client.post!(url,
+        json: %{
+          contents: [
+            %{role: "model", parts: [%{text: system}]},
+            %{role: "user", parts: [%{text: prompt}]}
+          ],
+          generationConfig: %{
+            temperature: 0.7,
+            topP: 0.8,
+            max_output_tokens: 65_536
+          }
+        },
+        into: fn
+          {:status, status} when status == 200 ->
+            Logger.info("Streaming started successfully with status 200")
+            {:cont, status}
+
+          {:status, status} ->
+            Logger.error("Streaming failed with status #{status}")
+            {:halt, {:error, status}}
+
+          {:headers, _headers} ->
+            {:cont, nil}
+
+          {:data, chunk} ->
+            Logger.debug("Received chunk: #{inspect(String.slice(chunk, 0, 100))}...")
+            # Parse SSE chunks
+            chunk
+            |> String.split("\n")
+            |> Enum.filter(&String.starts_with?(&1, "data: "))
+            |> Enum.each(fn line ->
+              content = String.trim_leading(line, "data: ")
+
+              unless content == "[DONE]" or content == "" do
+                case Jason.decode(content) do
+                  {:ok, json} ->
+                    case extract_text_from_chunk(json) do
+                      nil ->
+                        Logger.debug("No text found in chunk")
+
+                      text ->
+                        Logger.debug(
+                          "Extracted text chunk: #{inspect(String.slice(text, 0, 50))}..."
+                        )
+
+                        callback_fn.(text)
+                    end
+
+                  {:error, error} ->
+                    Logger.warning("Failed to decode JSON chunk: #{inspect(error)}")
+                end
+              end
+            end)
+
+            {:cont, nil}
+        end
+      )
+
+    Logger.info("Streaming completed with result: #{inspect(result)}")
+    result
+  end
+
+  defp extract_text_from_chunk(json) do
+    case get_in(json, ["candidates", Access.at(0), "content", "parts", Access.at(0), "text"]) do
+      nil -> nil
+      text when is_binary(text) -> text
+    end
   end
 
   def parse_body(body) do

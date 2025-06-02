@@ -51,6 +51,14 @@ defmodule Coderacer.CodeCache do
   @max_entries_per_combination 12
   # Note: Maximum generations = @max_entries_per_combination / @entries_per_combination = 4
 
+  # Delay configurations (in milliseconds)
+  # 10 seconds between individual requests
+  @request_delay 10_000
+  # 10 seconds between batches
+  @batch_delay 10_000
+  # 10 seconds between retries
+  @retry_delay 10_000
+
   # Languages from StartLive
   @languages [
     "c",
@@ -389,14 +397,14 @@ defmodule Coderacer.CodeCache do
       Enum.each(batch, fn combination ->
         generate_and_cache(combination)
         # Small delay between requests
-        Process.sleep(1000)
+        Process.sleep(@request_delay)
       end)
 
       Logger.info("Completed batch #{batch_index + 1}/#{div(total, 5) + 1}")
 
       # Longer delay between batches
       if batch_index < div(total, 5) do
-        Process.sleep(5000)
+        Process.sleep(@batch_delay)
       end
     end)
 
@@ -406,11 +414,14 @@ defmodule Coderacer.CodeCache do
   defp retry_combinations(combinations) do
     Enum.each(combinations, fn combination ->
       generate_and_cache(combination)
-      Process.sleep(2000)
+      Process.sleep(@retry_delay)
     end)
   end
 
   defp generate_and_cache({language, difficulty, lines, entry_num}) do
+    # Optional additional delay for rate limiting (uncomment if needed)
+    # Process.sleep(@api_rate_limit_delay)
+
     case Coderacer.AI.generate_live(language, difficulty, lines) do
       {:ok, code} ->
         timestamp = DateTime.utc_now()

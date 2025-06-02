@@ -2,6 +2,8 @@ defmodule CoderacerWeb.StartLiveTest do
   use CoderacerWeb.ConnCase
   import Phoenix.LiveViewTest
 
+  @moduletag skip_ai_mock: true
+
   describe "StartLive" do
     test "renders start page with form", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/")

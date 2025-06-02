@@ -21,7 +21,8 @@ defmodule Coderacer.MixProject do
           CoderacerWeb.Telemetry,
           Coderacer.Repo,
           Coderacer.Mailer,
-          Coderacer.Release
+          Coderacer.Release,
+          Coderacer.Application
         ]
       ],
       dialyzer: [
@@ -78,7 +79,7 @@ defmodule Coderacer.MixProject do
       {:bandit, "~> 1.5"},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:credo, "~> 1.7", only: [:dev], runtime: false},
-      {:tidewave, "~> 0.1.7", only: :dev}
+      {:tidewave, "~> 0.1.7", only: [:dev, :test]}
     ]
   end
 
