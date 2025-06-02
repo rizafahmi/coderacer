@@ -21,7 +21,8 @@ defmodule Coderacer.MixProject do
           CoderacerWeb.Telemetry,
           Coderacer.Repo,
           Coderacer.Mailer,
-          Coderacer.Release
+          Coderacer.Release,
+          Coderacer.Application
         ]
       ],
       dialyzer: [
