@@ -9,7 +9,7 @@
         <h1 class="text-5xl font-bold text-gradient mb-4">Challenge Complete!</h1>
         <p class="text-xl text-muted">Well done on completing the coding challenge</p>
       </div>
-
+      
 <!-- Results Grid -->
       <.live_component
         module={CoderacerWeb.Components.PerformanceStats}
@@ -18,7 +18,7 @@
         accuracy={@accuracy}
         session={@session}
       />
-
+      
 <!-- Performance Analysis -->
       <.live_component
         module={CoderacerWeb.Components.PerformanceAnalysis}
@@ -29,7 +29,7 @@
       />
 
       <pre>{@analysis}</pre>
-
+      
 <!-- Leaderboard Submission -->
       <%= if not @already_submitted do %>
         <div class="card-modern mb-8 p-8">
@@ -83,7 +83,7 @@
           </a>
         </div>
       <% end %>
-
+      
 <!-- Action Buttons -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/" class="btn-brand px-8 py-4 text-center">
@@ -111,7 +111,7 @@
           View Leaderboard
         </a>
       </div>
-
+      
 <!-- Motivational Quote -->
       <div class="mt-12 text-center">
         <div class="glass-effect rounded-xl p-8 max-w-2xl mx-auto">
