@@ -1,5 +1,6 @@
 defmodule CoderacerWeb.FinishLive do
   use CoderacerWeb, :live_view
+  require Logger
 
   alias Coderacer.Game
   alias Coderacer.Leaderboards
@@ -25,7 +26,8 @@ defmodule CoderacerWeb.FinishLive do
         # Check if already submitted to leaderboard
         already_submitted = Leaderboards.entry_exists_for_session?(session.id)
 
-        analysis = Coderacer.AI.analyze(session)
+        # Start streaming analysis
+        start_analysis_stream(session, self())
 
         socket =
           socket
@@ -35,7 +37,9 @@ defmodule CoderacerWeb.FinishLive do
           |> assign(:already_submitted, already_submitted)
           |> assign(:player_name, "")
           |> assign(:submission_status, nil)
-          |> assign(:analysis, analysis)
+          |> assign(:analysis, "")
+          |> assign(:analysis_streaming, true)
+          |> assign(:analysis_complete, false)
 
         {:ok, socket}
     end
@@ -64,5 +68,65 @@ defmodule CoderacerWeb.FinishLive do
           {:noreply, put_flash(socket, :error, "🔥Failed to submit score. Please try again.")}
       end
     end
+  end
+
+  def handle_info({:analysis_chunk, chunk}, socket) do
+    Logger.debug("Received analysis chunk in LiveView: #{inspect(String.slice(chunk, 0, 50))}...")
+    current_analysis = socket.assigns.analysis
+    updated_analysis = current_analysis <> chunk
+
+    socket =
+      socket
+      |> assign(:analysis, updated_analysis)
+
+    {:noreply, socket}
+  end
+
+  def handle_info(:analysis_complete, socket) do
+    Logger.info("Analysis streaming completed successfully")
+
+    socket =
+      socket
+      |> assign(:analysis_streaming, false)
+      |> assign(:analysis_complete, true)
+
+    {:noreply, socket}
+  end
+
+  def handle_info(:analysis_error, socket) do
+    Logger.error("Analysis streaming failed with error")
+
+    socket =
+      socket
+      |> assign(:analysis_streaming, false)
+      |> assign(:analysis_complete, true)
+      |> assign(:analysis, "Analysis temporarily unavailable. Please try refreshing the page.")
+
+    {:noreply, socket}
+  end
+
+  defp start_analysis_stream(session, pid) do
+    Logger.info("Starting analysis stream task for session #{session.id}")
+
+    Task.start(fn ->
+      try do
+        Logger.info("Calling AI.analyze_stream for session #{session.id}")
+
+        Coderacer.AI.analyze_stream(session, fn chunk ->
+          Logger.debug(
+            "Sending chunk to LiveView process: #{inspect(String.slice(chunk, 0, 30))}..."
+          )
+
+          send(pid, {:analysis_chunk, chunk})
+        end)
+
+        Logger.info("Analysis stream completed, sending completion message")
+        send(pid, :analysis_complete)
+      rescue
+        error ->
+          Logger.error("Analysis stream failed with error: #{inspect(error)}")
+          send(pid, :analysis_error)
+      end
+    end)
   end
 end
