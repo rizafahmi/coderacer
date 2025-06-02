@@ -1,13 +1,44 @@
 defmodule Coderacer.AITest do
   use ExUnit.Case
 
+  @moduletag skip_ai_mock: true
+
   # Mock module to intercept HTTP requests
   defmodule MockReq do
-    def post!(url, _opts) do
+    def post!(url, opts) do
       # Verify the request is going to the correct endpoint
       assert String.contains?(url, "generativelanguage.googleapis.com")
 
-      # Return a mock response with a known code snippet
+      # Check if this is an analyze request by looking at the prompt
+      contents = get_in(opts, [:json, :contents]) || []
+      user_content = Enum.at(contents, 1) || %{}
+      parts = Map.get(user_content, :parts, [])
+      first_part = Enum.at(parts, 0) || %{}
+      prompt = Map.get(first_part, :text, "")
+
+      response_text =
+        if String.contains?(prompt, "Analyze") do
+          Jason.encode!(%{
+            "response" => """
+            Analysis:
+            • Good typing speed and accuracy for a medium difficulty challenge
+            • JavaScript requires moderate special character usage
+            • Performance indicates solid foundation for this language
+
+            Call to Action:
+            Keep practicing to improve speed while maintaining accuracy!
+
+            Verdict:
+            Suitable - Your typing skills are well-matched for JavaScript development
+            """
+          })
+        else
+          Jason.encode!(%{
+            "response" => "console.log('Hello, World!');\nconst x = 42;"
+          })
+        end
+
+      # Return a mock response
       %Req.Response{
         status: 200,
         body: %{
@@ -16,10 +47,7 @@ defmodule Coderacer.AITest do
               "content" => %{
                 "parts" => [
                   %{
-                    "text" =>
-                      Jason.encode!(%{
-                        "response" => "console.log('Hello, World!');\nconst x = 42;"
-                      })
+                    "text" => response_text
                   }
                 ]
               }
@@ -183,5 +211,24 @@ defmodule Coderacer.AITest do
       assert is_binary(code)
       assert String.length(code) > 0
     end
+  end
+
+  test "analyze/1 returns analysis for session" do
+    # Create a mock session
+    session = %{
+      difficulty: "medium",
+      code_challenge: "console.log('test');",
+      time_completion: 30,
+      streak: 15,
+      wrong: 2,
+      language: "javascript"
+    }
+
+    result = Coderacer.AI.analyze(session)
+
+    assert is_binary(result)
+    assert String.contains?(result, "Analysis:")
+    assert String.contains?(result, "Call to Action:")
+    assert String.contains?(result, "Verdict:")
   end
 end
