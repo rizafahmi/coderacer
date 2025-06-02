@@ -7,7 +7,7 @@
     <.live_title default="BalapKode" suffix=" · Modern Code Typing">
       {assigns[:page_title]}
     </.live_title>
-
+    
 <!-- Dynamic Meta Tags for Social Sharing -->
     <%= if assigns[:share_description] do %>
       <!-- Open Graph / Facebook -->
@@ -19,7 +19,7 @@
       <meta property="og:image" content={assigns[:og_image_url]} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-
+      
 <!-- Twitter -->
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={assigns[:share_url]} />
@@ -52,10 +52,10 @@
       />
       <meta property="twitter:image" content={assigns[:og_image_url]} />
     <% end %>
-
+    
 <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href={~p"/favicon.ico"} />
-
+    
 <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -89,7 +89,7 @@
       <main class="flex-1 flex items-center justify-center p-4">
         {@inner_content}
       </main>
-
+      
 <!-- Footer -->
       <footer class="text-center py-6 text-muted border-t border-gray-800">
         <p class="text-sm">
