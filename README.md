@@ -71,6 +71,10 @@ A **CodeRacer** typing speed game designed for developers to practice typing cod
 5. **Visit the application**
    Open [`http://localhost:4000`](http://localhost:4000) in your browser
 
+### Deployment
+
+This project using container technology (Docker/Podman) and deploy it manually to Google Compute Engine. Google Cloud credits are provided for this project.
+
 ## 📖 Usage
 
 ### Starting a Game
