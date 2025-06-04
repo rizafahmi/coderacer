@@ -24,15 +24,16 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-// Hook to prevent tab default behavior
+// Hook to convert tab to two spaces
 const Hooks = {
   PreventTab: {
     mounted() {
       this.el.addEventListener("keydown", (e) => {
         if (e.key === "Tab") {
-          e.preventDefault()
+          e.preventDefault();
+          this.pushEventTo(this.el, "tab_pressed", {});
         }
-      })
+      });
     }
   }
 }

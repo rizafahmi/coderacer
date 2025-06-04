@@ -9,7 +9,8 @@ defmodule CoderacerWeb.GameLive do
     initial_state = %{streak: 0, wrong: 0}
 
     session = Game.get_session!(id)
-    snippet = String.trim(session.code_challenge)
+    # Convert tabs to two spaces for easier typing
+    snippet = String.trim(session.code_challenge) |> String.replace("\t", "  ")
     og_image_url = url(socket, ~p"/images/og-image.png")
 
     socket =
@@ -59,6 +60,58 @@ defmodule CoderacerWeb.GameLive do
   end
 
   @impl true
+  def handle_event("tab_pressed", _payload, socket) do
+    remaining_code_graphemes = String.graphemes(socket.assigns.remaining_code)
+    original_code = socket.assigns.original_code
+    current_position = socket.assigns.current_position
+    session_id = socket.assigns.session.id
+
+    case remaining_code_graphemes do
+      [" ", " " | t_rest] ->
+        # Target has two spaces, Tab press is correct
+        new_position = current_position + 2
+        new_remaining_code = Enum.join(t_rest)
+
+        new_score = %{
+          streak: socket.assigns.score.streak + 2,
+          wrong: socket.assigns.score.wrong
+        }
+
+        socket_after_match =
+          socket
+          |> assign(:current_position, new_position)
+          |> assign(:remaining_code, new_remaining_code)
+          |> assign(:display_code, format_code_for_typing(original_code, new_position))
+          |> assign(:score, new_score)
+
+        if Enum.empty?(t_rest) do
+          # Game finished after matching the tab
+          Logger.info("Finish after tab")
+
+          Game.update_session(socket.assigns.session, %{
+            streak: new_score.streak,
+            wrong: new_score.wrong,
+            time_completion: socket.assigns.elapsed_time.elapsed_time
+          })
+
+          {:noreply,
+           socket_after_match
+           |> assign(:elapsed_time, %{socket.assigns.elapsed_time | running: false})
+           |> push_navigate(to: "/finish/#{session_id}")}
+        else
+          # Continue game
+          {:noreply, socket_after_match}
+        end
+
+      _ ->
+        # Target does not have two spaces, Tab press is an error
+        {:noreply,
+         socket
+         |> assign(:score, %{streak: 0, wrong: socket.assigns.score.wrong + 1})}
+    end
+  end
+
+  @impl true
   def handle_info(:tick, socket) do
     if socket.assigns.elapsed_time.running do
       Process.send_after(self(), :tick, 1000)
@@ -94,7 +147,6 @@ defmodule CoderacerWeb.GameLive do
 
   defp format_char_as_typed(char) do
     case char do
-      "\t" -> "<span class=\"text-green-100\">⇥</span>"
       " " -> "<span class=\"text-green-100 text-[12px] px-1\">⎵</span>"
       "\r\n" -> "<span class=\"text-green-100 font-bold pl-1\">↵</span>\n"
       "\n" -> "<span class=\"text-green-100 font-bold pl-1\">↵</span>\n"
@@ -105,7 +157,6 @@ defmodule CoderacerWeb.GameLive do
 
   defp format_char_as_remaining(char) do
     case char do
-      "\t" -> "<span class=\"text-slate-400 opacity-60\">⇥</span>"
       " " -> "<span class=\"text-slate-400 opacity-60 text-[12px] px-1\">⎵</span>"
       "\r\n" -> "<span class=\"text-slate-400 opacity-60 font-bold pl-1\">↵</span>\n"
       "\n" -> "<span class=\"text-slate-400 opacity-60 font-bold pl-1\">↵</span>\n"

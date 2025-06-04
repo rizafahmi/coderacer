@@ -4,6 +4,8 @@ defmodule CoderacerWeb.StartLive do
   alias Coderacer.Game
   alias CoderacerWeb.Layouts
 
+  require Logger
+
   @languages [
     {"c", "C"},
     {"clojure", "Clojure"},
@@ -71,7 +73,8 @@ defmodule CoderacerWeb.StartLive do
            }) do
       {:noreply, push_navigate(socket, to: ~p"/game/#{session.id}")}
     else
-      {:error, _status, _error} ->
+      {:error, _status, error} ->
+        Logger.error("Error generating code: #{inspect(error)}")
         {:noreply, put_flash(socket, :error, "🤖 Error generating code. Rate limit exceeded.")}
 
       {:error, _changeset} ->

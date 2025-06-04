@@ -189,5 +189,35 @@ defmodule CoderacerWeb.GameLiveTest do
       # Should track both correct and incorrect characters
       assert html =~ "Time"
     end
+
+    test "tab_pressed advances by two when next two chars are spaces", %{conn: conn} do
+      session = session_fixture(%{code_challenge: "  abc"})
+      {:ok, view, _html} = live(conn, "/game/#{session.id}")
+
+      # Simulate tab_pressed event
+      render_hook(view, "tab_pressed", %{})
+
+      # Should advance by two spaces (streak should be 2, remaining_code should start with "a")
+      html = render(view)
+      # streak
+      assert html =~ "2"
+      # next char in code
+      assert html =~ "a"
+    end
+
+    test "tab_pressed increases error when next two chars are not spaces", %{conn: conn} do
+      session = session_fixture(%{code_challenge: "ab"})
+      {:ok, view, _html} = live(conn, "/game/#{session.id}")
+
+      # Simulate tab_pressed event
+      render_hook(view, "tab_pressed", %{})
+
+      # Should increase wrong count (wrong should be 1, streak should be 0)
+      html = render(view)
+      # wrong
+      assert html =~ "1"
+      # streak
+      assert html =~ "0"
+    end
   end
 end
