@@ -5,7 +5,7 @@ defmodule Coderacer.AITest do
   defmodule MockReq do
     def post!(url, _opts) do
       # Verify the request is going to the correct endpoint
-      assert String.contains?(url, "generativelanguage.googleapis.com")
+      assert String.contains?(url, "aiplatform.googleapis.com")
 
       # Return a mock response with a known code snippet
       %Req.Response{
