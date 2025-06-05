@@ -26,7 +26,7 @@ defmodule CoderacerWeb.Endpoint do
     gzip: not code_reloading?,
     only: CoderacerWeb.static_paths()
 
-  if Code.ensure_loaded?(Tidewave) do
+  if Mix.env() == :dev and Code.ensure_loaded?(Tidewave) do
     plug Tidewave
   end
 
