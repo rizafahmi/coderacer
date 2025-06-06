@@ -7,10 +7,14 @@ defmodule Coderacer.Application do
 
   @impl true
   def start(_type, _args) do
+    gcp_json_or_path = System.fetch_env!("GCP_SERVICE_ACCOUNT_JSON")
+
     credentials =
-      "GCP_SERVICE_ACCOUNT_JSON"
-      |> System.fetch_env!()
-      |> File.read!()
+      if File.exists?(gcp_json_or_path) do
+        File.read!(gcp_json_or_path)
+      else
+        gcp_json_or_path
+      end
       |> Jason.decode!()
 
     source = {:refresh_token, credentials}
