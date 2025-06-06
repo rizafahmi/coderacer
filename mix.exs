@@ -78,7 +78,8 @@ defmodule Coderacer.MixProject do
       {:bandit, "~> 1.5"},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:credo, "~> 1.7", only: [:dev], runtime: false},
-      {:tidewave, "~> 0.1.7", only: [:dev]}
+      {:tidewave, "~> 0.1.7", only: [:dev]},
+      {:goth, "1.4.5"}
     ]
   end
 

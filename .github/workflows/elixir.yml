@@ -36,4 +36,6 @@ jobs:
     - name: Install dependencies
       run: mix deps.get
     - name: Run tests
+      env:
+        GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
       run: mix test

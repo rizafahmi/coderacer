@@ -4,10 +4,13 @@ services:
     container_name: coderacer_deploy
     ports:
       - "4000:4000"
-    volumes:
-      - coderacer_sqlite:/app/priv/data
+    environment:
+      GCP_SERVICE_ACCOUNT_JSON: /app/config/gcp_credentials.json
     env_file:
       - .env
+    volumes:
+      - coderacer_sqlite:/app/priv/data
+      - ./application_default_credentials.json:/app/config/gcp_credentials.json:ro
     stdin_open: true # equivalent to -it
     tty: true # equivalent to -it
     restart: "no" # equivalent to --rm (no restart)
