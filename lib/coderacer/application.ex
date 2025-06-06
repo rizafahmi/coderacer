@@ -7,6 +7,14 @@ defmodule Coderacer.Application do
 
   @impl true
   def start(_type, _args) do
+    credentials =
+      "GCP_SERVICE_ACCOUNT_JSON"
+      |> System.fetch_env!()
+      |> File.read!()
+      |> Jason.decode!()
+
+    source = {:refresh_token, credentials}
+
     children = [
       CoderacerWeb.Telemetry,
       Coderacer.Repo,
@@ -14,6 +22,7 @@ defmodule Coderacer.Application do
        repos: Application.fetch_env!(:coderacer, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:coderacer, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Coderacer.PubSub},
+      {Goth, name: Coderacer.Goth, source: source},
       # Start a worker by calling: Coderacer.Worker.start_link(arg)
       # {Coderacer.Worker, arg},
       # Start to serve requests, typically the last entry

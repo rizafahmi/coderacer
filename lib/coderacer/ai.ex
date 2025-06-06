@@ -56,12 +56,13 @@ defmodule Coderacer.AI do
       "https://#{api_endpoint}/v1/projects/#{project_id}/locations/#{location_id}/publishers/google/models/#{model_id}:#{generate_content_api}"
 
     http_client = Application.get_env(:coderacer, :http_client, Req)
+    token = Goth.fetch!(Coderacer.Goth)
 
     http_client.post!(
       url,
       headers: [
         {"Content-Type", "application/json"},
-        {"Authorization", "Bearer #{System.get_env("VERTEX_API_KEY")}"}
+        {"Authorization", "Bearer #{token.token}"}
       ],
       json: %{
         contents: [

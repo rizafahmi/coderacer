@@ -50,5 +50,7 @@ npm-debug.log
 .amazonq
 AmazonQ.md
 
+# Credentials
 id_coderacer
 id_coderacer.pub
+application_default_credentials.json
