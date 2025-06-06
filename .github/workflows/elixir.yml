@@ -39,3 +39,7 @@ jobs:
       env:
         GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
       run: mix test
+    - name: Debug GCP_SERVICE_ACCOUNT_JSON
+      run: echo "${GCP_SERVICE_ACCOUNT_JSON:0:20}..."
+      env:
+        GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
