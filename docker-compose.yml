@@ -10,7 +10,7 @@ services:
       - .env
     volumes:
       - coderacer_sqlite:/app/priv/data
-      - ./application_default_credentials.json:/app/config/gcp_credentials.json:ro
+      - /home/coderacer-user/application_default_credentials.json:/app/config/gcp_credentials.json:ro
     stdin_open: true # equivalent to -it
     tty: true # equivalent to -it
     restart: "no" # equivalent to --rm (no restart)
