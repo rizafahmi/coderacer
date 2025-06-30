@@ -35,6 +35,15 @@ const Hooks = {
         }
       });
     }
+  },
+  TypingSound: {
+    mounted() {
+      const audio = this.el.querySelector("#typing-sound");
+      this.el.addEventListener("keydown", () => {
+        audio.currentTime = 0;
+        audio.play();
+      });
+    }
   }
 }
 

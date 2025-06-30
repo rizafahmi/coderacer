@@ -54,7 +54,7 @@ config :coderacer, CoderacerWeb.Endpoint,
   live_reload: [
     web_console_logger: true,
     patterns: [
-      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg|mp3)$",
       ~r"lib/coderacer_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ]
